@@ -17,6 +17,7 @@ use tokio::net::TcpStream;
 use tokio_tls::TlsStream;
 use tokio_tungstenite::{connect_async, stream::Stream, WebSocketStream};
 use websocket_response::WebsocketResponse;
+
 type McaiWebSocketStream = WebSocketStream<Stream<TcpStream, TlsStream<TcpStream>>>;
 
 pub struct Authot {
