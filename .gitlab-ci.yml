@@ -1,0 +1,13 @@
+---
+stages:
+    - test
+    - publish
+
+include: 
+  - project: 'media-cloud-ai/ci/pipelines'
+    file: '/rust/rust-publish-docker.yml'
+  - project: 'media-cloud-ai/ci/pipelines'
+    file: '/rust/rust-base.yml'
+
+...
+
