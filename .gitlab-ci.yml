@@ -1,4 +1,7 @@
 ---
+default:
+  image: registry.gitlab.com/media-cloud-ai/ci/rust:1.52.1-media
+
 stages:
     - test
     - publish
