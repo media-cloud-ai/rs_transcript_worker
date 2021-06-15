@@ -210,7 +210,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
 
       let message = Message::Text(data.to_string());
 
-      audio_source_sender.try_send(message.clone()).unwrap()
+      audio_source_sender.try_send(message).unwrap()
     }
 
     self.ws_thread.take().map(JoinHandle::join);
