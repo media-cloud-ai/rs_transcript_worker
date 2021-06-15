@@ -116,7 +116,7 @@ impl Authot {
 
       info!(
         "authot job id {} - {}",
-        response.id.unwrap_or_else(|| 0),
+        response.id.unwrap_or(0),
         response.message.clone().unwrap_or_else(|| "".to_string())
       );
       if response.stream_state == 0 {

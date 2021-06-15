@@ -20,7 +20,7 @@ impl TryFrom<Message> for WebsocketResponse {
       serde_json::from_str(&text)
         .map_err(|e| MessageError::RuntimeError(format!("Invalid data: {}", e.to_string())))
     } else {
-      Err(MessageError::RuntimeError(format!("Bad message format")))
+      Err(MessageError::RuntimeError("Bad message format".to_string()))
     }
   }
 }
