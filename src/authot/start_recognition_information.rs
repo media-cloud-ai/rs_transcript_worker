@@ -1,6 +1,7 @@
 use std::{
   convert::TryInto,
-  io::{Error, ErrorKind},
+  fs::File,
+  io::{BufReader, Error, ErrorKind},
 };
 use tokio_tungstenite::tungstenite::protocol::Message;
 
@@ -30,8 +31,16 @@ impl StartRecognitionInformation {
     }
   }
 
-  pub fn set_custom_vocabulary(&mut self, custom_vocabulary: Vec<String>) {
+  pub fn set_custom_vocabulary(&mut self, custom_vocabulary_path: String) {
+    let custom_voc_file = File::open(custom_vocabulary_path).expect("File does not exist");
+    let reader = BufReader::new(custom_voc_file);
+    let custom_vocabulary: Vec<CustomVocabulary> =
+      serde_json::from_reader(reader).expect("JSON was not well-formatted");
     self.transcription_config.additional_vocab = custom_vocabulary;
+  }
+
+  pub fn set_max_delay(&mut self, max_delay: f64) {
+    self.transcription_config.max_delay = max_delay;
   }
 }
 
@@ -50,7 +59,13 @@ pub struct TranscriptionConfig {
   pub enable_partials: bool,
   pub max_delay: f64,
   pub diarization: String,
-  pub additional_vocab: Vec<String>,
+  pub additional_vocab: Vec<CustomVocabulary>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CustomVocabulary {
+  pub content: String,
+  pub sounds_like: Vec<String>,
 }
 
 #[derive(Debug, Serialize)]
