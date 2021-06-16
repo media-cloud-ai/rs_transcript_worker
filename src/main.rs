@@ -4,12 +4,13 @@ extern crate serde_derive;
 extern crate serde_json;
 
 use authot::websocket_response::WebsocketResponse;
+use format::OutputFormat;
 use futures::channel::mpsc::{channel, Sender};
 use futures_util::{future, pin_mut, StreamExt};
 use mcai_worker_sdk::{job::JobResult, prelude::*, MessageError, MessageEvent};
-use stainless_ffmpeg_sys::AVMediaType;
 use std::{
   convert::TryFrom,
+  str::FromStr,
   sync::{
     atomic::{
       AtomicUsize,
@@ -26,6 +27,7 @@ use tokio::runtime::Runtime;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
 mod authot;
+mod format;
 
 pub mod built_info {
   include!(concat!(env!("OUT_DIR"), "/built.rs"));
@@ -52,10 +54,19 @@ pub struct WorkerParameters {
   authot_token: Option<String>,
   /// # Custom vocabulary
   /// Extend the knowledge of the provider by adding some specific words.
-  custom_vocabulary: Option<Vec<String>>,
+  custom_vocabulary: Option<String>,
   /// # Provider
   /// Name of the provider used for the transcription
   provider: String,
+  /// # Service Instance IP
+  /// IP address of the service instance
+  service_instance_ip: Option<String>,
+  /// # Transcript Interval
+  /// Interval between two transcripts arrival             
+  transcript_interval: Option<String>,
+  /// # Output Format
+  /// Output Format for transcription between EBU-TT-D and json
+  output_format: Option<String>,
   destination_path: String,
   source_path: String,
 }
@@ -89,6 +100,12 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     let selected_streams = get_first_audio_stream_id(&format_context)?;
 
     let cloned_parameters = parameters;
+    let param_output_format = cloned_parameters.output_format.clone();
+
+    let output_format = OutputFormat::from_str(
+      &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
+    )
+    .expect("Cannot get output format");
 
     let (audio_source_sender, audio_source_receiver) = channel(10000);
 
@@ -122,13 +139,24 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
                 cloned_sender.lock().unwrap().send(result).unwrap();
               }
               if event.message == "AddTranscript" {
-                if let Some(metadata) = event.metadata {
-                  let sequence_index = sequence_number.load(Acquire);
-                  let result =
-                    ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
-                  cloned_sender.lock().unwrap().send(result).unwrap();
+                match output_format {
+                  OutputFormat::EbuTtD => {
+                    if let Some(metadata) = event.metadata {
+                      let sequence_index = sequence_number.load(Acquire);
+                      let result =
+                        ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
+                      cloned_sender.lock().unwrap().send(result).unwrap();
 
-                  sequence_number.store(sequence_index + 1, Release);
+                      sequence_number.store(sequence_index + 1, Release);
+                    }
+                  }
+                  OutputFormat::Json => {
+                    let sequence_index = sequence_number.load(Acquire);
+                    let result = ProcessResult::new_json(&event);
+                    cloned_sender.lock().unwrap().send(result).unwrap();
+
+                    sequence_number.store(sequence_index + 1, Release);
+                  }
                 }
               }
             } else {
@@ -156,7 +184,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     _stream_index: usize,
     process_frame: ProcessFrame,
   ) -> Result<ProcessResult> {
-    match process_frame {
+    match &process_frame {
       ProcessFrame::AudioVideo(frame) => unsafe {
         trace!(
           "Frame {} samples, {} channels, {} bytes",

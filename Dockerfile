@@ -1,4 +1,4 @@
-FROM ubuntu:groovy as builder
+FROM ubuntu:focal as builder
 ENV TZ=Europe/Paris
 
 ADD . /src
@@ -30,8 +30,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     cargo build --verbose --release && \
     cargo install --path .
 
-FROM ubuntu:groovy
+FROM ubuntu:focal
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
+COPY --from=builder /src/ressources /ressources
 
 RUN apt update && \
     apt install -y \
