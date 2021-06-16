@@ -33,7 +33,11 @@ impl Authot {
         .unwrap_or_else(|| "".to_string()),
     };
 
-    let service_ip: String = parameters.service_instance_ip.as_ref().unwrap_or(&"localhost".to_string()).to_string();
+    let service_ip: String = parameters
+      .service_instance_ip
+      .as_ref()
+      .unwrap_or(&"localhost".to_string())
+      .to_string();
 
     let websocket_url = match &parameters.provider[..] {
       "authot" => {
@@ -52,16 +56,14 @@ impl Authot {
           let authot_live_information = authot.new_live().await.unwrap();
           authot.get_websocket_url(&authot_live_information).await
         }
-      },
-      "speechmatics" => {
-        format!("ws://{}:9000/v2", service_ip).to_string()
-      },
+      }
+      "speechmatics" => format!("ws://{}:9000/v2", service_ip),
       _ => {
         info!(
           "Provider {} not found, fallback to speechmatics",
           parameters.provider
         );
-        format!("ws://{}:9000/v2", service_ip).to_string()
+        format!("ws://{}:9000/v2", service_ip)
       }
     };
 

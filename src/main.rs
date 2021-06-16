@@ -103,7 +103,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     let param_output_format = cloned_parameters.output_format.clone();
 
     let output_format =
-      OutputFormat::from_str(&(param_output_format.unwrap_or("EBU-TT-D".to_string())))
+      OutputFormat::from_str(&(param_output_format.unwrap_or_else(|| "EBU-TT-D".to_string())))
         .expect("Cannot get output format");
 
     let (audio_source_sender, audio_source_receiver) = channel(10000);
