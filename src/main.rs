@@ -4,10 +4,10 @@ extern crate serde_derive;
 extern crate serde_json;
 
 use authot::websocket_response::WebsocketResponse;
+use format::OutputFormat;
 use futures::channel::mpsc::{channel, Sender};
 use futures_util::{future, pin_mut, StreamExt};
 use mcai_worker_sdk::{job::JobResult, prelude::*, MessageError, MessageEvent};
-use format::OutputFormat;
 use std::{
   convert::TryFrom,
   str::FromStr,
@@ -102,9 +102,10 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     let cloned_parameters = parameters;
     let param_output_format = cloned_parameters.output_format.clone();
 
-    let output_format =
-      OutputFormat::from_str(&(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())))
-        .expect("Cannot get output format");
+    let output_format = OutputFormat::from_str(
+      &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
+    )
+    .expect("Cannot get output format");
 
     let (audio_source_sender, audio_source_receiver) = channel(10000);
 
