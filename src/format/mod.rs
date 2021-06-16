@@ -21,3 +21,12 @@ impl FromStr for OutputFormat {
     }
   }
 }
+
+impl ToString for OutputFormat {
+  fn to_string(&self) -> String {
+    match &self {
+      OutputFormat::EbuTtD => "EBU-TT-D".to_string(),
+      OutputFormat::Json => "JSON".to_string(),
+    }
+  }
+}
