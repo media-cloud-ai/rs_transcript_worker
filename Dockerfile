@@ -27,7 +27,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     curl https://sh.rustup.rs -sSf | \
     sh -s -- --default-toolchain nightly -y && \
     . $HOME/.cargo/env && \
-    cargo build --verbose && \
+    cargo build --verbose --release && \
     cargo install --path .
 
 FROM ubuntu:focal
