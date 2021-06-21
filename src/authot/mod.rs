@@ -2,7 +2,9 @@ mod authot_live_information;
 pub mod start_recognition_information;
 pub mod websocket_response;
 
-pub use start_recognition_information::StartRecognitionInformation;
+pub use start_recognition_information::{
+  StartRecognitionInformation, StartRecognitionInformationNew,
+};
 
 use crate::WorkerParameters;
 use authot_live_information::AuthotLiveInformation;
@@ -58,6 +60,7 @@ impl Authot {
         }
       }
       "speechmatics" => format!("ws://{}:9000/v2", service_ip),
+      "speechmatics_new" => format!("ws://{}:9000/v2", service_ip),
       _ => {
         info!(
           "Provider {} not found, fallback to speechmatics",
@@ -71,34 +74,66 @@ impl Authot {
       .await
       .expect("Failed to connect");
 
-    let mut start_recognition_information = self::StartRecognitionInformation::new();
-
-    if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
-      start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
-    }
-
-    if let Some(max_delay) = &parameters.transcript_interval {
-      if let Ok(max_delay_float) = max_delay.parse::<f64>() {
-        start_recognition_information.set_max_delay(max_delay_float);
-      }
-    }
-
-    ws_stream
-      .send(start_recognition_information.try_into().unwrap())
-      .await
-      .expect("unable to send start recognition information");
-
-    while let Some(Ok(event)) = ws_stream.next().await {
-      let event: Result<WebsocketResponse> =
-        self::websocket_response::WebsocketResponse::try_from(event);
-      if let Ok(event) = event {
-        if event.message == "RecognitionStarted" {
-          break;
+    match &parameters.provider[..] {
+      "speechmatics_new" => {
+        let mut start_recognition_information = self::StartRecognitionInformationNew::new();
+        if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
+          start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
         }
+
+        if let Some(max_delay) = &parameters.transcript_interval {
+          if let Ok(max_delay_float) = max_delay.parse::<f64>() {
+            start_recognition_information.set_max_delay(max_delay_float);
+          }
+        }
+
+        ws_stream
+          .send(start_recognition_information.try_into().unwrap())
+          .await
+          .expect("unable to send start recognition information");
+
+        while let Some(Ok(event)) = ws_stream.next().await {
+          let event: Result<WebsocketResponse> =
+            self::websocket_response::WebsocketResponse::try_from(event);
+          if let Ok(event) = event {
+            if event.message == "RecognitionStarted" {
+              break;
+            }
+          }
+        }
+
+        (authot, ws_stream)
+      }
+      _ => {
+        let mut start_recognition_information = self::StartRecognitionInformation::new();
+        if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
+          start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
+        }
+
+        if let Some(max_delay) = &parameters.transcript_interval {
+          if let Ok(max_delay_float) = max_delay.parse::<f64>() {
+            start_recognition_information.set_max_delay(max_delay_float);
+          }
+        }
+
+        ws_stream
+          .send(start_recognition_information.try_into().unwrap())
+          .await
+          .expect("unable to send start recognition information");
+
+        while let Some(Ok(event)) = ws_stream.next().await {
+          let event: Result<WebsocketResponse> =
+            self::websocket_response::WebsocketResponse::try_from(event);
+          if let Ok(event) = event {
+            if event.message == "RecognitionStarted" {
+              break;
+            }
+          }
+        }
+
+        (authot, ws_stream)
       }
     }
-
-    (authot, ws_stream)
   }
 
   pub async fn new_live(&self) -> Result<AuthotLiveInformation> {
