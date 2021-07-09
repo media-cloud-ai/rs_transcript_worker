@@ -70,7 +70,7 @@ impl StartRecognitionInformationNew {
         max_delay: 5.0,
         diarization: "speaker_change".to_string(),
         additional_vocab: vec![],
-        operating_point: "enhanced".to_string(),
+        operating_point: "standard".to_string(),
       },
       audio_format: AudioFormat {
         audio_type: AudioType::Raw,
