@@ -59,8 +59,9 @@ impl Authot {
           authot.get_websocket_url(&authot_live_information).await
         }
       }
-      "speechmatics" => format!("ws://{}:9000/v2", service_ip),
-      "speechmatics_new" => format!("ws://{}:9000/v2", service_ip),
+      "speechmatics" | "speechmatics_standard" | "speechmatics_enhanced" => {
+        format!("ws://{}:9000/v2", service_ip)
+      }
       _ => {
         info!(
           "Provider {} not found, fallback to speechmatics",
@@ -75,8 +76,13 @@ impl Authot {
       .expect("Failed to connect");
 
     match &parameters.provider[..] {
-      "speechmatics_new" => {
-        let mut start_recognition_information = self::StartRecognitionInformationNew::new();
+      "speechmatics_standard" | "speechmatics_enhanced" => {
+        let mode: String = if &parameters.provider[..] == "speechmatics_standard" {
+          "standard".to_string()
+        } else {
+          "enhanced".to_string()
+        };
+        let mut start_recognition_information = self::StartRecognitionInformationNew::new(mode);
         if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
           start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
         }
@@ -84,6 +90,12 @@ impl Authot {
         if let Some(max_delay) = &parameters.transcript_interval {
           if let Ok(max_delay_float) = max_delay.parse::<f64>() {
             start_recognition_information.set_max_delay(max_delay_float);
+          }
+        }
+
+        if let Some(diarisation_balance) = &parameters.diarisation_balance {
+          if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
+            start_recognition_information.set_diarisation(diarisation_balance_float);
           }
         }
 
@@ -113,6 +125,12 @@ impl Authot {
         if let Some(max_delay) = &parameters.transcript_interval {
           if let Ok(max_delay_float) = max_delay.parse::<f64>() {
             start_recognition_information.set_max_delay(max_delay_float);
+          }
+        }
+
+        if let Some(diarisation_balance) = &parameters.diarisation_balance {
+          if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
+            start_recognition_information.set_diarisation(diarisation_balance_float);
           }
         }
 

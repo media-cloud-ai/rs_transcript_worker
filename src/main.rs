@@ -64,6 +64,9 @@ pub struct WorkerParameters {
   /// # Transcript Interval
   /// Interval between two transcripts arrival             
   transcript_interval: Option<String>,
+  /// # Diarisation balance
+  /// Balance between accuracy and recall for diarisation (0.0 to 1.0, standard is 0.4)
+  diarisation_balance: Option<String>,
   /// # Output Format
   /// Output Format for transcription between EBU-TT-D and json
   output_format: Option<String>,

@@ -1,6 +1,6 @@
 [package]
 name = "transcript_worker"
-version = "0.3.1-rc2"
+version = "0.3.2"
 authors = [
   "Marc-Antoine Arnaud <maarnaud@media-io.com>",
 ]
@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 futures = {version = "0.3", features = ["thread-pool"]}
 futures-util = "0.3"
-mcai_worker_sdk = { version = "=1.0.0-rc4", features = ["media"] }
+mcai_worker_sdk = { version = "=1.0.0", features = ["media"] }
 reqwest = { version = "0.10", features = ["json"] }
 schemars = "0.8"
 serde = "^1.0"
