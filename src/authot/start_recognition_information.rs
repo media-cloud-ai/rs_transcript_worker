@@ -21,6 +21,7 @@ impl StartRecognitionInformation {
         enable_partials: false,
         max_delay: 5.0,
         diarization: "speaker_change".to_string(),
+        speaker_change_sensitivity: 0.4,
         additional_vocab: vec![],
       },
       audio_format: AudioFormat {
@@ -41,6 +42,10 @@ impl StartRecognitionInformation {
 
   pub fn set_max_delay(&mut self, max_delay: f64) {
     self.transcription_config.max_delay = max_delay;
+  }
+
+  pub fn set_diarisation(&mut self, diarisation: f64) {
+    self.transcription_config.speaker_change_sensitivity = diarisation;
   }
 }
 
@@ -61,7 +66,7 @@ pub struct StartRecognitionInformationNew {
 }
 
 impl StartRecognitionInformationNew {
-  pub fn new() -> Self {
+  pub fn new(mode: String) -> Self {
     StartRecognitionInformationNew {
       message: TranscriptionMode::StartRecognition,
       transcription_config: TranscriptionConfigNew {
@@ -69,8 +74,9 @@ impl StartRecognitionInformationNew {
         enable_partials: false,
         max_delay: 5.0,
         diarization: "speaker_change".to_string(),
+        speaker_change_sensitivity: 0.4,
         additional_vocab: vec![],
-        operating_point: "standard".to_string(),
+        operating_point: mode,
       },
       audio_format: AudioFormat {
         audio_type: AudioType::Raw,
@@ -91,6 +97,10 @@ impl StartRecognitionInformationNew {
   pub fn set_max_delay(&mut self, max_delay: f64) {
     self.transcription_config.max_delay = max_delay;
   }
+
+  pub fn set_diarisation(&mut self, diarisation: f64) {
+    self.transcription_config.speaker_change_sensitivity = diarisation;
+  }
 }
 
 impl TryInto<Message> for StartRecognitionInformationNew {
@@ -108,6 +118,7 @@ pub struct TranscriptionConfig {
   pub enable_partials: bool,
   pub max_delay: f64,
   pub diarization: String,
+  pub speaker_change_sensitivity: f64,
   pub additional_vocab: Vec<CustomVocabulary>,
 }
 
@@ -117,6 +128,7 @@ pub struct TranscriptionConfigNew {
   pub enable_partials: bool,
   pub max_delay: f64,
   pub diarization: String,
+  pub speaker_change_sensitivity: f64,
   pub additional_vocab: Vec<CustomVocabulary>,
   pub operating_point: String,
 }
