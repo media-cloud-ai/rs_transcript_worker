@@ -32,6 +32,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
 
 FROM ubuntu:focal
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
+COPY --from=builder /src/ressources /ressources
 
 RUN apt update && \
     apt install -y \

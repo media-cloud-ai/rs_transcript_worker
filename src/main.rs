@@ -4,21 +4,20 @@ extern crate serde_derive;
 extern crate serde_json;
 
 use authot::websocket_response::WebsocketResponse;
+use format::OutputFormat;
 use futures::channel::mpsc::{channel, Sender};
 use futures_util::{future, pin_mut, StreamExt};
-use mcai_worker_sdk::{
-  debug, info, job::JobResult, start_worker, trace, FormatContext, Frame, JsonSchema, MessageError,
-  MessageEvent, ProcessResult, StreamDescriptor, Version,
-};
-use stainless_ffmpeg_sys::AVMediaType;
+use mcai_worker_sdk::{job::JobResult, prelude::*, MessageError, MessageEvent};
 use std::{
   convert::TryFrom,
+  str::FromStr,
   sync::{
     atomic::{
       AtomicUsize,
       Ordering::{Acquire, Release},
     },
-    mpsc, Arc, Mutex,
+    mpsc::Sender as StdSender,
+    Arc, Mutex,
   },
   thread,
   thread::JoinHandle,
@@ -28,6 +27,7 @@ use tokio::runtime::Runtime;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
 mod authot;
+mod format;
 
 pub mod built_info {
   include!(concat!(env!("OUT_DIR"), "/built.rs"));
@@ -39,22 +39,37 @@ struct TranscriptEvent {
   start_time: Option<f32>,
   authot_live_id: Option<usize>,
   audio_source_sender: Option<Sender<Message>>,
-  sender: Option<Arc<Mutex<mpsc::Sender<ProcessResult>>>>,
+  sender: Option<Arc<Mutex<StdSender<ProcessResult>>>>,
   ws_thread: Option<JoinHandle<()>>,
 }
 
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
 pub struct WorkerParameters {
   /// # Authot Live Identifier
-  /// Pass an pre-created Authot Live process identifier.  
+  /// Pass an pre-created Authot Live process identifier.
   /// It will skip the creation of a new live process.
   authot_live_id: Option<u32>,
-  /// # Authot token  
+  /// # Authot token
   /// Set the token to access to Authot service.
   authot_token: Option<String>,
   /// # Custom vocabulary
   /// Extend the knowledge of the provider by adding some specific words.
-  custom_vocabulary: Option<Vec<String>>,
+  custom_vocabulary: Option<String>,
+  /// # Provider
+  /// Name of the provider used for the transcription
+  provider: String,
+  /// # Service Instance IP
+  /// IP address of the service instance
+  service_instance_ip: Option<String>,
+  /// # Transcript Interval
+  /// Interval between two transcripts arrival             
+  transcript_interval: Option<String>,
+  /// # Diarisation balance
+  /// Balance between accuracy and recall for diarisation (0.0 to 1.0, standard is 0.4)
+  diarisation_balance: Option<String>,
+  /// # Output Format
+  /// Output Format for transcription between EBU-TT-D and json
+  output_format: Option<String>,
   destination_path: String,
   source_path: String,
 }
@@ -80,23 +95,29 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     &mut self,
     parameters: WorkerParameters,
     format_context: Arc<Mutex<FormatContext>>,
-    sender: Arc<Mutex<mpsc::Sender<ProcessResult>>>,
-  ) -> Result<Vec<StreamDescriptor>, MessageError> {
+    response_sender: Arc<Mutex<StdSender<ProcessResult>>>,
+  ) -> Result<Vec<StreamDescriptor>> {
     let format_context = format_context.lock().unwrap();
     self.start_time = format_context.get_start_time();
 
     let selected_streams = get_first_audio_stream_id(&format_context)?;
 
     let cloned_parameters = parameters;
+    let param_output_format = cloned_parameters.output_format.clone();
 
-    let (audio_source_sender, audio_source_receiver) = channel(100);
+    let output_format = OutputFormat::from_str(
+      &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
+    )
+    .expect("Cannot get output format");
+
+    let (audio_source_sender, audio_source_receiver) = channel(10000);
 
     self.audio_source_sender = Some(audio_source_sender);
 
-    let cloned_sender = sender.clone();
+    let cloned_sender = response_sender.clone();
     let start_time = self.start_time;
 
-    self.sender = Some(sender);
+    self.sender = Some(response_sender);
 
     self.ws_thread = Some(thread::spawn(move || {
       let sequence_number = Arc::new(AtomicUsize::new(0));
@@ -110,24 +131,35 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
         let receive_from_ws = {
           ws_receiver.for_each(|event| async {
             let event = event.unwrap();
-            trace!("{}", event);
-            let event = WebsocketResponse::try_from(event);
+            info!("{}", event);
+            let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
 
             if let Ok(event) = event {
               if event.message == "AudioAdded" {}
               if event.message == "EndOfTranscript" {
-                info!("End of transcript from Authot");
+                info!("End of transcript from provider");
                 let result = ProcessResult::end_of_process();
                 cloned_sender.lock().unwrap().send(result).unwrap();
               }
               if event.message == "AddTranscript" {
-                if let Some(metadata) = event.metadata {
-                  let sequence_index = sequence_number.load(Acquire);
-                  let result =
-                    ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
-                  cloned_sender.lock().unwrap().send(result).unwrap();
+                match output_format {
+                  OutputFormat::EbuTtD => {
+                    if let Some(metadata) = event.metadata {
+                      let sequence_index = sequence_number.load(Acquire);
+                      let result =
+                        ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
+                      cloned_sender.lock().unwrap().send(result).unwrap();
 
-                  sequence_number.store(sequence_index + 1, Release);
+                      sequence_number.store(sequence_index + 1, Release);
+                    }
+                  }
+                  OutputFormat::Json => {
+                    let sequence_index = sequence_number.load(Acquire);
+                    let result = ProcessResult::new_json(&event);
+                    cloned_sender.lock().unwrap().send(result).unwrap();
+
+                    sequence_number.store(sequence_index + 1, Release);
+                  }
                 }
               }
             } else {
@@ -153,45 +185,54 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     &mut self,
     job_result: JobResult,
     _stream_index: usize,
-    frame: Frame,
-  ) -> Result<ProcessResult, MessageError> {
-    unsafe {
-      trace!(
-        "Frame {} samples, {} channels, {} bytes",
-        (*frame.frame).nb_samples,
-        (*frame.frame).channels,
-        (*frame.frame).linesize[0],
-      );
+    process_frame: ProcessFrame,
+  ) -> Result<ProcessResult> {
+    match &process_frame {
+      ProcessFrame::AudioVideo(frame) => unsafe {
+        trace!(
+          "Frame {} samples, {} channels, {} bytes",
+          (*frame.frame).nb_samples,
+          (*frame.frame).channels,
+          (*frame.frame).linesize[0],
+        );
 
-      let size = ((*frame.frame).channels * (*frame.frame).nb_samples * 2) as usize;
-      let data = Vec::from_raw_parts((*frame.frame).data[0], size, size);
-      let message = Message::binary(data.clone());
-      std::mem::forget(data);
+        let size = ((*frame.frame).channels * (*frame.frame).nb_samples * 2) as usize;
+        let data = Vec::from_raw_parts((*frame.frame).data[0], size, size);
+        let message = Message::binary(data.clone());
+        std::mem::forget(data);
 
-      if let Some(audio_source_sender) = &mut self.audio_source_sender {
-        let mut sended = false;
-        while !sended {
-          match audio_source_sender.try_send(message.clone()) {
-            Ok(_) => {
-              sended = true;
-            }
-            Err(error) => {
-              if error.is_full() {
-                thread::sleep(Duration::from_millis(50));
+        if let Some(audio_source_sender) = &mut self.audio_source_sender {
+          let mut sended = false;
+          while !sended {
+            match audio_source_sender.try_send(message.clone()) {
+              Ok(_) => {
+                sended = true;
               }
-              if error.is_disconnected() {
-                return Err(MessageError::ProcessingError(job_result));
+              Err(error) => {
+                if error.is_full() {
+                  info!("C'est FULL");
+                  thread::sleep(Duration::from_millis(50));
+                }
+                if error.is_disconnected() {
+                  return Err(MessageError::ProcessingError(job_result));
+                }
               }
             }
           }
         }
+      },
+      _ => {
+        return Err(MessageError::RuntimeError(format!(
+          "Could not open frame as it was no AudioVideo frame in job {:?}",
+          job_result.get_str_job_id()
+        )))
       }
-    }
+    };
 
     Ok(ProcessResult::empty())
   }
 
-  fn ending_process(&mut self) -> Result<(), MessageError> {
+  fn ending_process(&mut self) -> Result<()> {
     if let Some(audio_source_sender) = &mut self.audio_source_sender {
       let data = json!({
         "message": "EndOfStream",
@@ -200,22 +241,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
 
       let message = Message::Text(data.to_string());
 
-      let mut sended = false;
-      while !sended {
-        match audio_source_sender.try_send(message.clone()) {
-          Ok(_) => {
-            sended = true;
-          }
-          Err(error) => {
-            if error.is_full() {
-              thread::sleep(Duration::from_millis(50));
-            }
-            if error.is_disconnected() {
-              panic!("disconnected Authot websocket");
-            }
-          }
-        }
-      }
+      audio_source_sender.try_send(message).unwrap()
     }
 
     self.ws_thread.take().map(JoinHandle::join);
@@ -223,22 +249,20 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
   }
 }
 
-fn get_first_audio_stream_id(
-  format_context: &FormatContext,
-) -> Result<Vec<StreamDescriptor>, MessageError> {
+fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<StreamDescriptor>> {
   // select first audio stream index
   for stream_index in 0..format_context.get_nb_streams() {
     if format_context.get_stream_type(stream_index as isize) == AVMediaType::AVMEDIA_TYPE_AUDIO {
       let channel_layouts = vec!["mono".to_string()];
       let sample_formats = vec!["s16".to_string()];
       let sample_rates = vec![16000];
-
-      let stream_descriptor = StreamDescriptor::new_audio(
-        stream_index as usize,
+      let filters = vec![AudioFilter::Format(AudioFormat {
+        sample_rates,
         channel_layouts,
         sample_formats,
-        sample_rates,
-      );
+      })];
+
+      let stream_descriptor = StreamDescriptor::new_audio(stream_index as usize, filters);
 
       return Ok(vec![stream_descriptor]);
     }
