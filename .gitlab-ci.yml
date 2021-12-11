@@ -6,6 +6,10 @@ variables:
   CONTAINER_REGISTRY: registry.gitlab.com
   CONTAINER_IMAGE_NAME: media-cloud-ai/workers/media/rs_transcript_worker
 
+variables:
+  CONTAINER_REGISTRY: registry.gitlab.com
+  CONTAINER_IMAGE_NAME: media-cloud-ai/workers/media/rs_transcript_worker
+
 stages:
     - test
     - publish
