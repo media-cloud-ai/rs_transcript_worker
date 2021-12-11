@@ -1,3 +1,4 @@
+use chrono::prelude::{DateTime, Utc};
 use mcai_worker_sdk::prelude::*;
 use std::convert::TryFrom;
 use tokio_tungstenite::tungstenite::protocol::Message;
@@ -31,6 +32,7 @@ pub struct Metadata {
   pub start_time: f64,
   pub end_time: f64,
   pub transcript: String,
+  pub clock: Option<DateTime<Utc>>,
 }
 
 impl Metadata {

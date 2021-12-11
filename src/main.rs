@@ -4,10 +4,11 @@ extern crate serde_derive;
 extern crate serde_json;
 
 use authot::websocket_response::WebsocketResponse;
+use chrono::prelude::{DateTime, Utc};
 use format::OutputFormat;
 use futures::channel::mpsc::{channel, Sender};
 use futures_util::{future, pin_mut, StreamExt};
-use mcai_worker_sdk::{job::JobResult, prelude::*, MessageError, MessageEvent};
+use mcai_worker_sdk::{job::JobResult, prelude::*, McaiWorker, MessageError};
 use std::{
   convert::TryFrom,
   str::FromStr,
@@ -28,6 +29,7 @@ use tokio_tungstenite::tungstenite::protocol::Message;
 
 mod authot;
 mod format;
+use authot::websocket_response;
 
 pub mod built_info {
   include!(concat!(env!("OUT_DIR"), "/built.rs"));
@@ -41,6 +43,7 @@ struct TranscriptEvent {
   audio_source_sender: Option<Sender<Message>>,
   sender: Option<Arc<Mutex<StdSender<ProcessResult>>>>,
   ws_thread: Option<JoinHandle<()>>,
+  clock_vec: Arc<Mutex<Vec<DateTime<Utc>>>>,
 }
 
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
@@ -62,7 +65,7 @@ pub struct WorkerParameters {
   /// IP address of the service instance
   service_instance_ip: Option<String>,
   /// # Transcript Interval
-  /// Interval between two transcripts arrival             
+  /// Interval between two transcripts arrival
   transcript_interval: Option<String>,
   /// # Diarisation balance
   /// Balance between accuracy and recall for diarisation (0.0 to 1.0, standard is 0.4)
@@ -74,7 +77,7 @@ pub struct WorkerParameters {
   source_path: String,
 }
 
-impl MessageEvent<WorkerParameters> for TranscriptEvent {
+impl McaiWorker<WorkerParameters> for TranscriptEvent {
   fn get_name(&self) -> String {
     "Transcript process worker".to_string()
   }
@@ -99,6 +102,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
   ) -> Result<Vec<StreamDescriptor>> {
     let format_context = format_context.lock().unwrap();
     self.start_time = format_context.get_start_time();
+    let start_offset = self.start_time.unwrap();
 
     let selected_streams = get_first_audio_stream_id(&format_context)?;
 
@@ -115,6 +119,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
     self.audio_source_sender = Some(audio_source_sender);
 
     let cloned_sender = response_sender.clone();
+    let cloned_clock_vec = self.clock_vec.clone();
     let start_time = self.start_time;
 
     self.sender = Some(response_sender);
@@ -131,7 +136,7 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
         let receive_from_ws = {
           ws_receiver.for_each(|event| async {
             let event = event.unwrap();
-            info!("{}", event);
+            debug!("{}", event);
             let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
 
             if let Ok(event) = event {
@@ -144,8 +149,12 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
               if event.message == "AddTranscript" {
                 match output_format {
                   OutputFormat::EbuTtD => {
-                    if let Some(metadata) = event.metadata {
+                    if let Some(mut metadata) = event.metadata {
+                      metadata.start_time += start_offset as f64;
+                      metadata.end_time += start_offset as f64;
                       let sequence_index = sequence_number.load(Acquire);
+                      cloned_clock_vec.lock().unwrap().clear();
+
                       let result =
                         ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
                       cloned_sender.lock().unwrap().send(result).unwrap();
@@ -155,7 +164,30 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
                   }
                   OutputFormat::Json => {
                     let sequence_index = sequence_number.load(Acquire);
-                    let result = ProcessResult::new_json(&event);
+                    let updated_metadata = if let Some(metadata) = event.metadata {
+                      let clock: DateTime<Utc> = cloned_clock_vec.lock().unwrap()[0];
+                      cloned_clock_vec.lock().unwrap().clear();
+                      info!("Clock {}", clock);
+                      Some(websocket_response::Metadata {
+                        start_time: metadata.start_time as f64,
+                        end_time: metadata.end_time as f64,
+                        transcript: metadata.transcript,
+                        clock: Some(clock),
+                      })
+                    } else {
+                      None
+                    };
+                    let updated_event = WebsocketResponse {
+                      message: event.message,
+                      id: event.id,
+                      kind: event.kind,
+                      quality: event.quality,
+                      reason: event.reason,
+                      metadata: updated_metadata,
+                      results: event.results,
+                    };
+
+                    let result = ProcessResult::new_json(&updated_event);
                     cloned_sender.lock().unwrap().send(result).unwrap();
 
                     sequence_number.store(sequence_index + 1, Release);
@@ -203,6 +235,8 @@ impl MessageEvent<WorkerParameters> for TranscriptEvent {
 
         if let Some(audio_source_sender) = &mut self.audio_source_sender {
           let mut sended = false;
+          let clock: DateTime<Utc> = Utc::now();
+          self.clock_vec.lock().unwrap().push(clock);
           while !sended {
             match audio_source_sender.try_send(message.clone()) {
               Ok(_) => {
