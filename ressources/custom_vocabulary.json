@@ -30,15 +30,9 @@
     ]
   },
   {
-    "content": "Downing Street",
-    "sounds_like": [
-      "downing street"
-    ]
-  },
-  {
     "content": "StopCovid",
     "sounds_like": [
-      "stop covid"
+      "stopcovid"
     ]
   },
   {
@@ -69,6 +63,1214 @@
     "content": "LR",
     "sounds_like": [
       "elère"
+    ]
+  },
+  {
+    "content": "Delphine Jubillar",
+    "sounds_like": [
+      "delphine jubilarre"
+    ]
+  },
+  {
+    "content": "Cédric Jubillar",
+    "sounds_like": [
+      "cédric jubilarre"
+    ]
+  },
+  {
+    "content": "CRDS",
+    "sounds_like": [
+      "céèrdéèsse"
+    ]
+  },
+  {
+    "content": "BASF",
+    "sounds_like": [
+      "béaèseffe"
+    ]
+  },
+  {
+    "content": "Jubillar",
+    "sounds_like": [
+      "jubilarre"
+    ]
+  },
+  {
+    "content": "FFP2",
+    "sounds_like": [
+      "effeffepédeux"
+    ]
+  },
+  {
+    "content": "Vladimir Poutine",
+    "sounds_like": [
+      "vladimirpoutine"
+    ]
+  },
+  {
+    "content": "URSS",
+    "sounds_like": [
+      "uairèssèsse",
+      "uairéssèsse"
+    ]
+  },
+  {
+    "content": "l'URSS",
+    "sounds_like": [
+      "luairèssèsse",
+      "luairéssèsse"
+    ]
+  },
+  {
+    "content": "FNSEA",
+    "sounds_like": [
+      "effenesseuha"
+    ]
+  },
+  {
+    "content": "RTE",
+    "sounds_like": [
+      "ertéheu"
+    ]
+  },
+  {
+    "content": "Leititia",
+    "sounds_like": [
+      "létissia"
+    ]
+  },
+  {
+    "content": "ADJOADOUD",
+    "sounds_like": [
+      "adoaoud"
+    ]
+  },
+  {
+    "content": "Astrig",
+    "sounds_like": [
+      "astrig"
+    ]
+  },
+  {
+    "content": "AGOPIAN",
+    "sounds_like": [
+      "agopian"
+    ]
+  },
+  {
+    "content": "Elsa ASSALIT",
+    "sounds_like": [
+      "elzassali"
+    ]
+  },
+  {
+    "content": "Daïc AUDOUIT",
+    "sounds_like": [
+      "daïkaudoui"
+    ]
+  },
+  {
+    "content": "Louis AUGRY",
+    "sounds_like": [
+      "louihogri"
+    ]
+  },
+  {
+    "content": "Chloé BARBAUX",
+    "sounds_like": [
+      "kloébarbo"
+    ]
+  },
+  {
+    "content": "Benjamin BARNIER",
+    "sounds_like": [
+      "binjaminbarnié"
+    ]
+  },
+  {
+    "content": "Laurène BARRIERE",
+    "sounds_like": [
+      "lorènebarière"
+    ]
+  },
+  {
+    "content": "Karine BASTE",
+    "sounds_like": [
+      "karinebasterégis"
+    ]
+  },
+  {
+    "content": "Jean-Rémi BAUDOT",
+    "sounds_like": [
+      "jeanrémibodo"
+    ]
+  },
+  {
+    "content": "Martin BAUMER",
+    "sounds_like": [
+      "martinbaumère"
+    ]
+  },
+  {
+    "content": "Yael BENAMOU",
+    "sounds_like": [
+      "yaèlbénamou"
+    ]
+  },
+  {
+    "content": "Julien BENEDETTO",
+    "sounds_like": [
+      "julienbénédèto"
+    ]
+  },
+  {
+    "content": "Quentin BERICHEL",
+    "sounds_like": [
+      "kentinbérichel"
+    ]
+  },
+  {
+    "content": "Alizé BOISSIN",
+    "sounds_like": [
+      "alizéboissin"
+    ]
+  },
+  {
+    "content": "Gilles BORNSTEIN",
+    "sounds_like": [
+      "gillebornchtayn"
+    ]
+  },
+  {
+    "content": "Alix BOUILHAGUET",
+    "sounds_like": [
+      "alixbouyaguè"
+    ]
+  },
+  {
+    "content": "Myriam BOUNAFAA",
+    "sounds_like": [
+      "miriambounafa"
+    ]
+  },
+  {
+    "content": "Florent BOUTET",
+    "sounds_like": [
+      "floranboutè"
+    ]
+  },
+  {
+    "content": "Luc BRISSON",
+    "sounds_like": [
+      "lukbrisson"
+    ]
+  },
+  {
+    "content": "Leslie CADIOU",
+    "sounds_like": [
+      "leslikadiou"
+    ]
+  },
+  {
+    "content": "Christophe CARNINO",
+    "sounds_like": [
+      "kristofcarnino"
+    ]
+  },
+  {
+    "content": "Nicolas CARVALHO",
+    "sounds_like": [
+      "nicolacarvalo"
+    ]
+  },
+  {
+    "content": "Antoine CAZABONNE",
+    "sounds_like": [
+      "antoinecazabonne"
+    ]
+  },
+  {
+    "content": "Jean CHAMOULAUD",
+    "sounds_like": [
+      "jeanchamoulo"
+    ]
+  },
+  {
+    "content": "Flavian CHARUEL",
+    "sounds_like": [
+      "flaviancharuel"
+    ]
+  },
+  {
+    "content": "Lucie CHAUMETTE",
+    "sounds_like": [
+      "lussichomette"
+    ]
+  },
+  {
+    "content": "Alexandre CHAUVEAU",
+    "sounds_like": [
+      "alexandrechovo"
+    ]
+  },
+  {
+    "content": "Pauline COIFFARD",
+    "sounds_like": [
+      "paulinecoiffar"
+    ]
+  },
+  {
+    "content": "Juliette COULAIS",
+    "sounds_like": [
+      "juliettecoulè"
+    ]
+  },
+  {
+    "content": "Agathe COUTELLE",
+    "sounds_like": [
+      "agatecoutelle"
+    ]
+  },
+  {
+    "content": "Alix Dauge",
+    "sounds_like": [
+      "alixdauge"
+    ]
+  },
+  {
+    "content": "Clémence De La Baume",
+    "sounds_like": [
+      "clémenssdelabaume"
+    ]
+  },
+  {
+    "content": "Siegrid De Misouard",
+    "sounds_like": [
+      "sigridemisouar"
+    ]
+  },
+  {
+    "content": "Nathanaël De Rincquesen",
+    "sounds_like": [
+      "natanaèlderinksin"
+    ]
+  },
+  {
+    "content": "Axel De Tarlé",
+    "sounds_like": [
+      "axeldetarlé"
+    ]
+  },
+  {
+    "content": "Géraldine DEHLINGER",
+    "sounds_like": [
+      "géraldinedelingé"
+    ]
+  },
+  {
+    "content": "Antoine DELCOURT",
+    "sounds_like": [
+      "antoinedelcour"
+    ]
+  },
+  {
+    "content": "David DELOS",
+    "sounds_like": [
+      "davidelo"
+    ]
+  },
+  {
+    "content": "Lucile DEVILLERS",
+    "sounds_like": [
+      "luciledevilère"
+    ]
+  },
+  {
+    "content": "Sofia DOLLE",
+    "sounds_like": [
+      "sofiadol"
+    ]
+  },
+  {
+    "content": "Hilal EL AFLAHI",
+    "sounds_like": [
+      "ilalelaflahi"
+    ]
+  },
+  {
+    "content": "Naoufel EL KHAOUAFI",
+    "sounds_like": [
+      "naoufèlelkaouafi"
+    ]
+  },
+  {
+    "content": " Samuel ETIENNE",
+    "sounds_like": [
+      "samuelétienne"
+    ]
+  },
+  {
+    "content": "Pauline FORGUE",
+    "sounds_like": [
+      "polineforgue"
+    ]
+  },
+  {
+    "content": "Corentin FOUCHARD",
+    "sounds_like": [
+      "corentinfouchar"
+    ]
+  },
+  {
+    "content": "Thibault FRANCESCHET",
+    "sounds_like": [
+      "tibofranséchè"
+    ]
+  },
+  {
+    "content": "Julien GAL",
+    "sounds_like": [
+      "juliengal"
+    ]
+  },
+  {
+    "content": "Jean-Christophe GALEAZZI",
+    "sounds_like": [
+      "jeankristofgaléazi"
+    ]
+  },
+  {
+    "content": "Christophe GASCARD",
+    "sounds_like": [
+      "kristofgascar"
+    ]
+  },
+  {
+    "content": "Muriel GENSSE",
+    "sounds_like": [
+      "muriellegence"
+    ]
+  },
+  {
+    "content": "Yoann D'ANGELO GIAMMETTA",
+    "sounds_like": [
+      "yoannegiametadangelo"
+    ]
+  },
+  {
+    "content": "Gael GIORDANA",
+    "sounds_like": [
+      "gaeljiordana"
+    ]
+  },
+  {
+    "content": "Claire GIROUD",
+    "sounds_like": [
+      "clairegirou"
+    ]
+  },
+  {
+    "content": "Camille GRENU",
+    "sounds_like": [
+      "kamillegrenu"
+    ]
+  },
+  {
+    "content": "Yann HAEFELE",
+    "sounds_like": [
+      "yanéfèle"
+    ]
+  },
+  {
+    "content": "Guillemette HALARD",
+    "sounds_like": [
+      "guillemettalar"
+    ]
+  },
+  {
+    "content": "Anais HANQUET",
+    "sounds_like": [
+      "anaïssankè"
+    ]
+  },
+  {
+    "content": "Lydie HARROUCHE",
+    "sounds_like": [
+      "lidiarouche"
+    ]
+  },
+  {
+    "content": "Alexandre HEBERT",
+    "sounds_like": [
+      "alexandrébère"
+    ]
+  },
+  {
+    "content": "Julien HELION",
+    "sounds_like": [
+      "julienhélion"
+    ]
+  },
+  {
+    "content": "Fréderique HENAUT",
+    "sounds_like": [
+      "frédérikéno"
+    ]
+  },
+  {
+    "content": "Sorya KHALDOUN",
+    "sounds_like": [
+      "soriacaldoune"
+    ]
+  },
+  {
+    "content": "Madjid KHIAT",
+    "sounds_like": [
+      "madjidkiatte"
+    ]
+  },
+  {
+    "content": "Jordan KLEIN",
+    "sounds_like": [
+      "jordanneclin"
+    ]
+  },
+  {
+    "content": "Claire KOC",
+    "sounds_like": [
+      "claircok"
+    ]
+  },
+  {
+    "content": "Louis LAFORGE",
+    "sounds_like": [
+      "louilaforge"
+    ]
+  },
+  {
+    "content": "Elodie LARGENTON",
+    "sounds_like": [
+      "élodilargenton"
+    ]
+  },
+  {
+    "content": "Séverine LARROUY",
+    "sounds_like": [
+      "séverinelaroui"
+    ]
+  },
+  {
+    "content": "Sophie SAINT LE",
+    "sounds_like": [
+      "sofileussain"
+    ]
+  },
+  {
+    "content": "David LEFORT",
+    "sounds_like": [
+      "davidlefor"
+    ]
+  },
+  {
+    "content": "Patricia LOISON",
+    "sounds_like": [
+      "patricialoizon"
+    ]
+  },
+  {
+    "content": "Aurianne LOIZEAU",
+    "sounds_like": [
+      "aurianneloizo"
+    ]
+  },
+  {
+    "content": "Alexandre MALESSON",
+    "sounds_like": [
+      "alexanmalesson"
+    ]
+  },
+  {
+    "content": "Cassandre MALLAY",
+    "sounds_like": [
+      "cassandremalè"
+    ]
+  },
+  {
+    "content": "Flore MARECHAL",
+    "sounds_like": [
+      "floremaréchal"
+    ]
+  },
+  {
+    "content": "Léo MARRON",
+    "sounds_like": [
+      "léomaron"
+    ]
+  },
+  {
+    "content": "Florence MAURICE-PEROUMAL",
+    "sounds_like": [
+      "florencemorissepéroumal"
+    ]
+  },
+  {
+    "content": "Djamel MAZI",
+    "sounds_like": [
+      "djamel mazi"
+    ]
+  },
+  {
+    "content": "Marion MERCIER",
+    "sounds_like": [
+      "marion mercié"
+    ]
+  },
+  {
+    "content": "Mohamed MEZERAI",
+    "sounds_like": [
+      "moamèdemézeraille"
+    ]
+  },
+  {
+    "content": "Benoît MOUSSET",
+    "sounds_like": [
+      "benoimoussè"
+    ]
+  },
+  {
+    "content": "Nay NAAYEM",
+    "sounds_like": [
+      "nènayème"
+    ]
+  },
+  {
+    "content": "Sophie NEUMAYER",
+    "sounds_like": [
+      "sofi neumayeur"
+    ]
+  },
+  {
+    "content": "Arthur NYS",
+    "sounds_like": [
+      "arturnisse"
+    ]
+  },
+  {
+    "content": "Natalia ODISHARIA",
+    "sounds_like": [
+      "nataliaodicharia"
+    ]
+  },
+  {
+    "content": "Léo PAICHARD",
+    "sounds_like": [
+      "léopèchar"
+    ]
+  },
+  {
+    "content": "Gilles PAPIN",
+    "sounds_like": [
+      "gillepapin"
+    ]
+  },
+  {
+    "content": "Auberie PERREAUT",
+    "sounds_like": [
+      "auberipero"
+    ]
+  },
+  {
+    "content": "Julie POIRIER",
+    "sounds_like": [
+      "julipoirié"
+    ]
+  },
+  {
+    "content": "Juliette POISSONNIER",
+    "sounds_like": [
+      "juliettepoissonnié"
+    ]
+  },
+  {
+    "content": "Adrien PORTRON",
+    "sounds_like": [
+      "adrienportron"
+    ]
+  },
+  {
+    "content": "Juliette PRIGENT",
+    "sounds_like": [
+      "julietteprigean"
+    ]
+  },
+  {
+    "content": "Nathan RAMAHERISON",
+    "sounds_like": [
+      "natanramaérizon"
+    ]
+  },
+  {
+    "content": "Adrien ROHARD",
+    "sounds_like": [
+      "adrienroar"
+    ]
+  },
+  {
+    "content": "Patrice ROMEDENNE",
+    "sounds_like": [
+      "patrisseromdène"
+    ]
+  },
+  {
+    "content": "Murielle ROUSSELIN",
+    "sounds_like": [
+      "murielrousslin"
+    ]
+  },
+  {
+    "content": "Eliott SAMUEL",
+    "sounds_like": [
+      "eliotesamuel"
+    ]
+  },
+  {
+    "content": "Aurélie HAUVILLE SCHILLER",
+    "sounds_like": [
+      "aurélichileuroville"
+    ]
+  },
+  {
+    "content": "Claire SERGENT",
+    "sounds_like": [
+      "clèresergean "
+    ]
+  },
+  {
+    "content": "Florence STYLE",
+    "sounds_like": [
+      "floranstil"
+    ]
+  },
+  {
+    "content": "Léa SZULEWICZ",
+    "sounds_like": [
+      "léazulevitch"
+    ]
+  },
+  {
+    "content": " Marianne THEOLEYRE",
+    "sounds_like": [
+      "marianne téolère"
+    ]
+  },
+  {
+    "content": "Sébastien THOMAS",
+    "sounds_like": [
+      "sébastientoma"
+    ]
+  },
+  {
+    "content": "Jonathan TRULLARD",
+    "sounds_like": [
+      "jonatantrular"
+    ]
+  },
+  {
+    "content": "Alexandra UZAN",
+    "sounds_like": [
+      "alexandrahuzan"
+    ]
+  },
+  {
+    "content": "Lise VOGEL",
+    "sounds_like": [
+      "lizvogel"
+    ]
+  },
+  {
+    "content": "Marine ZAMBRANO",
+    "sounds_like": [
+      "marinezambrano"
+    ]
+  },
+  {
+    "content": "Daïc",
+    "sounds_like": [
+      "daïc"
+    ]
+  },
+  {
+    "content": "Naoufel",
+    "sounds_like": [
+      "naoufelle"
+    ]
+  },
+  {
+    "content": "Maryse Burgot",
+    "sounds_like": [
+      "marizburgo"
+    ]
+  },
+  {
+    "content": "Dorothée Olliéric",
+    "sounds_like": [
+      "dorotéoliéric"
+    ]
+  },
+  {
+    "content": "François Beaudonnet",
+    "sounds_like": [
+      "franssoibodonai"
+    ]
+  },
+  {
+    "content": "Bernard Weyl",
+    "sounds_like": [
+      "bernarvèl"
+    ]
+  },
+  {
+    "content": "Etienne Leenhardt",
+    "sounds_like": [
+      "étiennelénarte"
+    ]
+  },
+  {
+    "content": "Olivier Carow",
+    "sounds_like": [
+      "oliviécarof"
+    ]
+  },
+  {
+    "content": "Audrey Goutard",
+    "sounds_like": [
+      "audrègoutar"
+    ]
+  },
+  {
+    "content": "Xavier Haglund",
+    "sounds_like": [
+      "xaviéagloun"
+    ]
+  },
+  {
+    "content": "Sophie Rodier",
+    "sounds_like": [
+      "sofirodié"
+    ]
+  },
+  {
+    "content": "Samah Soula",
+    "sounds_like": [
+      "samasoula"
+    ]
+  },
+  {
+    "content": "Fanny Stenneler",
+    "sounds_like": [
+      "fanisténelair"
+    ]
+  },
+  {
+    "content": "Florence Trintignac",
+    "sounds_like": [
+      "florencetrintignac"
+    ]
+  },
+  {
+    "content": "Luc Lacroix",
+    "sounds_like": [
+      "luklacroi"
+    ]
+  },
+  {
+    "content": "Arnaud Miguet",
+    "sounds_like": [
+      "arnomiguet"
+    ]
+  },
+  {
+    "content": "Alban Mikoczy",
+    "sounds_like": [
+      "albanmikozi"
+    ]
+  },
+  {
+    "content": "Matthieu Boisseau",
+    "sounds_like": [
+      "matieuboisso"
+    ]
+  },
+  {
+    "content": "Dominique Derda",
+    "sounds_like": [
+      "dominikderda"
+    ]
+  },
+  {
+    "content": "Laurent Desbonnets",
+    "sounds_like": [
+      "laurendébonai"
+    ]
+  },
+  {
+    "content": "Julien Gasparutto",
+    "sounds_like": [
+      "juliengasparuto"
+    ]
+  },
+  {
+    "content": "Arnaud Compte",
+    "sounds_like": [
+      "arnoconte"
+    ]
+  },
+  {
+    "content": "Carol Cuello",
+    "sounds_like": [
+      "karolkouelo"
+    ]
+  },
+  {
+    "content": "Marc De Chalvron",
+    "sounds_like": [
+      "markdechalvron"
+    ]
+  },
+  {
+    "content": "Lionel Feuerstein",
+    "sounds_like": [
+      "lionelfeuyerstayne"
+    ]
+  },
+  {
+    "content": "Anne-Charlotte Hinet",
+    "sounds_like": [
+      "annecharlotinai"
+    ]
+  },
+  {
+    "content": "Valery Lerouge",
+    "sounds_like": [
+      "valérilerouge"
+    ]
+  },
+  {
+    "content": "Lilya Melkonian",
+    "sounds_like": [
+      "liliamelkonian"
+    ]
+  },
+  {
+    "content": "Diane Schlienger",
+    "sounds_like": [
+      "dianchlièngeur"
+    ]
+  },
+  {
+    "content": "Clément Weill-Raynal",
+    "sounds_like": [
+      "clémenvèlrènal"
+    ]
+  },
+  {
+    "content": "Joseph Tual",
+    "sounds_like": [
+      "joseftual"
+    ]
+  },
+  {
+    "content": "Hugues Huet",
+    "sounds_like": [
+      "uguehuette"
+    ]
+  },
+  {
+    "content": "Pascal Verdeau",
+    "sounds_like": [
+      "paskalverdo"
+    ]
+  },
+  {
+    "content": "Eric Pelletier-Janin",
+    "sounds_like": [
+      "erikpeltiéjanin"
+    ]
+  },
+  {
+    "content": "Emmanuelle Lagarde",
+    "sounds_like": [
+      "émanuèlagarde"
+    ]
+  },
+  {
+    "content": "Erling Haaland",
+    "sounds_like": [
+      "airlingueaaland"
+    ]
+  },
+  {
+    "content": "Cristiano Ronaldo",
+    "sounds_like": [
+      "kristianoronaldo"
+    ]
+  },
+  {
+    "content": "Coupe d'Afrique des Nations",
+    "sounds_like": [
+      "coupedafrikdénation"
+    ]
+  },
+  {
+    "content": "CAN",
+    "sounds_like": [
+      "cane"
+    ]
+  },
+  {
+    "content": "Jeux olympiques",
+    "sounds_like": [
+      "jeuolympik"
+    ]
+  },
+  {
+    "content": "Emmanuel Macron",
+    "sounds_like": [
+      "emmanuelmacron"
+    ]
+  },
+  {
+    "content": "Olivier Véran",
+    "sounds_like": [
+      "oliviévéran"
+    ]
+  },
+  {
+    "content": "Union Européenne",
+    "sounds_like": [
+      "unioneuropéène"
+    ]
+  },
+  {
+    "content": "Volodymyr Zelensky",
+    "sounds_like": [
+      "vlodimirzélenski"
+    ]
+  },
+  {
+    "content": "Zelensky",
+    "sounds_like": [
+      "zélenski"
+    ]
+  },
+  {
+    "content": "Accord de Paris",
+    "sounds_like": [
+      "accordepari"
+    ]
+  },
+  {
+    "content": "Bygmalion",
+    "sounds_like": [
+      "bigmalion"
+    ]
+  },
+  {
+    "content": "Référendum",
+    "sounds_like": [
+      "référindom"
+    ]
+  },
+  {
+    "content": "Kharkiv",
+    "sounds_like": [
+      "karkiv"
+    ]
+  },
+  {
+    "content": "Dnipro",
+    "sounds_like": [
+      "dnipro"
+    ]
+  },
+  {
+    "content": "Donetsk",
+    "sounds_like": [
+      "donestk, doniestk"
+    ]
+  },
+  {
+    "content": "Lviv",
+    "sounds_like": [
+      "lviv"
+    ]
+  },
+  {
+    "content": "Marioupol",
+    "sounds_like": [
+      "marioupol"
+    ]
+  },
+  {
+    "content": "Louhansk",
+    "sounds_like": [
+      "louansk"
+    ]
+  },
+  {
+    "content": "Kherson",
+    "sounds_like": [
+      "kersonne"
+    ]
+  },
+  {
+    "content": "Zaporijia",
+    "sounds_like": [
+      "zaporijia"
+    ]
+  },
+  {
+    "content": "Mykolaïv",
+    "sounds_like": [
+      "mikolahive"
+    ]
+  },
+  {
+    "content": "Kryvy Rih",
+    "sounds_like": [
+      "kriviri"
+    ]
+  },
+  {
+    "content": "Sars-CoV-2",
+    "sounds_like": [
+      "ssarcecovedeu"
+    ]
+  },
+  {
+    "content": "Covid-19",
+    "sounds_like": [
+      "covidiseneuf"
+    ]
+  },
+  {
+    "content": "Greta Thunberg",
+    "sounds_like": [
+      "gretateunbèrg"
+    ]
+  },
+  {
+    "content": "Nicolas Hulot",
+    "sounds_like": [
+      "nicolahulo"
+    ]
+  },
+  {
+    "content": "OMS",
+    "sounds_like": [
+      "oèmess"
+    ]
+  },
+  {
+    "content": "SNCF",
+    "sounds_like": [
+      "ecèncéèf"
+    ]
+  },
+  {
+    "content": "ONU",
+    "sounds_like": [
+      "oènu"
+    ]
+  },
+  {
+    "content": "PIB",
+    "sounds_like": [
+      "péibé"
+    ]
+  },
+  {
+    "content": "URSS",
+    "sounds_like": [
+      "uèressaisse, urse"
+    ]
+  },
+  {
+    "content": "FNSEA",
+    "sounds_like": [
+      "effenesseuha"
+    ]
+  },
+  {
+    "content": "FMI",
+    "sounds_like": [
+      "effemi"
+    ]
+  },
+  {
+    "content": "Eurovision",
+    "sounds_like": [
+      "eurovision"
+    ]
+  },
+  {
+    "content": "Les Informés",
+    "sounds_like": [
+      "lèzinoformé"
+    ]
+  },
+  {
+    "content": "l'info s'éclaire",
+    "sounds_like": [
+      "linfosséclair"
+    ]
+  },
+  {
+    "content": "la matinale",
+    "sounds_like": [
+      "lamatinal"
+    ]
+  },
+  {
+    "content": "l'éco",
+    "sounds_like": [
+      "léko"
+    ]
+  },
+  {
+    "content": "le fil info",
+    "sounds_like": [
+      "lefilinfo"
+    ]
+  },
+  {
+    "content": "ça fait l'actu",
+    "sounds_like": [
+      "safailactu"
+    ]
+  },
+  {
+    "content": "la faute à l'Europe",
+    "sounds_like": [
+      "lafautaleurope"
+    ]
+  },
+  {
+    "content": "l'invité éco",
+    "sounds_like": [
+      "linvitéaiko"
+    ]
+  },
+  {
+    "content": "votre instant politique",
+    "sounds_like": [
+      "votrinstanpolitik"
+    ]
+  },
+  {
+    "content": "le 23h",
+    "sounds_like": [
+      "levintroizeur"
     ]
   }
 ]
