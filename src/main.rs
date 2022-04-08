@@ -36,6 +36,7 @@ pub mod built_info {
 }
 
 #[derive(Debug, Default)]
+#[allow(dead_code)]
 struct TranscriptEvent {
   sequence_number: u64,
   start_time: Option<f32>,
@@ -47,6 +48,7 @@ struct TranscriptEvent {
 }
 
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
+#[allow(dead_code)]
 pub struct WorkerParameters {
   /// # Authot Live Identifier
   /// Pass an pre-created Authot Live process identifier.
@@ -286,6 +288,11 @@ impl McaiWorker<WorkerParameters> for TranscriptEvent {
 fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<StreamDescriptor>> {
   // select first audio stream index
   for stream_index in 0..format_context.get_nb_streams() {
+    info!(
+      "Stream {:?}, type {:?}",
+      stream_index,
+      format_context.get_stream_type(stream_index as isize)
+    );
     if format_context.get_stream_type(stream_index as isize) == AVMediaType::AVMEDIA_TYPE_AUDIO {
       let channel_layouts = vec!["mono".to_string()];
       let sample_formats = vec!["s16".to_string()];
