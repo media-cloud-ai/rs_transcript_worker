@@ -50,7 +50,8 @@
   {
     "content": "Karine Baste",
     "sounds_like": [
-      "karinebasterégis, karinebaste"
+      "karinebasterégis",
+      "karinebaste"
     ]
   },
   {
@@ -186,6 +187,12 @@
     ]
   },
   {
+    "content": "Solène Cressant",
+    "sounds_like": [
+      "solènecréssan"
+    ]
+  },
+  {
     "content": "Alix Dauge",
     "sounds_like": [
       "alixdauge"
@@ -230,13 +237,15 @@
   {
     "content": "David Delos",
     "sounds_like": [
-      "davidelo, davidelosse"
+      "davidelo",
+      "davidelosse"
     ]
   },
   {
     "content": "Lucile Devillers",
     "sounds_like": [
-      "luciledevilère, luciledevilé"
+      "luciledevilère",
+      "luciledevilé"
     ]
   },
   {
@@ -930,6 +939,20 @@
     ]
   },
   {
+    "content": "NUPES",
+    "sounds_like": [
+      "nup",
+      "nupèsse",
+      "nupse"
+    ]
+  },
+  {
+    "content": "Jordan Bardella",
+    "sounds_like": [
+      "jordanebardèla"
+    ]
+  },
+  {
     "content": "Accord de Paris",
     "sounds_like": [
       "accordepari"
@@ -962,7 +985,8 @@
   {
     "content": "Donetsk",
     "sounds_like": [
-      "donestk, doniestk"
+      "donestk",
+      "doniestk"
     ]
   },
   {
@@ -1064,7 +1088,8 @@
   {
     "content": "URSS",
     "sounds_like": [
-      "uèressaisse, urse"
+      "uèressaisse",
+      "urse"
     ]
   },
   {
