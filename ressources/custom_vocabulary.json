@@ -50,8 +50,7 @@
   {
     "content": "Karine Baste",
     "sounds_like": [
-      "karinebasterégis",
-      "karinebaste"
+      "karinebasterégis, karinebaste"
     ]
   },
   {
@@ -237,15 +236,13 @@
   {
     "content": "David Delos",
     "sounds_like": [
-      "davidelo",
-      "davidelosse"
+      "davidelo, davidelosse"
     ]
   },
   {
     "content": "Lucile Devillers",
     "sounds_like": [
-      "luciledevilère",
-      "luciledevilé"
+      "luciledevilère, luciledevilé"
     ]
   },
   {
@@ -879,6 +876,12 @@
     ]
   },
   {
+    "content": "Caroline Sinz",
+    "sounds_like": [
+      "karolinessinnse"
+    ]
+  },
+  {
     "content": "Erling Haaland",
     "sounds_like": [
       "airlingueaaland"
@@ -888,6 +891,2664 @@
     "content": "Cristiano Ronaldo",
     "sounds_like": [
       "kristianoronaldo"
+    ]
+  },
+  {
+    "content": "Kylian Mbappé",
+    "sounds_like": [
+      "kilianaimebapé"
+    ]
+  },
+  {
+    "content": "Mbappé",
+    "sounds_like": [
+      "aimebapé"
+    ]
+  },
+  {
+    "content": "5",
+    "sounds_like": [
+      "failleve"
+    ]
+  },
+  {
+    "content": "2110",
+    "sounds_like": [
+      "vintéundice"
+    ]
+  },
+  {
+    "content": "2D",
+    "sounds_like": [
+      "deudé"
+    ]
+  },
+  {
+    "content": "360°",
+    "sounds_like": [
+      "troisensoisentedegré"
+    ]
+  },
+  {
+    "content": "3D",
+    "sounds_like": [
+      "troidé"
+    ]
+  },
+  {
+    "content": "4G",
+    "sounds_like": [
+      "katgé"
+    ]
+  },
+  {
+    "content": "4K",
+    "sounds_like": [
+      "katka"
+    ]
+  },
+  {
+    "content": "5G millimétrique",
+    "sounds_like": [
+      "cinkgémilimétrike"
+    ]
+  },
+  {
+    "content": "5G stand alone",
+    "sounds_like": [
+      "cinkgéstendelone"
+    ]
+  },
+  {
+    "content": "6K",
+    "sounds_like": [
+      "cika"
+    ]
+  },
+  {
+    "content": "ADO",
+    "sounds_like": [
+      "adéo"
+    ]
+  },
+  {
+    "content": "Adobe",
+    "sounds_like": [
+      "adobe"
+    ]
+  },
+  {
+    "content": "Adobe",
+    "sounds_like": [
+      "adobi"
+    ]
+  },
+  {
+    "content": "After effects",
+    "sounds_like": [
+      "afterefekt"
+    ]
+  },
+  {
+    "content": "Agito",
+    "sounds_like": [
+      "ajito"
+    ]
+  },
+  {
+    "content": "AI",
+    "sounds_like": [
+      "ahi"
+    ]
+  },
+  {
+    "content": "AISO",
+    "sounds_like": [
+      "ahièso"
+    ]
+  },
+  {
+    "content": "Alex Babelot",
+    "sounds_like": [
+      "alexbabelot"
+    ]
+  },
+  {
+    "content": "Alexandre Glénat",
+    "sounds_like": [
+      "alexendregléna"
+    ]
+  },
+  {
+    "content": "Anne-Sophie Lapix",
+    "sounds_like": [
+      "anesofilapix"
+    ]
+  },
+  {
+    "content": "Apple Prores",
+    "sounds_like": [
+      "apeulproresse"
+    ]
+  },
+  {
+    "content": "AR",
+    "sounds_like": [
+      "ahère"
+    ]
+  },
+  {
+    "content": "Arnaud Anchelergue",
+    "sounds_like": [
+      "arnohenchelergue"
+    ]
+  },
+  {
+    "content": "Arnaud Courtois",
+    "sounds_like": [
+      "arnocourtoi"
+    ]
+  },
+  {
+    "content": "Arnaud Kotlarczik",
+    "sounds_like": [
+      "arnokotlarzik"
+    ]
+  },
+  {
+    "content": "Arnaud Vincenti",
+    "sounds_like": [
+      "arnovinsenti"
+    ]
+  },
+  {
+    "content": "art director",
+    "sounds_like": [
+      "artedirector"
+    ]
+  },
+  {
+    "content": "asset",
+    "sounds_like": [
+      "asète"
+    ]
+  },
+  {
+    "content": "auto-trackée",
+    "sounds_like": [
+      "ototraké"
+    ]
+  },
+  {
+    "content": "AVID",
+    "sounds_like": [
+      "avide"
+    ]
+  },
+  {
+    "content": "AVID Maestro Live",
+    "sounds_like": [
+      "avidemaestrolaïve"
+    ]
+  },
+  {
+    "content": "avid media composer",
+    "sounds_like": [
+      "avidmédiakompozer"
+    ]
+  },
+  {
+    "content": "BAB",
+    "sounds_like": [
+      "bab"
+    ]
+  },
+  {
+    "content": "Back Drop",
+    "sounds_like": [
+      "bakdrop"
+    ]
+  },
+  {
+    "content": "backstage",
+    "sounds_like": [
+      "bakstèdje"
+    ]
+  },
+  {
+    "content": "bardage",
+    "sounds_like": [
+      "bardaje"
+    ]
+  },
+  {
+    "content": "Benjamin Buziol",
+    "sounds_like": [
+      "binjaminbuziol"
+    ]
+  },
+  {
+    "content": "Benjamin Landsberger",
+    "sounds_like": [
+      "benjaminlansbergé"
+    ]
+  },
+  {
+    "content": "Biblioquête",
+    "sounds_like": [
+      "bibliokète"
+    ]
+  },
+  {
+    "content": "Bin",
+    "sounds_like": [
+      "bine"
+    ]
+  },
+  {
+    "content": "blockchain",
+    "sounds_like": [
+      "blokchène"
+    ]
+  },
+  {
+    "content": "board",
+    "sounds_like": [
+      "borde"
+    ]
+  },
+  {
+    "content": "Body HF",
+    "sounds_like": [
+      "bodihachèfe"
+    ]
+  },
+  {
+    "content": "Boris",
+    "sounds_like": [
+      "borice"
+    ]
+  },
+  {
+    "content": "Boris Salhaji",
+    "sounds_like": [
+      "boricesalaji"
+    ]
+  },
+  {
+    "content": "Bovary",
+    "sounds_like": [
+      "bovari"
+    ]
+  },
+  {
+    "content": "BR",
+    "sounds_like": [
+      "béhère"
+    ]
+  },
+  {
+    "content": "Broadcast",
+    "sounds_like": [
+      "brodcaste"
+    ]
+  },
+  {
+    "content": "broadcasters",
+    "sounds_like": [
+      "brodcastère"
+    ]
+  },
+  {
+    "content": "bruiteur",
+    "sounds_like": [
+      "bruiteur"
+    ]
+  },
+  {
+    "content": "buzzword",
+    "sounds_like": [
+      "beuzvord"
+    ]
+  },
+  {
+    "content": "C2PA",
+    "sounds_like": [
+      "cédepéha"
+    ]
+  },
+  {
+    "content": "cablage",
+    "sounds_like": [
+      "kablaje"
+    ]
+  },
+  {
+    "content": "cablecam",
+    "sounds_like": [
+      "kabelcam"
+    ]
+  },
+  {
+    "content": "cam",
+    "sounds_like": [
+      "kame"
+    ]
+  },
+  {
+    "content": "caméraman",
+    "sounds_like": [
+      "kaméramane"
+    ]
+  },
+  {
+    "content": "Camille Duvelleroy",
+    "sounds_like": [
+      "kamilleduvéleroi"
+    ]
+  },
+  {
+    "content": "Canon",
+    "sounds_like": [
+      "kanone"
+    ]
+  },
+  {
+    "content": "Car-régie",
+    "sounds_like": [
+      "karréji"
+    ]
+  },
+  {
+    "content": "Cassandre",
+    "sounds_like": [
+      "kassendre"
+    ]
+  },
+  {
+    "content": "CC&C",
+    "sounds_like": [
+      "ciciendci"
+    ]
+  },
+  {
+    "content": "CC&C",
+    "sounds_like": [
+      "cécéendcé"
+    ]
+  },
+  {
+    "content": "Cédric Klapisch",
+    "sounds_like": [
+      "sédriklapiche"
+    ]
+  },
+  {
+    "content": "chefs déco",
+    "sounds_like": [
+      "chefdéko"
+    ]
+  },
+  {
+    "content": "Christian Khalfa",
+    "sounds_like": [
+      "kristienkalfa"
+    ]
+  },
+  {
+    "content": "Christophe de Vallambras",
+    "sounds_like": [
+      "krisofdevalenbra"
+    ]
+  },
+  {
+    "content": "Ciao",
+    "sounds_like": [
+      "thcao"
+    ]
+  },
+  {
+    "content": "Claude Framery",
+    "sounds_like": [
+      "klodframeri"
+    ]
+  },
+  {
+    "content": "clim",
+    "sounds_like": [
+      "clime"
+    ]
+  },
+  {
+    "content": "cloud",
+    "sounds_like": [
+      "klode"
+    ]
+  },
+  {
+    "content": "Collage",
+    "sounds_like": [
+      "kolaje"
+    ]
+  },
+  {
+    "content": "colorisation",
+    "sounds_like": [
+      "kolorization"
+    ]
+  },
+  {
+    "content": "combo",
+    "sounds_like": [
+      "kombo"
+    ]
+  },
+  {
+    "content": "commutation",
+    "sounds_like": [
+      "komutasion"
+    ]
+  },
+  {
+    "content": "compositing",
+    "sounds_like": [
+      "kompozitigne"
+    ]
+  },
+  {
+    "content": "conso",
+    "sounds_like": [
+      "konso"
+    ]
+  },
+  {
+    "content": "corporate",
+    "sounds_like": [
+      "corporète"
+    ]
+  },
+  {
+    "content": "Creative Designe Director",
+    "sounds_like": [
+      "kréativdisagnenedirektor"
+    ]
+  },
+  {
+    "content": "cross boardé",
+    "sounds_like": [
+      "krocebordé"
+    ]
+  },
+  {
+    "content": "Culturebox",
+    "sounds_like": [
+      "kulturbox"
+    ]
+  },
+  {
+    "content": "curling",
+    "sounds_like": [
+      "keurligne"
+    ]
+  },
+  {
+    "content": "Cyclo",
+    "sounds_like": [
+      "siklo"
+    ]
+  },
+  {
+    "content": "Dalet",
+    "sounds_like": [
+      "dalette"
+    ]
+  },
+  {
+    "content": "Daniel Costelle",
+    "sounds_like": [
+      "danielkostel"
+    ]
+  },
+  {
+    "content": "data",
+    "sounds_like": [
+      "data"
+    ]
+  },
+  {
+    "content": "déco",
+    "sounds_like": [
+      "déko"
+    ]
+  },
+  {
+    "content": "Delphine Delafosse",
+    "sounds_like": [
+      "delfinedelafoce"
+    ]
+  },
+  {
+    "content": "Delphone Ernotte",
+    "sounds_like": [
+      "delfinernote"
+    ]
+  },
+  {
+    "content": "dérushage",
+    "sounds_like": [
+      "déreuchage"
+    ]
+  },
+  {
+    "content": "dérusher",
+    "sounds_like": [
+      "déreuché"
+    ]
+  },
+  {
+    "content": "design thinking",
+    "sounds_like": [
+      "disignenefinkigne"
+    ]
+  },
+  {
+    "content": "désinformation",
+    "sounds_like": [
+      "déinformasion"
+    ]
+  },
+  {
+    "content": "dessiccateur",
+    "sounds_like": [
+      "décikateur"
+    ]
+  },
+  {
+    "content": "disruptif",
+    "sounds_like": [
+      "disruptif"
+    ]
+  },
+  {
+    "content": "disruption",
+    "sounds_like": [
+      "disrupsion"
+    ]
+  },
+  {
+    "content": "disruptive",
+    "sounds_like": [
+      "disruptive"
+    ]
+  },
+  {
+    "content": "DNxHD-36",
+    "sounds_like": [
+      "déènixachdétrentsise"
+    ]
+  },
+  {
+    "content": "DNxIQ",
+    "sounds_like": [
+      "déènixaïkiou"
+    ]
+  },
+  {
+    "content": "Dolly",
+    "sounds_like": [
+      "doli"
+    ]
+  },
+  {
+    "content": "download",
+    "sounds_like": [
+      "donelode"
+    ]
+  },
+  {
+    "content": "download",
+    "sounds_like": [
+      "donelode"
+    ]
+  },
+  {
+    "content": "downloadé",
+    "sounds_like": [
+      "donelodé"
+    ]
+  },
+  {
+    "content": "Dreamcorp",
+    "sounds_like": [
+      "drimcorpe"
+    ]
+  },
+  {
+    "content": "DSI",
+    "sounds_like": [
+      "déèci"
+    ]
+  },
+  {
+    "content": "duplex",
+    "sounds_like": [
+      "duplex"
+    ]
+  },
+  {
+    "content": "duplexer",
+    "sounds_like": [
+      "duplexé"
+    ]
+  },
+  {
+    "content": "Duran Duboi",
+    "sounds_like": [
+      "duranduboi"
+    ]
+  },
+  {
+    "content": "EBU",
+    "sounds_like": [
+      "eubéhu"
+    ]
+  },
+  {
+    "content": "ECN",
+    "sounds_like": [
+      "eucéhène"
+    ]
+  },
+  {
+    "content": "éco-citoyen",
+    "sounds_like": [
+      "ékocitoyin"
+    ]
+  },
+  {
+    "content": "éco-label",
+    "sounds_like": [
+      "ékolabel"
+    ]
+  },
+  {
+    "content": "éco-responsabilité",
+    "sounds_like": [
+      "ékoresponsabilité"
+    ]
+  },
+  {
+    "content": "écran led",
+    "sounds_like": [
+      "écranlède"
+    ]
+  },
+  {
+    "content": "écran XR",
+    "sounds_like": [
+      "écanhixère"
+    ]
+  },
+  {
+    "content": "Edgar Degas",
+    "sounds_like": [
+      "edgardega"
+    ]
+  },
+  {
+    "content": "ENDIRECTV.COM",
+    "sounds_like": [
+      "endirekttévépoincome"
+    ]
+  },
+  {
+    "content": "end-users",
+    "sounds_like": [
+      "indiouseur"
+    ]
+  },
+  {
+    "content": "Epic",
+    "sounds_like": [
+      "épik"
+    ]
+  },
+  {
+    "content": "Eric Lacoua",
+    "sounds_like": [
+      "ériklacoua"
+    ]
+  },
+  {
+    "content": "Eric Scherer",
+    "sounds_like": [
+      "erikchérère"
+    ]
+  },
+  {
+    "content": "ESI",
+    "sounds_like": [
+      "euessehi"
+    ]
+  },
+  {
+    "content": "Eurodrone",
+    "sounds_like": [
+      "eurodrone"
+    ]
+  },
+  {
+    "content": "européanisation",
+    "sounds_like": [
+      "européanizasion"
+    ]
+  },
+  {
+    "content": "Eurovox",
+    "sounds_like": [
+      "eurovox"
+    ]
+  },
+  {
+    "content": "Excel",
+    "sounds_like": [
+      "exel"
+    ]
+  },
+  {
+    "content": "Fablab",
+    "sounds_like": [
+      "fablabe"
+    ]
+  },
+  {
+    "content": "Fabrice Colin",
+    "sounds_like": [
+      "fabriscolin"
+    ]
+  },
+  {
+    "content": "fact-checking",
+    "sounds_like": [
+      "factchékigne"
+    ]
+  },
+  {
+    "content": "fake",
+    "sounds_like": [
+      "fèke"
+    ]
+  },
+  {
+    "content": "fake news",
+    "sounds_like": [
+      "fèkniouze"
+    ]
+  },
+  {
+    "content": "fake news",
+    "sounds_like": [
+      "fèkniouze"
+    ]
+  },
+  {
+    "content": "Fan Zones",
+    "sounds_like": [
+      "fanezone"
+    ]
+  },
+  {
+    "content": "Far Cry Primal",
+    "sounds_like": [
+      "farkraïeprimal"
+    ]
+  },
+  {
+    "content": "feed",
+    "sounds_like": [
+      "fid"
+    ]
+  },
+  {
+    "content": "feedback",
+    "sounds_like": [
+      "fidbak"
+    ]
+  },
+  {
+    "content": "Flaubert",
+    "sounds_like": [
+      "flobère"
+    ]
+  },
+  {
+    "content": "flight",
+    "sounds_like": [
+      "flaye"
+    ]
+  },
+  {
+    "content": "flux",
+    "sounds_like": [
+      "flu"
+    ]
+  },
+  {
+    "content": "France télé",
+    "sounds_like": [
+      "frenstélé"
+    ]
+  },
+  {
+    "content": "Franck Feldman",
+    "sounds_like": [
+      "frankfeldmane"
+    ]
+  },
+  {
+    "content": "Frédéric Romens",
+    "sounds_like": [
+      "frédérikrominse"
+    ]
+  },
+  {
+    "content": "Free-D",
+    "sounds_like": [
+      "fridé"
+    ]
+  },
+  {
+    "content": "Fuji",
+    "sounds_like": [
+      "fuji"
+    ]
+  },
+  {
+    "content": "Fujinon",
+    "sounds_like": [
+      "fujinon"
+    ]
+  },
+  {
+    "content": "Full HD",
+    "sounds_like": [
+      "fouleachedé"
+    ]
+  },
+  {
+    "content": "GAFAM",
+    "sounds_like": [
+      "gafame"
+    ]
+  },
+  {
+    "content": "gathering",
+    "sounds_like": [
+      "gaterigne"
+    ]
+  },
+  {
+    "content": "Gautier Curtil",
+    "sounds_like": [
+      "gotiécurtile"
+    ]
+  },
+  {
+    "content": "geek",
+    "sounds_like": [
+      "guik"
+    ]
+  },
+  {
+    "content": "Global Protect",
+    "sounds_like": [
+      "globalprotect"
+    ]
+  },
+  {
+    "content": "Gordon et Marie Sellier",
+    "sounds_like": [
+      "gordonémarisélié"
+    ]
+  },
+  {
+    "content": "GPI",
+    "sounds_like": [
+      "jépiaï"
+    ]
+  },
+  {
+    "content": "GPI",
+    "sounds_like": [
+      "jipihaï"
+    ]
+  },
+  {
+    "content": "Gravity sketch",
+    "sounds_like": [
+      "gravitisketch"
+    ]
+  },
+  {
+    "content": "Green IT",
+    "sounds_like": [
+      "grinaïti"
+    ]
+  },
+  {
+    "content": "GTR",
+    "sounds_like": [
+      "gétéhère"
+    ]
+  },
+  {
+    "content": "GTR studio",
+    "sounds_like": [
+      "gétéèrestudio"
+    ]
+  },
+  {
+    "content": "Guillaume Godet",
+    "sounds_like": [
+      "guyomgodé"
+    ]
+  },
+  {
+    "content": "gyroscope",
+    "sounds_like": [
+      "jiroskope"
+    ]
+  },
+  {
+    "content": "habillage",
+    "sounds_like": [
+      "abyaje"
+    ]
+  },
+  {
+    "content": "Hall",
+    "sounds_like": [
+      "ol"
+    ]
+  },
+  {
+    "content": "hardware",
+    "sounds_like": [
+      "ardwère"
+    ]
+  },
+  {
+    "content": "HD",
+    "sounds_like": [
+      "achdé"
+    ]
+  },
+  {
+    "content": "HDR",
+    "sounds_like": [
+      "achdéhère"
+    ]
+  },
+  {
+    "content": "head",
+    "sounds_like": [
+      "éde"
+    ]
+  },
+  {
+    "content": "HF",
+    "sounds_like": [
+      "achef"
+    ]
+  },
+  {
+    "content": "hockey",
+    "sounds_like": [
+      "oké"
+    ]
+  },
+  {
+    "content": "HR",
+    "sounds_like": [
+      "achère"
+    ]
+  },
+  {
+    "content": "hub",
+    "sounds_like": [
+      "heube"
+    ]
+  },
+  {
+    "content": "IA",
+    "sounds_like": [
+      "iha"
+    ]
+  },
+  {
+    "content": "IKEA",
+    "sounds_like": [
+      "ikéa"
+    ]
+  },
+  {
+    "content": "immersé",
+    "sounds_like": [
+      "imercé"
+    ]
+  },
+  {
+    "content": "inter JT",
+    "sounds_like": [
+      "intairjité"
+    ]
+  },
+  {
+    "content": "intercom",
+    "sounds_like": [
+      "intèrkom"
+    ]
+  },
+  {
+    "content": "interphonie",
+    "sounds_like": [
+      "intairfoni"
+    ]
+  },
+  {
+    "content": "Intranet",
+    "sounds_like": [
+      "intranète"
+    ]
+  },
+  {
+    "content": "IP",
+    "sounds_like": [
+      "ipé"
+    ]
+  },
+  {
+    "content": "IP directeurs",
+    "sounds_like": [
+      "ipédirecteur"
+    ]
+  },
+  {
+    "content": "Isabelle Clarke",
+    "sounds_like": [
+      "izabelclark"
+    ]
+  },
+  {
+    "content": "IT",
+    "sounds_like": [
+      "aïti"
+    ]
+  },
+  {
+    "content": "iTransfert",
+    "sounds_like": [
+      "itransfère"
+    ]
+  },
+  {
+    "content": "Ivanti",
+    "sounds_like": [
+      "ivanti"
+    ]
+  },
+  {
+    "content": "IVS",
+    "sounds_like": [
+      "ivéhèsse"
+    ]
+  },
+  {
+    "content": "Jean-Baptiste Marteau",
+    "sounds_like": [
+      "janbatistmarto"
+    ]
+  },
+  {
+    "content": "Jean-Julien",
+    "sounds_like": [
+      "janjulien"
+    ]
+  },
+  {
+    "content": "Jean-Luc Martin",
+    "sounds_like": [
+      "janlukmartin"
+    ]
+  },
+  {
+    "content": "Jeanne Marchalot",
+    "sounds_like": [
+      "janemarchalo"
+    ]
+  },
+  {
+    "content": "Jean-Paul Chevreux",
+    "sounds_like": [
+      "janpolchevreu"
+    ]
+  },
+  {
+    "content": "Jean-Yves",
+    "sounds_like": [
+      "janhive"
+    ]
+  },
+  {
+    "content": "JeanYves Alloin",
+    "sounds_like": [
+      "janhivehaloin"
+    ]
+  },
+  {
+    "content": "Jérôme Revon",
+    "sounds_like": [
+      "jéromrévon"
+    ]
+  },
+  {
+    "content": "jingle",
+    "sounds_like": [
+      "djinegueule"
+    ]
+  },
+  {
+    "content": "JO",
+    "sounds_like": [
+      "jiho"
+    ]
+  },
+  {
+    "content": "Johanna Ghiglia",
+    "sounds_like": [
+      "johanajiglia"
+    ]
+  },
+  {
+    "content": "JP Tech",
+    "sounds_like": [
+      "jipétec"
+    ]
+  },
+  {
+    "content": "JT",
+    "sounds_like": [
+      "jité"
+    ]
+  },
+  {
+    "content": "Julie Scion",
+    "sounds_like": [
+      "julicion"
+    ]
+  },
+  {
+    "content": "Karine Bach",
+    "sounds_like": [
+      "karinebak"
+    ]
+  },
+  {
+    "content": "Karine Mas",
+    "sounds_like": [
+      "karinemasse"
+    ]
+  },
+  {
+    "content": "Key frames",
+    "sounds_like": [
+      "kifrème"
+    ]
+  },
+  {
+    "content": "keying",
+    "sounds_like": [
+      "kéhigne"
+    ]
+  },
+  {
+    "content": "keying",
+    "sounds_like": [
+      "kihigne"
+    ]
+  },
+  {
+    "content": "KPI",
+    "sounds_like": [
+      "kapihaï"
+    ]
+  },
+  {
+    "content": "lab",
+    "sounds_like": [
+      "lab"
+    ]
+  },
+  {
+    "content": "Lady Sapiens",
+    "sounds_like": [
+      "lédisapiense"
+    ]
+  },
+  {
+    "content": "Laura Gérardin",
+    "sounds_like": [
+      "lorajérardin"
+    ]
+  },
+  {
+    "content": "Laurence Astier",
+    "sounds_like": [
+      "lorensastié"
+    ]
+  },
+  {
+    "content": "Laurent Delahousse",
+    "sounds_like": [
+      "lorendelahousse"
+    ]
+  },
+  {
+    "content": "Lenovo P720",
+    "sounds_like": [
+      "lénovopésètsenvin"
+    ]
+  },
+  {
+    "content": "Lift",
+    "sounds_like": [
+      "lift"
+    ]
+  },
+  {
+    "content": "lightshow",
+    "sounds_like": [
+      "laïtcho"
+    ]
+  },
+  {
+    "content": "l'ingé son",
+    "sounds_like": [
+      "lingéson"
+    ]
+  },
+  {
+    "content": "Linh Lan Dao",
+    "sounds_like": [
+      "linelanedao"
+    ]
+  },
+  {
+    "content": "Lionel Thiriet",
+    "sounds_like": [
+      "lioneltirié"
+    ]
+  },
+  {
+    "content": "Little Big Story",
+    "sounds_like": [
+      "liteulbigstory"
+    ]
+  },
+  {
+    "content": "live",
+    "sounds_like": [
+      "laïve"
+    ]
+  },
+  {
+    "content": "low cost",
+    "sounds_like": [
+      "locoste"
+    ]
+  },
+  {
+    "content": "LSM",
+    "sounds_like": [
+      "elèseme"
+    ]
+  },
+  {
+    "content": "LSN",
+    "sounds_like": [
+      "elesene"
+    ]
+  },
+  {
+    "content": "Luc Munier",
+    "sounds_like": [
+      "lukmunié"
+    ]
+  },
+  {
+    "content": "Lucid Reallities",
+    "sounds_like": [
+      "lucidréalitize"
+    ]
+  },
+  {
+    "content": "Ludo",
+    "sounds_like": [
+      "ludo"
+    ]
+  },
+  {
+    "content": "Ludovic Defives",
+    "sounds_like": [
+      "ludovikdefive"
+    ]
+  },
+  {
+    "content": "Lumni",
+    "sounds_like": [
+      "lumni"
+    ]
+  },
+  {
+    "content": "Luxiris",
+    "sounds_like": [
+      "luxiris"
+    ]
+  },
+  {
+    "content": "Mac",
+    "sounds_like": [
+      "mak"
+    ]
+  },
+  {
+    "content": "MacGyver",
+    "sounds_like": [
+      "makgaïvère"
+    ]
+  },
+  {
+    "content": "machino",
+    "sounds_like": [
+      "machino"
+    ]
+  },
+  {
+    "content": "Maestro Live",
+    "sounds_like": [
+      "maestrolaïve"
+    ]
+  },
+  {
+    "content": "malinformation",
+    "sounds_like": [
+      "malinformasion"
+    ]
+  },
+  {
+    "content": "mapping",
+    "sounds_like": [
+      "mapigne"
+    ]
+  },
+  {
+    "content": "Marion Amiel",
+    "sounds_like": [
+      "marionhamiel"
+    ]
+  },
+  {
+    "content": "Marvel",
+    "sounds_like": [
+      "Marvèle"
+    ]
+  },
+  {
+    "content": "material",
+    "sounds_like": [
+      "matérial"
+    ]
+  },
+  {
+    "content": "material",
+    "sounds_like": [
+      "matériol"
+    ]
+  },
+  {
+    "content": "Mathieu Kassovitz",
+    "sounds_like": [
+      "matieukasovitz"
+    ]
+  },
+  {
+    "content": "Matthieu Parmentier",
+    "sounds_like": [
+      "matieuparmentié"
+    ]
+  },
+  {
+    "content": "Media Composer",
+    "sounds_like": [
+      "médiaconpozeur"
+    ]
+  },
+  {
+    "content": "Media Composer Cloud Remote",
+    "sounds_like": [
+      "mediacomposeurkloudrimote"
+    ]
+  },
+  {
+    "content": "mediafile",
+    "sounds_like": [
+      "médiafaïle"
+    ]
+  },
+  {
+    "content": "MediaLab",
+    "sounds_like": [
+      "médialabe"
+    ]
+  },
+  {
+    "content": "media-manager",
+    "sounds_like": [
+      "médiamanadjeur"
+    ]
+  },
+  {
+    "content": "mélangeur",
+    "sounds_like": [
+      "mélenjeur"
+    ]
+  },
+  {
+    "content": "mésinformation",
+    "sounds_like": [
+      "mésinformasion"
+    ]
+  },
+  {
+    "content": "Méta-média",
+    "sounds_like": [
+      "métamédia"
+    ]
+  },
+  {
+    "content": "Metaquest",
+    "sounds_like": [
+      "métacouest"
+    ]
+  },
+  {
+    "content": "Metavers",
+    "sounds_like": [
+      "métaverse"
+    ]
+  },
+  {
+    "content": "Metavers",
+    "sounds_like": [
+      "métavère"
+    ]
+  },
+  {
+    "content": "Mickaël Pinson",
+    "sounds_like": [
+      "mikaelpinson"
+    ]
+  },
+  {
+    "content": "mixing",
+    "sounds_like": [
+      "mixigne"
+    ]
+  },
+  {
+    "content": "Modul'air",
+    "sounds_like": [
+      "modulère"
+    ]
+  },
+  {
+    "content": "monitoring",
+    "sounds_like": [
+      "monitorigne"
+    ]
+  },
+  {
+    "content": "monitoring",
+    "sounds_like": [
+      "monitorigne"
+    ]
+  },
+  {
+    "content": "monotâche",
+    "sounds_like": [
+      "monotache"
+    ]
+  },
+  {
+    "content": "Motion Control",
+    "sounds_like": [
+      "mocheunkontrol"
+    ]
+  },
+  {
+    "content": "Multicam Systems",
+    "sounds_like": [
+      "multikamsistème"
+    ]
+  },
+  {
+    "content": "multi-flux",
+    "sounds_like": [
+      "multiflu"
+    ]
+  },
+  {
+    "content": "multiplan",
+    "sounds_like": [
+      "multuplen"
+    ]
+  },
+  {
+    "content": "Münich",
+    "sounds_like": [
+      "munik"
+    ]
+  },
+  {
+    "content": "mur LED",
+    "sounds_like": [
+      "murlède"
+    ]
+  },
+  {
+    "content": "MXF",
+    "sounds_like": [
+      "èmixef"
+    ]
+  },
+  {
+    "content": "Nathalie Gallet",
+    "sounds_like": [
+      "nataligalé"
+    ]
+  },
+  {
+    "content": "News",
+    "sounds_like": [
+      "niouze"
+    ]
+  },
+  {
+    "content": "Nexis",
+    "sounds_like": [
+      "néxis"
+    ]
+  },
+  {
+    "content": "Nicolas Chateauneuf",
+    "sounds_like": [
+      "nikolachatoneuf"
+    ]
+  },
+  {
+    "content": "Nicolas Usdin",
+    "sounds_like": [
+      "nikolahusdin"
+    ]
+  },
+  {
+    "content": "nodal",
+    "sounds_like": [
+      "nodal"
+    ]
+  },
+  {
+    "content": "Nowu",
+    "sounds_like": [
+      "nohiou"
+    ]
+  },
+  {
+    "content": "Oculus Quest",
+    "sounds_like": [
+      "oculusekoueste"
+    ]
+  },
+  {
+    "content": "Olivier Roelens",
+    "sounds_like": [
+      "oliviérolinse"
+    ]
+  },
+  {
+    "content": "Origin",
+    "sounds_like": [
+      "oridgine"
+    ]
+  },
+  {
+    "content": "OS",
+    "sounds_like": [
+      "ohès"
+    ]
+  },
+  {
+    "content": "OSC",
+    "sounds_like": [
+      "oescé"
+    ]
+  },
+  {
+    "content": "Outlook",
+    "sounds_like": [
+      "outlook"
+    ]
+  },
+  {
+    "content": "owner",
+    "sounds_like": [
+      "oneur"
+    ]
+  },
+  {
+    "content": "pack",
+    "sounds_like": [
+      "pak"
+    ]
+  },
+  {
+    "content": "PAE",
+    "sounds_like": [
+      "péhaeu"
+    ]
+  },
+  {
+    "content": "palettier",
+    "sounds_like": [
+      "paltié"
+    ]
+  },
+  {
+    "content": "paluche",
+    "sounds_like": [
+      "paluche"
+    ]
+  },
+  {
+    "content": "PAM",
+    "sounds_like": [
+      "pame"
+    ]
+  },
+  {
+    "content": "pan tilt zoom",
+    "sounds_like": [
+      "panetiltzoume"
+    ]
+  },
+  {
+    "content": "Panasonic",
+    "sounds_like": [
+      "panasonik"
+    ]
+  },
+  {
+    "content": "panel",
+    "sounds_like": [
+      "panel"
+    ]
+  },
+  {
+    "content": "panel d'ordres",
+    "sounds_like": [
+      "paneldordre"
+    ]
+  },
+  {
+    "content": "Particular",
+    "sounds_like": [
+      "particulare"
+    ]
+  },
+  {
+    "content": "people",
+    "sounds_like": [
+      "pipol"
+    ]
+  },
+  {
+    "content": "performer",
+    "sounds_like": [
+      "performé"
+    ]
+  },
+  {
+    "content": "Philippe Cohen Zardi",
+    "sounds_like": [
+      "filipcohainezardi"
+    ]
+  },
+  {
+    "content": "Philippe Vaidie",
+    "sounds_like": [
+      "filipvédi"
+    ]
+  },
+  {
+    "content": "Pierre Mestrez",
+    "sounds_like": [
+      "pièrmestré"
+    ]
+  },
+  {
+    "content": "Pierre-Marie Boyé",
+    "sounds_like": [
+      "piermariboyé"
+    ]
+  },
+  {
+    "content": "Pilot",
+    "sounds_like": [
+      "païlote"
+    ]
+  },
+  {
+    "content": "Pilot",
+    "sounds_like": [
+      "pilo"
+    ]
+  },
+  {
+    "content": "Pixii",
+    "sounds_like": [
+      "pixi"
+    ]
+  },
+  {
+    "content": "plaques RA",
+    "sounds_like": [
+      "plakèra"
+    ]
+  },
+  {
+    "content": "plateau C",
+    "sounds_like": [
+      "platocé"
+    ]
+  },
+  {
+    "content": "pluggé",
+    "sounds_like": [
+      "plugé"
+    ]
+  },
+  {
+    "content": "plugin",
+    "sounds_like": [
+      "pleugine"
+    ]
+  },
+  {
+    "content": "polychrone",
+    "sounds_like": [
+      "polikrone"
+    ]
+  },
+  {
+    "content": "polyscope",
+    "sounds_like": [
+      "poliskope"
+    ]
+  },
+  {
+    "content": "pool",
+    "sounds_like": [
+      "poule"
+    ]
+  },
+  {
+    "content": "post-production",
+    "sounds_like": [
+      "postproduksion"
+    ]
+  },
+  {
+    "content": "pré-cablage",
+    "sounds_like": [
+      "prékablaje"
+    ]
+  },
+  {
+    "content": "prépa",
+    "sounds_like": [
+      "prépa"
+    ]
+  },
+  {
+    "content": "preset",
+    "sounds_like": [
+      "présete"
+    ]
+  },
+  {
+    "content": "Présilab",
+    "sounds_like": [
+      "présilabe"
+    ]
+  },
+  {
+    "content": "préviz on set",
+    "sounds_like": [
+      "prévizoneset"
+    ]
+  },
+  {
+    "content": "process",
+    "sounds_like": [
+      "procès"
+    ]
+  },
+  {
+    "content": "prod",
+    "sounds_like": [
+      "prod"
+    ]
+  },
+  {
+    "content": "prompteur",
+    "sounds_like": [
+      "prompteur"
+    ]
+  },
+  {
+    "content": "proxy",
+    "sounds_like": [
+      "proxy"
+    ]
+  },
+  {
+    "content": "PTZ",
+    "sounds_like": [
+      "pétézède"
+    ]
+  },
+  {
+    "content": "Quest",
+    "sounds_like": [
+      "coueste"
+    ]
+  },
+  {
+    "content": "quiz",
+    "sounds_like": [
+      "kwize"
+    ]
+  },
+  {
+    "content": "R&D",
+    "sounds_like": [
+      "èrédé"
+    ]
+  },
+  {
+    "content": "RA",
+    "sounds_like": [
+      "èra"
+    ]
+  },
+  {
+    "content": "Raw",
+    "sounds_like": [
+      "ro"
+    ]
+  },
+  {
+    "content": "réal",
+    "sounds_like": [
+      "réal"
+    ]
+  },
+  {
+    "content": "real time",
+    "sounds_like": [
+      "riltïme"
+    ]
+  },
+  {
+    "content": "Red Giant",
+    "sounds_like": [
+      "rèdjiente"
+    ]
+  },
+  {
+    "content": "Rédac",
+    "sounds_like": [
+      "rédak"
+    ]
+  },
+  {
+    "content": "redispastche",
+    "sounds_like": [
+      "redispatche"
+    ]
+  },
+  {
+    "content": "régisseur",
+    "sounds_like": [
+      "réjisseur"
+    ]
+  },
+  {
+    "content": "Remote",
+    "sounds_like": [
+      "rimote"
+    ]
+  },
+  {
+    "content": "remote",
+    "sounds_like": [
+      "rimote"
+    ]
+  },
+  {
+    "content": "Remote prod",
+    "sounds_like": [
+      "rimoteprode"
+    ]
+  },
+  {
+    "content": "Remote production",
+    "sounds_like": [
+      "rimoteproduksion"
+    ]
+  },
+  {
+    "content": "repéreur",
+    "sounds_like": [
+      "repéreur"
+    ]
+  },
+  {
+    "content": "répet'",
+    "sounds_like": [
+      "répète"
+    ]
+  },
+  {
+    "content": "reporting",
+    "sounds_like": [
+      "riportigne"
+    ]
+  },
+  {
+    "content": "rérenvoie",
+    "sounds_like": [
+      "rérenvoi"
+    ]
+  },
+  {
+    "content": "Réunion pré-déco",
+    "sounds_like": [
+      "réunionprédéko"
+    ]
+  },
+  {
+    "content": "Reveal",
+    "sounds_like": [
+      "rivil"
+    ]
+  },
+  {
+    "content": "Roland Garros",
+    "sounds_like": [
+      "rolengaroce"
+    ]
+  },
+  {
+    "content": "Ronin",
+    "sounds_like": [
+      "Ronine"
+    ]
+  },
+  {
+    "content": "Ronin",
+    "sounds_like": [
+      "Ronin"
+    ]
+  },
+  {
+    "content": "Rotobrosse",
+    "sounds_like": [
+      "rotobroce"
+    ]
+  },
+  {
+    "content": "rotoscopie",
+    "sounds_like": [
+      "rotoskopi"
+    ]
+  },
+  {
+    "content": "rushes",
+    "sounds_like": [
+      "reuche"
+    ]
+  },
+  {
+    "content": "Saint-Cloud",
+    "sounds_like": [
+      "sinclou"
+    ]
+  },
+  {
+    "content": "Sammy",
+    "sounds_like": [
+      "sami"
+    ]
+  },
+  {
+    "content": "SAS",
+    "sounds_like": [
+      "èsahès"
+    ]
+  },
+  {
+    "content": "scripte",
+    "sounds_like": [
+      "scripte"
+    ]
+  },
+  {
+    "content": "Sébastien Grandsire",
+    "sounds_like": [
+      "sébatiengrancire"
+    ]
+  },
+  {
+    "content": "Seine musicale",
+    "sounds_like": [
+      "cènemuzikal"
+    ]
+  },
+  {
+    "content": "SEP",
+    "sounds_like": [
+      "cèpe"
+    ]
+  },
+  {
+    "content": "Seven Lives",
+    "sounds_like": [
+      "séveunlaïvze"
+    ]
+  },
+  {
+    "content": "show",
+    "sounds_like": [
+      "cho"
+    ]
+  },
+  {
+    "content": "SI Achats",
+    "sounds_like": [
+      "èsihacha"
+    ]
+  },
+  {
+    "content": "SimplyLive",
+    "sounds_like": [
+      "simeplilaïve"
+    ]
+  },
+  {
+    "content": "sketchup",
+    "sounds_like": [
+      "sketcheup"
+    ]
+  },
+  {
+    "content": "slow web",
+    "sounds_like": [
+      "sloweb"
+    ]
+  },
+  {
+    "content": "soft",
+    "sounds_like": [
+      "soft"
+    ]
+  },
+  {
+    "content": "Sonia Roméro",
+    "sounds_like": [
+      "soniaroméro"
+    ]
+  },
+  {
+    "content": "sonorisateur",
+    "sounds_like": [
+      "sonorizateur"
+    ]
+  },
+  {
+    "content": "Sony 3500",
+    "sounds_like": [
+      "sonitroimilcink"
+    ]
+  },
+  {
+    "content": "sourcer",
+    "sounds_like": [
+      "sourcé"
+    ]
+  },
+  {
+    "content": "Spirit",
+    "sounds_like": [
+      "spirit"
+    ]
+  },
+  {
+    "content": "spot",
+    "sounds_like": [
+      "spot"
+    ]
+  },
+  {
+    "content": "Stade 2",
+    "sounds_like": [
+      "stadedeu"
+    ]
+  },
+  {
+    "content": "staffing",
+    "sounds_like": [
+      "stafigne"
+    ]
+  },
+  {
+    "content": "Stan Walbert",
+    "sounds_like": [
+      "stanewalbère"
+    ]
+  },
+  {
+    "content": "Star Wars",
+    "sounds_like": [
+      "starwarze"
+    ]
+  },
+  {
+    "content": "Starlink",
+    "sounds_like": [
+      "starligneke"
+    ]
+  },
+  {
+    "content": "steadycam",
+    "sounds_like": [
+      "stédikam"
+    ]
+  },
+  {
+    "content": "steadycamer",
+    "sounds_like": [
+      "stédikameur"
+    ]
+  },
+  {
+    "content": "Stella Productions",
+    "sounds_like": [
+      "stélaproduksion"
+    ]
+  },
+  {
+    "content": "Stéphane Gibard",
+    "sounds_like": [
+      "stéfanejibar"
+    ]
+  },
+  {
+    "content": "Stéphane Miquel",
+    "sounds_like": [
+      "stéfanemikel"
+    ]
+  },
+  {
+    "content": "Storylab",
+    "sounds_like": [
+      "storilab"
+    ]
+  },
+  {
+    "content": "stream deck",
+    "sounds_like": [
+      "strimdek"
+    ]
+  },
+  {
+    "content": "streamer",
+    "sounds_like": [
+      "strimé"
+    ]
+  },
+  {
+    "content": "streaming",
+    "sounds_like": [
+      "strimigne"
+    ]
+  },
+  {
+    "content": "subséquents",
+    "sounds_like": [
+      "subséken"
+    ]
+  },
+  {
+    "content": "talk-show",
+    "sounds_like": [
+      "tolkcho"
+    ]
+  },
+  {
+    "content": "Tancrède",
+    "sounds_like": [
+      "tenkrède"
+    ]
+  },
+  {
+    "content": "Teams",
+    "sounds_like": [
+      "timce"
+    ]
+  },
+  {
+    "content": "Télécom Sud Paris",
+    "sounds_like": [
+      "télékomsudpari"
+    ]
+  },
+  {
+    "content": "Télématin",
+    "sounds_like": [
+      "télématin"
+    ]
+  },
+  {
+    "content": "Templates",
+    "sounds_like": [
+      "tenmplète"
+    ]
+  },
+  {
+    "content": "téra-octet",
+    "sounds_like": [
+      "téraokté"
+    ]
+  },
+  {
+    "content": "thermo colorimètre",
+    "sounds_like": [
+      "termocolorimètre"
+    ]
+  },
+  {
+    "content": "Thomas Lagache",
+    "sounds_like": [
+      "tomalagache"
+    ]
+  },
+  {
+    "content": "TikTok",
+    "sounds_like": [
+      "tiktok"
+    ]
+  },
+  {
+    "content": "timeline",
+    "sounds_like": [
+      "taïmelaïne"
+    ]
+  },
+  {
+    "content": "titrage",
+    "sounds_like": [
+      "titraje"
+    ]
+  },
+  {
+    "content": "TMO",
+    "sounds_like": [
+      "téhèmo"
+    ]
+  },
+  {
+    "content": "Toma de Matteis",
+    "sounds_like": [
+      "tomadematéhis"
+    ]
+  },
+  {
+    "content": "Tony",
+    "sounds_like": [
+      "toni"
+    ]
+  },
+  {
+    "content": "tracker",
+    "sounds_like": [
+      "trakèr"
+    ]
+  },
+  {
+    "content": "tracking",
+    "sounds_like": [
+      "trakigne"
+    ]
+  },
+  {
+    "content": "transportabilité",
+    "sounds_like": [
+      "transportabilité"
+    ]
+  },
+  {
+    "content": "Trapcode",
+    "sounds_like": [
+      "trapkode"
+    ]
+  },
+  {
+    "content": "traveling",
+    "sounds_like": [
+      "traveling"
+    ]
+  },
+  {
+    "content": "Travelling",
+    "sounds_like": [
+      "traveligne"
+    ]
+  },
+  {
+    "content": "travellistes",
+    "sounds_like": [
+      "travéliste"
+    ]
+  },
+  {
+    "content": "Truquiste",
+    "sounds_like": [
+      "trukiste"
+    ]
+  },
+  {
+    "content": "Tuto",
+    "sounds_like": [
+      "tuto"
+    ]
+  },
+  {
+    "content": "TVS",
+    "sounds_like": [
+      "tévéhesse"
+    ]
+  },
+  {
+    "content": "Twitch",
+    "sounds_like": [
+      "twitch"
+    ]
+  },
+  {
+    "content": "Ubisoft",
+    "sounds_like": [
+      "ubisoft"
+    ]
+  },
+  {
+    "content": "UER",
+    "sounds_like": [
+      "uheuère"
+    ]
+  },
+  {
+    "content": "UHD",
+    "sounds_like": [
+      "uhachedé"
+    ]
+  },
+  {
+    "content": "UM",
+    "sounds_like": [
+      "uhème"
+    ]
+  },
+  {
+    "content": "UM1",
+    "sounds_like": [
+      "uhèmun"
+    ]
+  },
+  {
+    "content": "UM1",
+    "sounds_like": [
+      "uhèmun"
+    ]
+  },
+  {
+    "content": "Unreal",
+    "sounds_like": [
+      "eunril"
+    ]
+  },
+  {
+    "content": "unreal 5",
+    "sounds_like": [
+      "eunril cink"
+    ]
+  },
+  {
+    "content": "unreal 5",
+    "sounds_like": [
+      "eunril faïve"
+    ]
+  },
+  {
+    "content": "Unreal Engine",
+    "sounds_like": [
+      "unerilendjine"
+    ]
+  },
+  {
+    "content": "upload",
+    "sounds_like": [
+      "euplode"
+    ]
+  },
+  {
+    "content": "upload",
+    "sounds_like": [
+      "euplode"
+    ]
+  },
+  {
+    "content": "uploadé",
+    "sounds_like": [
+      "euplodé"
+    ]
+  },
+  {
+    "content": "use-case",
+    "sounds_like": [
+      "iouzekèse"
+    ]
+  },
+  {
+    "content": "Vélodrome SQY",
+    "sounds_like": [
+      "vélodromedesinkantineniveline"
+    ]
+  },
+  {
+    "content": "Vendargues",
+    "sounds_like": [
+      "vendarge"
+    ]
+  },
+  {
+    "content": "Venue Gateaway",
+    "sounds_like": [
+      "veniougètewé"
+    ]
+  },
+  {
+    "content": "VFX",
+    "sounds_like": [
+      "véèfix"
+    ]
+  },
+  {
+    "content": "ViBox",
+    "sounds_like": [
+      "vibox"
+    ]
+  },
+  {
+    "content": "Victor Blanco",
+    "sounds_like": [
+      "viktorblenko"
+    ]
+  },
+  {
+    "content": "Vincent Nalpas",
+    "sounds_like": [
+      "vincennalpace"
+    ]
+  },
+  {
+    "content": "Virtual Map",
+    "sounds_like": [
+      "vituolmap"
+    ]
+  },
+  {
+    "content": "Virtual set designer",
+    "sounds_like": [
+      "virtuolcetdisaïgnneur"
+    ]
+  },
+  {
+    "content": "Vjing",
+    "sounds_like": [
+      "vijigne"
+    ]
+  },
+  {
+    "content": "voice over",
+    "sounds_like": [
+      "voïcovèr"
+    ]
+  },
+  {
+    "content": "VPN",
+    "sounds_like": [
+      "vépéène"
+    ]
+  },
+  {
+    "content": "VPN",
+    "sounds_like": [
+      "vépéène"
+    ]
+  },
+  {
+    "content": "VR",
+    "sounds_like": [
+      "véèr"
+    ]
+  },
+  {
+    "content": "VR Room",
+    "sounds_like": [
+      "véèrroume"
+    ]
+  },
+  {
+    "content": "Vrchat",
+    "sounds_like": [
+      "véèrtchat"
+    ]
+  },
+  {
+    "content": "Vu d'Europe",
+    "sounds_like": [
+      "vudeurope"
+    ]
+  },
+  {
+    "content": "WDR",
+    "sounds_like": [
+      "doublevédéèr"
+    ]
+  },
+  {
+    "content": "widget",
+    "sounds_like": [
+      "widjète"
+    ]
+  },
+  {
+    "content": "WizzWorld",
+    "sounds_like": [
+      "wizvord"
+    ]
+  },
+  {
+    "content": "Wysiwyg",
+    "sounds_like": [
+      "wiziwig"
+    ]
+  },
+  {
+    "content": "XD Motion",
+    "sounds_like": [
+      "ixdémocheun"
+    ]
+  },
+  {
+    "content": "xR",
+    "sounds_like": [
+      "ixère"
+    ]
+  },
+  {
+    "content": "XR commissionner",
+    "sounds_like": [
+      "ixèrcomisionère"
+    ]
+  },
+  {
+    "content": "Yves-Marie Poirier",
+    "sounds_like": [
+      "ivmaripoirié"
+    ]
+  },
+  {
+    "content": "zoom",
+    "sounds_like": [
+      "zoum"
+    ]
+  },
+  {
+    "content": "zoomer",
+    "sounds_like": [
+      "zoumé"
     ]
   },
   {
@@ -941,15 +3602,19 @@
   {
     "content": "NUPES",
     "sounds_like": [
-      "nup",
-      "nupèsse",
-      "nupse"
+      "nup, nupèsse, nupse"
     ]
   },
   {
     "content": "Jordan Bardella",
     "sounds_like": [
       "jordanebardèla"
+    ]
+  },
+  {
+    "content": "macroniste",
+    "sounds_like": [
+      "macroniste"
     ]
   },
   {
@@ -985,8 +3650,7 @@
   {
     "content": "Donetsk",
     "sounds_like": [
-      "donestk",
-      "doniestk"
+      "donestk, doniestk"
     ]
   },
   {
@@ -1088,8 +3752,7 @@
   {
     "content": "URSS",
     "sounds_like": [
-      "uèressaisse",
-      "urse"
+      "uèressaisse, urse"
     ]
   },
   {
