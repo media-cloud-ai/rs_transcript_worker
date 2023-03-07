@@ -1,4 +1,4 @@
-use chrono::prelude::{DateTime, Utc};
+use chrono::{DateTime, Utc};
 use mcai_worker_sdk::prelude::*;
 use std::convert::TryFrom;
 use tokio_tungstenite::tungstenite::protocol::Message;

@@ -1,0 +1,80 @@
+pub mod start_recognition_information;
+pub mod websocket_response;
+
+pub use start_recognition_information::StartRecognitionInformation;
+
+use crate::WorkerParameters;
+use futures_util::{sink::SinkExt, stream::StreamExt};
+use mcai_worker_sdk::prelude::*;
+use std::convert::{TryFrom, TryInto};
+use tokio::net::TcpStream;
+use tokio_tls::TlsStream;
+use tokio_tungstenite::{connect_async, stream::Stream, WebSocketStream};
+use websocket_response::WebsocketResponse;
+
+type McaiWebSocketStream = WebSocketStream<Stream<TcpStream, TlsStream<TcpStream>>>;
+
+pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
+  let service_ip: String = parameters
+    .service_instance_ip
+    .as_ref()
+    .unwrap_or(&"localhost".to_string())
+    .to_string();
+
+  let websocket_url = match &parameters.provider[..] {
+    "speechmatics" | "speechmatics_standard" | "speechmatics_enhanced" => {
+      format!("ws://{}:9000/v2", service_ip)
+    }
+    _ => {
+      info!(
+        "Provider {} not found, fallback to speechmatics",
+        parameters.provider
+      );
+      format!("ws://{}:9000/v2", service_ip)
+    }
+  };
+
+  let (mut ws_stream, _) = connect_async(websocket_url)
+    .await
+    .expect("Failed to connect");
+
+  let mode: String = if &parameters.provider[..] == "speechmatics_standard" {
+    "standard".to_string()
+  } else {
+    "enhanced".to_string()
+  };
+
+  let mut start_recognition_information = self::StartRecognitionInformation::new(mode);
+  if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
+    start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
+  }
+
+  if let Some(max_delay) = &parameters.transcript_interval {
+    if let Ok(max_delay_float) = max_delay.parse::<f64>() {
+      start_recognition_information.set_max_delay(max_delay_float);
+    }
+  }
+
+  if let Some(diarisation_balance) = &parameters.diarisation_balance {
+    if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
+      start_recognition_information.set_diarisation(diarisation_balance_float);
+    }
+  }
+
+  ws_stream
+    .send(start_recognition_information.try_into().unwrap())
+    .await
+    .expect("unable to send start recognition information");
+
+  while let Some(Ok(event)) = ws_stream.next().await {
+    let event: Result<WebsocketResponse> =
+      self::websocket_response::WebsocketResponse::try_from(event);
+    if let Ok(event) = event {
+      if event.message == "RecognitionStarted" {
+        break;
+      }
+    }
+  }
+
+  ws_stream
+}

@@ -3,12 +3,15 @@ extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 
-use authot::websocket_response::WebsocketResponse;
-use chrono::prelude::{DateTime, Utc};
+use chrono::{DateTime, Utc};
 use format::OutputFormat;
 use futures::channel::mpsc::{channel, Sender};
 use futures_util::{future, pin_mut, StreamExt};
-use mcai_worker_sdk::{job::JobResult, prelude::*, McaiWorker, MessageError};
+use mcai_worker_sdk::{
+  default_rust_mcai_worker_description, job::JobResult, prelude::*, MessageError,
+};
+use providers::speechmatics::websocket_response::WebsocketResponse;
+
 use std::{
   convert::TryFrom,
   str::FromStr,
@@ -27,20 +30,20 @@ use std::{
 use tokio::runtime::Runtime;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
-mod authot;
 mod format;
-use authot::websocket_response;
+mod providers;
+use providers::speechmatics::websocket_response;
 
-pub mod built_info {
-  include!(concat!(env!("OUT_DIR"), "/built.rs"));
-}
+default_rust_mcai_worker_description!();
+
+#[derive(Debug, Default)]
+struct McaiRustWorker {}
 
 #[derive(Debug, Default)]
 #[allow(dead_code)]
 struct TranscriptEvent {
   sequence_number: u64,
   start_time: Option<f32>,
-  authot_live_id: Option<usize>,
   audio_source_sender: Option<Sender<Message>>,
   sender: Option<Arc<Mutex<StdSender<ProcessResult>>>>,
   ws_thread: Option<JoinHandle<()>>,
@@ -50,13 +53,6 @@ struct TranscriptEvent {
 #[derive(Debug, Clone, Deserialize, JsonSchema)]
 #[allow(dead_code)]
 pub struct WorkerParameters {
-  /// # Authot Live Identifier
-  /// Pass an pre-created Authot Live process identifier.
-  /// It will skip the creation of a new live process.
-  authot_live_id: Option<u32>,
-  /// # Authot token
-  /// Set the token to access to Authot service.
-  authot_token: Option<String>,
   /// # Custom vocabulary
   /// Extend the knowledge of the provider by adding some specific words.
   custom_vocabulary: Option<String>,
@@ -79,23 +75,7 @@ pub struct WorkerParameters {
   source_path: String,
 }
 
-impl McaiWorker<WorkerParameters> for TranscriptEvent {
-  fn get_name(&self) -> String {
-    "Transcript process worker".to_string()
-  }
-
-  fn get_short_description(&self) -> String {
-    "Worker to process Transcript using different providers".to_string()
-  }
-
-  fn get_description(&self) -> String {
-    r#"This worker applies Transcript from audio source into TTML stream."#.to_string()
-  }
-
-  fn get_version(&self) -> Version {
-    Version::parse(built_info::PKG_VERSION).expect("unable to locate Package version")
-  }
-
+impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent {
   fn init_process(
     &mut self,
     parameters: WorkerParameters,
@@ -130,7 +110,7 @@ impl McaiWorker<WorkerParameters> for TranscriptEvent {
       let sequence_number = Arc::new(AtomicUsize::new(0));
 
       let future = async {
-        let (_authot, ws_stream) = authot::Authot::new(&cloned_parameters).await;
+        let ws_stream = providers::speechmatics::new(&cloned_parameters).await;
         let (ws_sender, ws_receiver) = ws_stream.split();
 
         let send_to_ws = audio_source_receiver.map(Ok).forward(ws_sender);
@@ -171,8 +151,8 @@ impl McaiWorker<WorkerParameters> for TranscriptEvent {
                       cloned_clock_vec.lock().unwrap().clear();
                       info!("Clock {}", clock);
                       Some(websocket_response::Metadata {
-                        start_time: metadata.start_time as f64,
-                        end_time: metadata.end_time as f64,
+                        start_time: metadata.start_time,
+                        end_time: metadata.end_time,
                         transcript: metadata.transcript,
                         clock: Some(clock),
                       })
@@ -215,12 +195,13 @@ impl McaiWorker<WorkerParameters> for TranscriptEvent {
     Ok(selected_streams)
   }
 
-  fn process_frame(
+  fn process_frames(
     &mut self,
     job_result: JobResult,
     _stream_index: usize,
-    process_frame: ProcessFrame,
+    process_frames: &[mcai_worker_sdk::prelude::ProcessFrame],
   ) -> Result<ProcessResult> {
+    let process_frame: &ProcessFrame = &process_frames[0];
     match &process_frame {
       ProcessFrame::AudioVideo(frame) => unsafe {
         trace!(
@@ -246,7 +227,7 @@ impl McaiWorker<WorkerParameters> for TranscriptEvent {
               }
               Err(error) => {
                 if error.is_full() {
-                  info!("C'est FULL");
+                  warn!("Buffer is full!");
                   thread::sleep(Duration::from_millis(50));
                 }
                 if error.is_disconnected() {
