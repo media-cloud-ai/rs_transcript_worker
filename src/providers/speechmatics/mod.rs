@@ -14,6 +14,8 @@ use websocket_response::WebsocketResponse;
 
 type McaiWebSocketStream = WebSocketStream<Stream<TcpStream, TlsStream<TcpStream>>>;
 
+/// Creates a new connection to Speechmatics Real-Time container/instance
+/// See Speechmatics documentation : https://docs.speechmatics.com/introduction/rt-guide
 pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
   let service_ip: String = parameters
     .service_instance_ip
@@ -44,17 +46,22 @@ pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
     "enhanced".to_string()
   };
 
+  // Informations for the websocket
   let mut start_recognition_information = self::StartRecognitionInformation::new(mode);
+
+  // Custom Vocabulary
   if let Some(custom_vocabulary) = &parameters.custom_vocabulary {
     start_recognition_information.set_custom_vocabulary(custom_vocabulary.to_string());
   }
 
+  // Transcript interval (length of each transcript)
   if let Some(max_delay) = &parameters.transcript_interval {
     if let Ok(max_delay_float) = max_delay.parse::<f64>() {
       start_recognition_information.set_max_delay(max_delay_float);
     }
   }
 
+  // Diarisation balance
   if let Some(diarisation_balance) = &parameters.diarisation_balance {
     if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
       start_recognition_information.set_diarisation(diarisation_balance_float);

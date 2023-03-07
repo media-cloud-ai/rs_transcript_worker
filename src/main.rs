@@ -83,6 +83,8 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     response_sender: Arc<Mutex<StdSender<ProcessResult>>>,
   ) -> Result<Vec<StreamDescriptor>> {
     let format_context = format_context.lock().unwrap();
+
+    // Store the start time
     self.start_time = format_context.get_start_time();
     let start_offset = self.start_time.unwrap();
 
@@ -91,21 +93,21 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     let cloned_parameters = parameters;
     let param_output_format = cloned_parameters.output_format.clone();
 
+    // Specify output format
     let output_format = OutputFormat::from_str(
       &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
     )
     .expect("Cannot get output format");
 
     let (audio_source_sender, audio_source_receiver) = channel(10000);
-
     self.audio_source_sender = Some(audio_source_sender);
-
     let cloned_sender = response_sender.clone();
     let cloned_clock_vec = self.clock_vec.clone();
     let start_time = self.start_time;
 
     self.sender = Some(response_sender);
 
+    // Spawn a thread listening to the websocket
     self.ws_thread = Some(thread::spawn(move || {
       let sequence_number = Arc::new(AtomicUsize::new(0));
 
@@ -184,7 +186,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
 
         pin_mut!(send_to_ws, receive_from_ws);
         future::select(send_to_ws, receive_from_ws).await;
-        info!("Ending Authot Live server.");
+        info!("Ending transcription.");
       };
 
       let mut runtime = Runtime::new().unwrap();
@@ -266,8 +268,8 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
   }
 }
 
+/// Select first audio stream index
 fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<StreamDescriptor>> {
-  // select first audio stream index
   for stream_index in 0..format_context.get_nb_streams() {
     info!(
       "Stream {:?}, type {:?}",

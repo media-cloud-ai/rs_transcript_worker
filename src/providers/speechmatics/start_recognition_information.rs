@@ -6,17 +6,28 @@ use std::{
 use tokio_tungstenite::tungstenite::protocol::Message;
 
 #[derive(Debug, Serialize)]
+/// Transcription session informations
 pub struct StartRecognitionInformation {
   pub message: TranscriptionMode,
-  pub transcription_config: TranscriptionConfigNew,
+  pub transcription_config: TranscriptionConfig,
   pub audio_format: AudioFormat,
 }
 
 impl StartRecognitionInformation {
+  /// Creating a structure used by the websocket to create a Session
+  ///
+  /// # Arguments
+  ///
+  /// * `mode` - Corresponding to the operating point (see Speechmatics Documentation)
+  /// # Examples
+  ///
+  /// ```
+  /// let start_recognition_information = StartRecognitionInformation::new("enhanced");
+  /// ```
   pub fn new(mode: String) -> Self {
     StartRecognitionInformation {
       message: TranscriptionMode::StartRecognition,
-      transcription_config: TranscriptionConfigNew {
+      transcription_config: TranscriptionConfig {
         language: Language::Fr,
         enable_partials: false,
         max_delay: 5.0,
@@ -60,17 +71,9 @@ impl TryInto<Message> for StartRecognitionInformation {
 }
 
 #[derive(Debug, Serialize)]
+/// Transcription session configuration
+/// See https://docs.speechmatics.com/features
 pub struct TranscriptionConfig {
-  pub language: Language,
-  pub enable_partials: bool,
-  pub max_delay: f64,
-  pub diarization: String,
-  pub speaker_change_sensitivity: f64,
-  pub additional_vocab: Vec<CustomVocabulary>,
-}
-
-#[derive(Debug, Serialize)]
-pub struct TranscriptionConfigNew {
   pub language: Language,
   pub enable_partials: bool,
   pub max_delay: f64,
@@ -81,17 +84,22 @@ pub struct TranscriptionConfigNew {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+/// Custom vocabulary entry
+/// See https://docs.speechmatics.com/features/custom-dictionary
 pub struct CustomVocabulary {
   pub content: String,
   pub sounds_like: Vec<String>,
 }
 
 #[derive(Debug, Serialize)]
+/// Transcription mode
+/// See https://docs.speechmatics.com/features/accuracy-language-packs
 pub enum TranscriptionMode {
   StartRecognition,
 }
 
 #[derive(Debug, Serialize)]
+/// Audio format
 pub struct AudioFormat {
   #[serde(rename = "type")]
   pub audio_type: AudioType,
@@ -100,18 +108,22 @@ pub struct AudioFormat {
 }
 
 #[derive(Debug, Serialize)]
+/// Transcription language
+/// See https://docs.speechmatics.com/features/accuracy-language-packs
 pub enum Language {
   #[serde(rename = "fr")]
   Fr,
 }
 
 #[derive(Debug, Serialize)]
+/// Audio type
 pub enum AudioType {
   #[serde(rename = "raw")]
   Raw,
 }
 
 #[derive(Debug, Serialize)]
+/// Audio encoding
 pub enum AudioEncoding {
   #[serde(rename = "pcm_s16le")]
   PcmS16le,
