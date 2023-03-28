@@ -10,7 +10,6 @@ use futures_util::{future, pin_mut, StreamExt};
 use mcai_worker_sdk::{
   default_rust_mcai_worker_description, job::JobResult, prelude::*, MessageError,
 };
-use providers::speechmatics::websocket_response::WebsocketResponse;
 
 use std::{
   convert::TryFrom,
@@ -32,7 +31,7 @@ use tokio_tungstenite::tungstenite::protocol::Message;
 
 mod format;
 mod providers;
-use providers::speechmatics::websocket_response;
+use providers::speechmatics::{websocket_response, websocket_response::WebsocketResponse};
 
 default_rust_mcai_worker_description!();
 
@@ -89,9 +88,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     let start_offset = self.start_time.unwrap();
 
     let selected_streams = get_first_audio_stream_id(&format_context)?;
-
-    let cloned_parameters = parameters;
-    let param_output_format = cloned_parameters.output_format.clone();
+    let param_output_format = parameters.output_format.clone();
 
     // Specify output format
     let output_format = OutputFormat::from_str(
@@ -112,7 +109,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
       let sequence_number = Arc::new(AtomicUsize::new(0));
 
       let future = async {
-        let ws_stream = providers::speechmatics::new(&cloned_parameters).await;
+        let ws_stream = providers::speechmatics::new(&parameters).await;
         let (ws_sender, ws_receiver) = ws_stream.split();
 
         let send_to_ws = audio_source_receiver.map(Ok).forward(ws_sender);
