@@ -1890,7 +1890,6 @@ dependencies = [
 [[package]]
 name = "mcai_worker_sdk"
 version = "2.0.0-rc6"
-source = "git+https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git?rev=658977d58cc7283c4892d66f9ffb99e002fb62cc#658977d58cc7283c4892d66f9ffb99e002fb62cc"
 dependencies = [
  "amq-protocol",
  "amq-protocol-types",
