@@ -1,6 +1,6 @@
 [package]
 name = "transcript_worker"
-version = "0.5.0-rc9"
+version = "0.5.0-rc10"
 authors = [
   "Marc-Antoine Arnaud <maarnaud@media-io.com>",
   "Nicolas Pierre <nico.pierre@icloud.com>",
@@ -12,7 +12,7 @@ license = "MIT"
 chrono = "0.4.19"
 futures = {version = "0.3", features = ["thread-pool"]}
 futures-util = "0.3"
-mcai_worker_sdk = { git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git", rev = "a2e7b3b42fc35b65a47814dc84e48c179db71a19", features = ["media"] }
+mcai_worker_sdk = { git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git", rev = "30af96b26ce83fafd27c1e6d296a8548c8195246", features = ["media"] }
 reqwest = { version = "0.10", features = ["json"] }
 schemars = "0.8"
 serde = "^1.0"
