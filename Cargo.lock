@@ -1890,6 +1890,7 @@ dependencies = [
 [[package]]
 name = "mcai_worker_sdk"
 version = "2.0.0-rc6"
+source = "git+https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git?rev=831a6faff2ef50b173ef97ea5484e7c844a24c8b#831a6faff2ef50b173ef97ea5484e7c844a24c8b"
 dependencies = [
  "amq-protocol",
  "amq-protocol-types",
@@ -3502,7 +3503,7 @@ dependencies = [
 
 [[package]]
 name = "transcript_worker"
-version = "0.5.0-rc6"
+version = "0.5.0-rc11"
 dependencies = [
  "chrono",
  "futures",
