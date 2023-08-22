@@ -116,67 +116,69 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
 
         let receive_from_ws = {
           ws_receiver.for_each(|event| async {
-            let event = event.unwrap();
-            debug!("{}", event);
-            let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
-
             if let Ok(event) = event {
-              if event.message == "AudioAdded" {}
-              if event.message == "EndOfTranscript" {
-                info!("End of transcript from provider");
-                let result = ProcessResult::end_of_process();
-                cloned_sender.lock().unwrap().send(result).unwrap();
-              }
-              if event.message == "AddTranscript" {
-                match output_format {
-                  OutputFormat::EbuTtD => {
-                    if let Some(mut metadata) = event.metadata {
-                      metadata.start_time += start_offset as f64;
-                      metadata.end_time += start_offset as f64;
-                      let sequence_index = sequence_number.load(Acquire);
-                      cloned_clock_vec.lock().unwrap().clear();
+              debug!("{}", event);
+              let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
 
-                      let result =
-                        ProcessResult::new_xml(metadata.generate_ttml(start_time, sequence_index));
+              if let Ok(event) = event {
+                if event.message == "AudioAdded" {}
+                if event.message == "EndOfTranscript" {
+                  info!("End of transcript from provider");
+                  let result = ProcessResult::end_of_process();
+                  cloned_sender.lock().unwrap().send(result).unwrap();
+                }
+                if event.message == "AddTranscript" {
+                  match output_format {
+                    OutputFormat::EbuTtD => {
+                      if let Some(mut metadata) = event.metadata {
+                        metadata.start_time += start_offset as f64;
+                        metadata.end_time += start_offset as f64;
+                        let sequence_index = sequence_number.load(Acquire);
+                        cloned_clock_vec.lock().unwrap().clear();
+
+                        let result = ProcessResult::new_xml(
+                          metadata.generate_ttml(start_time, sequence_index),
+                        );
+                        cloned_sender.lock().unwrap().send(result).unwrap();
+
+                        sequence_number.store(sequence_index + 1, Release);
+                      }
+                    }
+                    OutputFormat::Json => {
+                      let sequence_index = sequence_number.load(Acquire);
+                      let updated_metadata = if let Some(metadata) = event.metadata {
+                        let clock: DateTime<Utc> = cloned_clock_vec.lock().unwrap()[0];
+                        cloned_clock_vec.lock().unwrap().clear();
+                        info!("Clock {}", clock);
+                        Some(websocket_response::Metadata {
+                          start_time: metadata.start_time,
+                          end_time: metadata.end_time,
+                          transcript: metadata.transcript,
+                          clock: Some(clock),
+                        })
+                      } else {
+                        None
+                      };
+                      let updated_event = WebsocketResponse {
+                        message: event.message,
+                        id: event.id,
+                        kind: event.kind,
+                        quality: event.quality,
+                        reason: event.reason,
+                        metadata: updated_metadata,
+                        results: event.results,
+                      };
+
+                      let result = ProcessResult::new_json(&updated_event);
                       cloned_sender.lock().unwrap().send(result).unwrap();
 
                       sequence_number.store(sequence_index + 1, Release);
                     }
                   }
-                  OutputFormat::Json => {
-                    let sequence_index = sequence_number.load(Acquire);
-                    let updated_metadata = if let Some(metadata) = event.metadata {
-                      let clock: DateTime<Utc> = cloned_clock_vec.lock().unwrap()[0];
-                      cloned_clock_vec.lock().unwrap().clear();
-                      info!("Clock {}", clock);
-                      Some(websocket_response::Metadata {
-                        start_time: metadata.start_time,
-                        end_time: metadata.end_time,
-                        transcript: metadata.transcript,
-                        clock: Some(clock),
-                      })
-                    } else {
-                      None
-                    };
-                    let updated_event = WebsocketResponse {
-                      message: event.message,
-                      id: event.id,
-                      kind: event.kind,
-                      quality: event.quality,
-                      reason: event.reason,
-                      metadata: updated_metadata,
-                      results: event.results,
-                    };
-
-                    let result = ProcessResult::new_json(&updated_event);
-                    cloned_sender.lock().unwrap().send(result).unwrap();
-
-                    sequence_number.store(sequence_index + 1, Release);
-                  }
                 }
+              } else {
+                debug!("receive raw message: {:?}", event);
               }
-            } else {
-              debug!("receive raw message: {:?}", event);
             }
           })
         };
@@ -230,6 +232,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
                   thread::sleep(Duration::from_millis(50));
                 }
                 if error.is_disconnected() {
+                  error!("Websocket is disconnected.");
                   return Err(MessageError::ProcessingError(job_result));
                 }
               }

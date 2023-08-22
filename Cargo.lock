@@ -1799,9 +1799,9 @@ dependencies = [
 
 [[package]]
 name = "mcai_worker_sdk"
-version = "2.0.0-rc5"
+version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a1923bf30684fc85335ca65c2b56f7aa9cafd01614541f240869c8dd570d199b"
+checksum = "929b0e84fd9e970eb05d96b909f36161e8cbfa64ed3cced05985f8020b85a36f"
 dependencies = [
  "amq-protocol",
  "amq-protocol-types",
@@ -3387,7 +3387,7 @@ dependencies = [
 
 [[package]]
 name = "transcript_worker"
-version = "0.5.0-rc4"
+version = "0.6.0"
 dependencies = [
  "chrono",
  "futures",
