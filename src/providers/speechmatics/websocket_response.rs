@@ -1,5 +1,10 @@
 use chrono::{DateTime, Utc};
-use mcai_worker_sdk::prelude::*;
+use mcai_worker_sdk::{
+  prelude::ebu_ttml_live::{
+    Body, Div, EbuTtmlLive, Head, Paragraph, Span, TimeExpression, TimeUnit,
+  },
+  prelude::*,
+};
 use std::convert::TryFrom;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
