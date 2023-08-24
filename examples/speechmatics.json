@@ -8,21 +8,25 @@
       "value": "SOURCE_PATH"
     },
     {
-      "id": "authot_token",
-      "type": "string",
-      "store": "environment",
-      "value": "AUTHOT_TOKEN"
-    },
-    {
       "id": "destination_path",
       "type": "string",
       "store": "environment",
       "value": "DESTINATION_PATH"
     },
     {
-      "id": "ttml_indentifier",
+      "id": "provider",
       "type": "string",
-      "value": "franceinfo"
+      "value": "speechmatics"
+    },
+    {
+      "id": "service_instance_ip",
+      "type": "string",
+      "value": "localhost"
+    },
+    {
+      "id": "transcript_interval",
+      "type": "string",
+      "value": "10"
     }
   ]
 }
