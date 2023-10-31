@@ -16,7 +16,7 @@ type McaiWebSocketStream = WebSocketStream<Stream<TcpStream, TlsStream<TcpStream
 
 /// Creates a new connection to Speechmatics Real-Time container/instance
 /// See Speechmatics documentation : https://docs.speechmatics.com/introduction/rt-guide
-pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
+pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
   let service_ip: String = parameters
     .service_instance_ip
     .as_ref()
@@ -36,9 +36,19 @@ pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
     }
   };
 
-  let (mut ws_stream, _) = connect_async(websocket_url)
-    .await
-    .expect("Failed to connect");
+  let mut i = 0;
+  let (mut ws_stream, _) = loop {
+    let result = connect_async(websocket_url.clone()).await;
+    if let Err(e) = result {
+      error!("{}", e);
+      if i == 3 {
+        return Err(MessageError::RuntimeError(e.to_string()));
+      }
+      i += 1;
+    } else {
+      break result.unwrap();
+    }
+  };
 
   let mode: String = if &parameters.provider[..] == "speechmatics_standard" {
     "standard".to_string()
@@ -71,7 +81,7 @@ pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
   ws_stream
     .send(start_recognition_information.try_into().unwrap())
     .await
-    .expect("unable to send start recognition information");
+    .map_err(|e| MessageError::RuntimeError(e.to_string()))?;
 
   while let Some(Ok(event)) = ws_stream.next().await {
     let event: Result<WebsocketResponse> =
@@ -83,5 +93,5 @@ pub async fn new(parameters: &WorkerParameters) -> McaiWebSocketStream {
     }
   }
 
-  ws_stream
+  Ok(ws_stream)
 }
