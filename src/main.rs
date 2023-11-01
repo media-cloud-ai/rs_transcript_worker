@@ -109,8 +109,15 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
       let sequence_number = Arc::new(AtomicUsize::new(0));
 
       let future = async {
-        let ws_stream = providers::speechmatics::new(&parameters).await;
-        let (ws_sender, ws_receiver) = ws_stream.split();
+        let ws_stream = providers::speechmatics::new(&parameters)
+          .await
+          .map_err(|e| MessageError::RuntimeError(e.to_string()));
+
+        if let Err(e) = ws_stream {
+          panic!("{}", e.to_string());
+        }
+
+        let (ws_sender, ws_receiver) = ws_stream.unwrap().split();
 
         let send_to_ws = audio_source_receiver.map(Ok).forward(ws_sender);
 
@@ -233,7 +240,11 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
                 }
                 if error.is_disconnected() {
                   error!("Websocket is disconnected.");
-                  return Err(MessageError::ProcessingError(job_result));
+                  return Err(MessageError::ProcessingError(
+                    job_result
+                      .with_status(JobStatus::Error)
+                      .with_message("Websocket is disconnected."),
+                  ));
                 }
               }
             }
@@ -241,10 +252,11 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
         }
       },
       _ => {
-        return Err(MessageError::RuntimeError(format!(
-          "Could not open frame as it was no AudioVideo frame in job {:?}",
-          job_result.get_str_job_id()
-        )))
+        return Err(MessageError::ProcessingError(
+          job_result
+            .with_status(JobStatus::Error)
+            .with_message("Could not open frame as it was no AudioVideo frame in job."),
+        ))
       }
     };
 
