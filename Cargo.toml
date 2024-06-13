@@ -1,29 +1,31 @@
 [package]
 name = "transcript_worker"
-version = "0.6.2-rc0"
+version = "1.0.0"
 authors = [
-  "Marc-Antoine Arnaud <maarnaud@media-io.com>",
-  "Nicolas Pierre <nico.pierre@icloud.com>",
+    "Marc-Antoine Arnaud <maarnaud@media-io.com>",
+    "Nicolas Pierre <nico.pierre@icloud.com>",
 ]
 edition = "2018"
 license = "MIT"
 
 [dependencies]
 chrono = "0.4.19"
-futures = {version = "0.3", features = ["thread-pool"]}
+futures = { version = "0.3", features = ["thread-pool"] }
 futures-util = "0.3"
 reqwest = { version = "0.10", features = ["json"] }
 schemars = "0.8"
 serde = "^1.0"
 serde_derive = "^1.0"
 serde_json = "^1.0"
-stainless_ffmpeg = "0.3.5"
+stainless_ffmpeg = "0.3.10"
 tokio = "0.2"
 tokio-tls = "0.3"
-tokio-tungstenite = {version = "0.10.1", features = ["tls"], git = "https://github.com/media-cloud-ai/tokio-tungstenite.git" }
+tokio-tungstenite = { version = "0.10.1", features = [
+    "tls",
+], git = "https://github.com/media-cloud-ai/tokio-tungstenite.git" }
 
 [dependencies.mcai_worker_sdk]
-version = "2.1.1-rc0"
+version = "2.2.0"
 features = ["media"]
 
 [build-dependencies]
