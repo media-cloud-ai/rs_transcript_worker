@@ -1,149 +1,105 @@
 # rs_transcript_worker
- 
-## Project Overview
- 
-The `rs_transcript_worker` is a Rust-based worker designed to process transcripts using different providers. This worker is integrated with the Media Cloud AI platform and supports various transcript formats and transformations.
- 
-## Objectives of the Worker
- 
-The primary objective of this worker is to process transcripts based on specified parameters and providers. The worker reads input transcript files, applies transformations, and outputs the processed transcripts in the desired format.
- 
-## Functionnement
- 
-1. **Setup**: The worker initializes and sets up any necessary configurations.
-2. **Process**: The worker processes the job by:
-   - Reading the input transcript file from the specified source path.
-   - Applying the specified transformations based on the input parameters.
-   - Formatting the transcripts according to the specified provider.
-   - Writing the formatted transcripts to the specified destination path.
-   - Logging the processing steps and setting the job status to completed.
-3. **Completion**: The worker returns the formatted transcripts.
- 
-## Environmental Variables
- 
-- None specified in the code.
- 
-## Services Used
- 
-- None specified in the code.
- 
-## CPU/GPU
- 
-This worker primarily requires CPU resources for processing transcript files and applying transformations. There are no specific GPU requirements.
- 
+
+## Project Description
+The `rs_transcript_worker` is a Rust-based application designed to process transcripts using various providers. It leverages different services to handle speech recognition tasks and provides a structured way to manage and format the transcribed data.
+
 ## Project Architecture
- 
-The project follows a modular architecture with the following components:
- 
-- **Providers Module**: Contains provider-specific implementations, including `speechmatics`.
-- **Format Module**: Contains functions for formatting transcripts.
-- **Main Module**: Implements the worker logic, including setup and processing functions.
- 
+The project is structured into several directories and files, each serving a specific purpose:
+
+```
+.
+|-- examples
+|   |-- authot.json
+|   `-- speechmatics.json
+|-- ressources
+|   `-- custom_vocabulary.json
+|-- src
+|   |-- format
+|   |   `-- mod.rs
+|   |-- providers
+|   |   |-- speechmatics
+|   |   |   |-- mod.rs
+|   |   |   |-- start_recognition_information.rs
+|   |   |   `-- websocket_response.rs
+|   |   `-- mod.rs
+|   `-- main.rs
+|-- Cargo.lock
+|-- Cargo.toml
+|-- Dockerfile
+|-- LICENSE
+|-- README.md
+|-- build.rs
+`-- rustfmt.toml
+```
+
+### Key Components
+- **examples/**: Contains example configuration files for different providers.
+- **ressources/**: Holds resources like custom vocabulary files.
+- **src/**: The main source directory containing the code for formatting and provider-specific implementations.
+- **Cargo.toml**: The Rust package manager file, specifying dependencies and project metadata.
+- **Dockerfile**: Used for containerizing the application.
+
 ## Usage / Deployment Guide
- 
-### Prerequisites
- 
-- Rust
-- Docker (for containerization)
- 
-### Installation
- 
-1. **Clone the Repository**:
-   ```sh
-   git clone git@gitlab.com:media-cloud-ai/workers/media/rs_transcript_worker.git
-   cd rs_transcript_worker
+To deploy and use the `rs_transcript_worker`, follow these steps:
+
+1. **Build the Project**: Use Cargo to build the project.
+   ```bash
+   cargo build --release
    ```
- 
-2. **Install Dependencies**:
-   ```sh
-   cargo build
+
+2. **Run the Application**: Execute the compiled binary.
+   ```bash
+   ./target/release/rs_transcript_worker
    ```
- 
-3. **Build Docker Image**:
-   ```sh
+
+3. **Docker Deployment**: Build and run the Docker container.
+   ```bash
    docker build -t rs_transcript_worker .
-   ```
- 
-4. **Run the Worker**:
-   ```sh
    docker run rs_transcript_worker
    ```
- 
-## Created Resources
- 
-- **BigQuery Datasets**: None
-- **Tables**: None
-- **Buckets**: None
-- **Service Accounts**: None
- 
-## Produced Data
- 
-The worker produces formatted transcript files in the specified destination path. The format of the output transcripts depends on the input parameters and the specified provider.
- 
+
+## Objectives of the Worker
+The worker is designed to:
+- Process audio transcripts using different speech recognition providers.
+- Format and manage the transcribed data efficiently.
+
+## Functioning
+The operation of the worker involves:
+1. Initializing the required configurations and resources.
+2. Connecting to the specified speech recognition provider.
+3. Sending audio data for transcription.
+4. Receiving and processing the transcribed data.
+5. Formatting the output as per the specified requirements.
+
+## Environmental Variables
+The application may require the following environment variables:
+- `PROVIDER_API_KEY`: API key for the speech recognition provider.
+- `CUSTOM_VOCABULARY_PATH`: Path to the custom vocabulary file.
+
+## Services Used
+The worker interacts with the following services:
+- **Speechmatics**: For speech-to-text transcription via WebSocket connections.
+
+## CPU/GPU Requirements
+This worker primarily requires a CPU for its operations. There is no specific requirement for a GPU.
+
 ## Visual Elements
- 
-### Flowchart
- 
+
+### Architecture Diagram
 ```mermaid
-graph TD
-    A["START_JOB"] --> B["Read Input Transcript File"]
-    B --> C["Apply Transformations"]
-    C --> D["Format Transcripts"]
-    D --> E["Write Formatted Transcripts"]
-    E --> F["Set Job Status to Completed"]
-    F --> G["RETURN FORMATTED TRANSCRIPTS"]
+graph TD;
+    A["Audio Input"] --> B["rs_transcript_worker"];
+    B --> C["Speechmatics API"];
+    C --> D["Transcription Output"];
+    style A fill:#FFB3BA,stroke:#333,stroke-width:2px;
+    style B fill:#BAFFC9,stroke:#333,stroke-width:2px;
+    style C fill:#BAE1FF,stroke:#333,stroke-width:2px;
+    style D fill:#FFFFBA,stroke:#333,stroke-width:2px;
 ```
- 
-### Diagram
- 
-```mermaid
-graph TD
-    subgraph Worker
-        A["Setup"]
-        B["Process"]
-        C["Completion"]
-    end
-    subgraph Providers
-        D["Read Input Transcript File"]
-        E["Apply Transformations"]
-        F["Format Transcripts"]
-        G["Write Formatted Transcripts"]
-    end
-    A --> B
-    B --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> C
-```
- 
-## Authors and Acknowledgment
- 
-This project is maintained by the France TV DAIA team. Special thanks to all contributors who have helped improve the project.
- 
+
 ## License
- 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
- 
-## Project Status
- 
-The project is actively maintained and open to contributions. If you have any questions or need support, please open an issue or contact the maintainers.
- 
-## Contributing
- 
-We welcome contributions! Please read the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to contribute to this project.
- 
-## Support
- 
-For support, please open an issue on the GitLab repository or contact the maintainers directly.
- 
-## Roadmap
- 
-Future releases may include:
-- Enhanced error handling and logging.
-- Support for additional transcript formats.
-- Improved documentation and examples.
- 
+This project is licensed under the terms specified in the LICENSE file.
+
 ---
- 
-**Note**: This README.md is based on the provided code and project structure, with secondary inspiration from existing markdown files. Any information derived from potentially outdated sources is clearly indicated.
+
+This README provides a comprehensive overview of the `rs_transcript_worker` project, detailing its structure, usage, and functionality. For further details, refer to the source code and configuration files included in the project.
