@@ -128,7 +128,9 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
               let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
 
               if let Ok(event) = event {
-                if event.message == "AudioAdded" {}
+                if event.message == "AudioAdded" {
+                  debug!("Audio added to websocket");
+                }
                 if event.message == "EndOfTranscript" {
                   info!("End of transcript from provider");
                   let result = ProcessResult::end_of_process();
@@ -176,7 +178,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
                         results: event.results,
                       };
 
-                      let result = ProcessResult::new_json(&updated_event);
+                      let result = ProcessResult::new_json(updated_event);
                       cloned_sender.lock().unwrap().send(result).unwrap();
 
                       sequence_number.store(sequence_index + 1, Release);
