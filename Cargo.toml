@@ -12,6 +12,7 @@ license = "MIT"
 chrono = "0.4.19"
 futures = { version = "0.3", features = ["thread-pool"] }
 futures-util = "0.3"
+native-tls = "0.2.11"
 reqwest = { version = "0.10", features = ["json"] }
 schemars = "0.8"
 serde = "^1.0"
