@@ -26,11 +26,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     curl https://sh.rustup.rs -sSf | \
     sh -s -- --default-toolchain 1.76.0 -y && \
     . $HOME/.cargo/env && \
-    cargo build --verbose --release && \
-    cargo install --path .
+    cargo build --verbose --release
 
 FROM ubuntu:focal
-COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
+COPY --from=builder /src/target/release/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
 RUN apt update && \
