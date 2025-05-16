@@ -1,6 +1,6 @@
 [package]
 name = "transcript_worker"
-version = "1.0.0"
+version = "1.1.0-rc0"
 authors = [
     "Marc-Antoine Arnaud <maarnaud@media-io.com>",
     "Nicolas Pierre <nico.pierre@icloud.com>",
@@ -25,8 +25,9 @@ tokio-tungstenite = { version = "0.10.1", features = [
 ], git = "https://github.com/media-cloud-ai/tokio-tungstenite.git" }
 
 [dependencies.mcai_worker_sdk]
-version = "2.2.0"
+git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git"
+branch = "hotfix/add-srt-max-payload-size-config"
 features = ["media"]
 
 [build-dependencies]
-mcai_build = "0.2.0"
+mcai_build = "0.3.0"
