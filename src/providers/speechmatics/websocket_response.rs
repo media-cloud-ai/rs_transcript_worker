@@ -5,6 +5,7 @@ use mcai_worker_sdk::{
   },
   prelude::*,
 };
+use serde::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
@@ -22,12 +23,13 @@ pub struct WebsocketResponse {
 
 impl TryFrom<Message> for WebsocketResponse {
   type Error = MessageError;
+
   fn try_from(value: Message) -> Result<Self> {
     if let Message::Text(text) = value {
       serde_json::from_str(&text)
-        .map_err(|e| MessageError::RuntimeError(format!("Invalid data: {}", e)))
+        .map_err(|e| MessageError::RuntimeError(format!("Invalid data: {e}")))
     } else {
-      Err(MessageError::RuntimeError("Bad message format".to_string()))
+      Err(MessageError::RuntimeError("Bad message format".into()))
     }
   }
 }
@@ -69,11 +71,11 @@ impl Metadata {
     };
 
     EbuTtmlLive {
-      language: Some("fr-FR".to_string()),
-      sequence_identifier: Some("LiveSubtitle".to_string()),
+      language: Some("fr-FR".into()),
+      sequence_identifier: Some("LiveSubtitle".into()),
       sequence_number: Some(sequence_number as u64),
-      clock_mode: Some("local".to_string()),
-      time_base: Some("clock".to_string()),
+      clock_mode: Some("local".into()),
+      time_base: Some("clock".into()),
       head: Head::default(),
       body,
     }
