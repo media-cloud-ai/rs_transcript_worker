@@ -1,46 +1,39 @@
-#[macro_use]
-extern crate serde_derive;
-#[macro_use]
-extern crate serde_json;
+mod format;
+mod providers;
+
+use format::OutputFormat;
+use providers::speechmatics::{websocket_response, websocket_response::WebsocketResponse};
 
 use chrono::{DateTime, Utc};
-use format::OutputFormat;
-use futures::channel::mpsc::{channel, Sender};
-use futures_util::{future, pin_mut, StreamExt};
+use futures::channel::mpsc::{Sender, channel};
+use futures_util::{StreamExt, future, pin_mut};
 use mcai_worker_sdk::{
-  default_rust_mcai_worker_description, job::JobResult, prelude::*, MessageError,
+  MessageError, default_rust_mcai_worker_description, job::JobResult, prelude::*,
 };
-
+use serde::Deserialize;
+use serde_json::json;
 use std::{
   convert::TryFrom,
   str::FromStr,
   sync::{
+    Arc, Mutex,
     atomic::{
       AtomicUsize,
       Ordering::{Acquire, Release},
     },
     mpsc::Sender as StdSender,
-    Arc, Mutex,
   },
-  thread,
-  thread::JoinHandle,
+  thread::{self, JoinHandle},
   time::Duration,
 };
 use tokio::runtime::Runtime;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
-mod format;
-mod providers;
-use providers::speechmatics::{websocket_response, websocket_response::WebsocketResponse};
-
 default_rust_mcai_worker_description!();
 
 #[derive(Debug, Default)]
-struct McaiRustWorker {}
-
-#[derive(Debug, Default)]
 #[allow(dead_code)]
-struct TranscriptEvent {
+struct TranscriptWorker {
   sequence_number: u64,
   start_time: Option<f32>,
   audio_source_sender: Option<Sender<Message>>,
@@ -74,7 +67,7 @@ pub struct WorkerParameters {
   source_path: String,
 }
 
-impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent {
+impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorker {
   fn init_process(
     &mut self,
     parameters: WorkerParameters,
@@ -88,13 +81,15 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     let start_offset = self.start_time.unwrap();
 
     let selected_streams = get_first_audio_stream_id(&format_context)?;
-    let param_output_format = parameters.output_format.clone();
 
     // Specify output format
-    let output_format = OutputFormat::from_str(
-      &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
-    )
-    .expect("Cannot get output format");
+    let output_format =
+      parameters
+        .output_format
+        .as_ref()
+        .map_or(OutputFormat::EbuTtD, |param_output_format| {
+          OutputFormat::from_str(param_output_format).expect("Cannot get output format")
+        });
 
     let (audio_source_sender, audio_source_receiver) = channel(10000);
     self.audio_source_sender = Some(audio_source_sender);
@@ -124,7 +119,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
         let receive_from_ws = {
           ws_receiver.for_each(|event| async {
             if let Ok(event) = event {
-              debug!("{}", event);
+              debug!("{event}");
               let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
 
               if let Ok(event) = event {
@@ -158,7 +153,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
                       let updated_metadata = if let Some(metadata) = event.metadata {
                         let clock: DateTime<Utc> = cloned_clock_vec.lock().unwrap()[0];
                         cloned_clock_vec.lock().unwrap().clear();
-                        info!("Clock {}", clock);
+                        info!("Clock {clock}");
                         Some(websocket_response::Metadata {
                           start_time: metadata.start_time,
                           end_time: metadata.end_time,
@@ -186,7 +181,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
                   }
                 }
               } else {
-                debug!("receive raw message: {:?}", event);
+                debug!("receive raw message: {event:?}");
               }
             }
           })
@@ -209,9 +204,9 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     &mut self,
     job_result: JobResult,
     _stream_index: usize,
-    process_frames: &[mcai_worker_sdk::prelude::ProcessFrame],
+    process_frames: &[ProcessFrame],
   ) -> Result<ProcessResult> {
-    let process_frame: &ProcessFrame = &process_frames[0];
+    let process_frame = &process_frames[0];
     match &process_frame {
       ProcessFrame::AudioVideo(frame) => unsafe {
         trace!(
@@ -258,7 +253,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
           job_result
             .with_status(JobStatus::Error)
             .with_message("Could not open frame as it was no AudioVideo frame in job."),
-        ))
+        ));
       }
     };
 
@@ -283,6 +278,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
 }
 
 /// Select first audio stream index
+#[allow(clippy::result_large_err)]
 fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<StreamDescriptor>> {
   for stream_index in 0..format_context.get_nb_streams() {
     info!(
@@ -291,8 +287,8 @@ fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<Strea
       format_context.get_stream_type(stream_index as isize)
     );
     if format_context.get_stream_type(stream_index as isize) == AVMediaType::AVMEDIA_TYPE_AUDIO {
-      let channel_layouts = vec!["mono".to_string()];
-      let sample_formats = vec!["s16".to_string()];
+      let channel_layouts = vec!["mono".into()];
+      let sample_formats = vec!["s16".into()];
       let sample_rates = vec![16000];
       let filters = vec![AudioFilter::Format(AudioFormat {
         sample_rates,
@@ -307,11 +303,11 @@ fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<Strea
   }
 
   Err(MessageError::RuntimeError(
-    "No such audio stream in the source".to_string(),
+    "No such audio stream in the source".into(),
   ))
 }
 
 fn main() {
-  let worker = TranscriptEvent::default();
+  let worker = TranscriptWorker::default();
   start_worker(worker);
 }

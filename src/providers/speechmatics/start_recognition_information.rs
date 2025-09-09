@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::{
   convert::TryInto,
   fs::File,
@@ -6,7 +7,7 @@ use std::{
 use tokio_tungstenite::tungstenite::protocol::Message;
 
 #[derive(Debug, Serialize)]
-/// Transcription session informations
+/// Transcription session information
 pub struct StartRecognitionInformation {
   pub message: TranscriptionMode,
   pub transcription_config: TranscriptionConfig,
@@ -31,7 +32,7 @@ impl StartRecognitionInformation {
         language: Language::Fr,
         enable_partials: false,
         max_delay: 5.0,
-        diarization: "speaker_change".to_string(),
+        diarization: "speaker_change".into(),
         speaker_change_sensitivity: 0.4,
         additional_vocab: vec![],
         operating_point: mode,
@@ -44,11 +45,10 @@ impl StartRecognitionInformation {
     }
   }
 
-  pub fn set_custom_vocabulary(&mut self, custom_vocabulary_path: String) {
+  pub fn set_custom_vocabulary(&mut self, custom_vocabulary_path: &str) {
     let custom_voc_file = File::open(custom_vocabulary_path).expect("File does not exist");
     let reader = BufReader::new(custom_voc_file);
-    let custom_vocabulary: Vec<CustomVocabulary> =
-      serde_json::from_reader(reader).expect("JSON was not well-formatted");
+    let custom_vocabulary = serde_json::from_reader(reader).expect("JSON was not well-formatted");
     self.transcription_config.additional_vocab = custom_vocabulary;
   }
 
@@ -63,9 +63,11 @@ impl StartRecognitionInformation {
 
 impl TryInto<Message> for StartRecognitionInformation {
   type Error = Error;
+
   fn try_into(self) -> Result<Message, Self::Error> {
-    let serialized = serde_json::to_string(&self)
-      .map_err(|e| Error::new(ErrorKind::InvalidData, e.to_string()))?;
+    let serialized =
+      serde_json::to_string(&self).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+
     Ok(Message::text(serialized))
   }
 }

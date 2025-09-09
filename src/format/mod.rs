@@ -1,5 +1,6 @@
 use mcai_worker_sdk::prelude::*;
-use std::str::FromStr;
+use serde::Deserialize;
+use std::{fmt, str::FromStr};
 
 #[derive(Debug, Clone, Deserialize)]
 pub enum OutputFormat {
@@ -8,7 +9,7 @@ pub enum OutputFormat {
 }
 
 impl FromStr for OutputFormat {
-  type Err = mcai_worker_sdk::MessageError;
+  type Err = MessageError;
 
   fn from_str(input: &str) -> Result<OutputFormat> {
     match input {
@@ -22,11 +23,13 @@ impl FromStr for OutputFormat {
   }
 }
 
-impl ToString for OutputFormat {
-  fn to_string(&self) -> String {
-    match &self {
-      OutputFormat::EbuTtD => "EBU-TT-D".to_string(),
-      OutputFormat::Json => "JSON".to_string(),
-    }
+impl fmt::Display for OutputFormat {
+  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    let str = match &self {
+      OutputFormat::EbuTtD => "EBU-TT-D",
+      OutputFormat::Json => "JSON",
+    };
+
+    write!(f, "{str}")
   }
 }
