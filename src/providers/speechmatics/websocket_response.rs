@@ -12,6 +12,7 @@ use tokio_tungstenite::tungstenite::protocol::Message;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct WebsocketResponse {
   pub message: String,
+  pub format: Option<String>,
   pub id: Option<String>,
   #[serde(rename = "type")]
   pub kind: Option<String>,
@@ -85,11 +86,14 @@ impl Metadata {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Results {
   pub alternatives: Option<Vec<Alternatives>>,
+  pub attaches_to: Option<String>,
   pub start_time: f64,
   pub end_time: f64,
   #[serde(rename = "type")]
   pub kind: String,
   pub is_eos: Option<bool>,
+  pub score: Option<f32>,
+  pub volume: Option<f32>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -97,4 +101,5 @@ pub struct Alternatives {
   pub confidence: f64,
   pub content: String,
   pub language: String,
+  pub speaker: String,
 }
