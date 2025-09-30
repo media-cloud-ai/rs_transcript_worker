@@ -26,7 +26,12 @@
     {
       "id": "transcript_interval",
       "type": "string",
-      "value": "10"
+      "value": "4.0"
+    },
+    {
+      "id": "output_format",
+      "type": "string",
+      "value": "JSON"
     }
   ]
 }

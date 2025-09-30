@@ -31,9 +31,14 @@ impl StartRecognitionInformation {
       transcription_config: TranscriptionConfig {
         language: Language::Fr,
         enable_partials: false,
-        max_delay: 5.0,
-        diarization: "speaker_change".into(),
-        speaker_change_sensitivity: 0.4,
+        max_delay: 4.0,
+        max_delay_mode: "fixed".into(),
+        diarization: "speaker".into(),
+        speaker_diarization_config: Some(SpeakerDiarizationConfig {
+          max_speakers: Some(50),
+          prefer_current_speaker: Some(false),
+          speaker_sensitivity: Some(0.6),
+        }),
         additional_vocab: vec![],
         operating_point: mode,
       },
@@ -56,8 +61,12 @@ impl StartRecognitionInformation {
     self.transcription_config.max_delay = max_delay;
   }
 
-  pub fn set_diarisation(&mut self, diarisation: f64) {
-    self.transcription_config.speaker_change_sensitivity = diarisation;
+  pub fn set_diarisation(&mut self, diarisation: f32) {
+    self.transcription_config.speaker_diarization_config = Some(SpeakerDiarizationConfig {
+      max_speakers: Some(50),
+      prefer_current_speaker: Some(false),
+      speaker_sensitivity: Some(diarisation),
+    });
   }
 }
 
@@ -79,8 +88,9 @@ pub struct TranscriptionConfig {
   pub language: Language,
   pub enable_partials: bool,
   pub max_delay: f64,
+  pub max_delay_mode: String,
   pub diarization: String,
-  pub speaker_change_sensitivity: f64,
+  pub speaker_diarization_config: Option<SpeakerDiarizationConfig>,
   pub additional_vocab: Vec<CustomVocabulary>,
   pub operating_point: String,
 }
@@ -107,6 +117,15 @@ pub struct AudioFormat {
   pub audio_type: AudioType,
   pub encoding: AudioEncoding,
   pub sample_rate: u32,
+}
+
+#[derive(Debug, Serialize, Default)]
+/// Diarization Config
+/// See https://docs.speechmatics.com/speech-to-text/realtime/realtime_diarization#configuration
+pub struct SpeakerDiarizationConfig {
+  pub max_speakers: Option<i32>,
+  pub prefer_current_speaker: Option<bool>,
+  pub speaker_sensitivity: Option<f32>,
 }
 
 #[derive(Debug, Serialize)]

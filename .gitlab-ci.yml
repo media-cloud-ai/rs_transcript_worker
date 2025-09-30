@@ -3,7 +3,6 @@ default:
   image: registry.gitlab.com/media-cloud-ai/ci/rust:1.88.0-media
 
 variables:
-  CONTAINER_REGISTRY: registry.gitlab.com
   CONTAINER_IMAGE_NAME: media/rs_transcript_worker
 
 stages:
