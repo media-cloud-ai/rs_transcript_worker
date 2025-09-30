@@ -71,7 +71,7 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
 
   // Diarisation balance
   if let Some(diarisation_balance) = &parameters.diarisation_balance {
-    if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
+    if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f32>() {
       start_recognition_information.set_diarisation(diarisation_balance_float);
     }
   }

@@ -72,20 +72,18 @@ pub struct WorkerParameters {
 }
 
 impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorker {
-  fn init_media_source(
-    &mut self,
-    parameters: WorkerParameters,
-    input_format_context: &InputFormatContext,
-  ) -> Result<MediaInitReturn> {
-    let output = Arc::new(Mutex::new(DataOutput::try_new(
-      &parameters.destination_path,
-    )?));
+  fn init_process(&mut self, process_builder: ProcessBuilder) -> Result<InitProcessReturn> {
+    let parameters: WorkerParameters = process_builder.get_job_parameters()?;
 
+    let output = Arc::new(Mutex::new(process_builder.try_new_data_output()?));
     self.output = Some(output.clone());
+
+    let media_source_builder = process_builder.try_new_media_source_builder()?;
 
     // Store the start time
     self.start_time = {
-      let start_time = unsafe { (*input_format_context.as_ptr()).start_time };
+      let start_time =
+        unsafe { (*media_source_builder.input_format_context().as_ptr()).start_time };
 
       if start_time == AV_NOPTS_VALUE {
         None
@@ -97,7 +95,8 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
     let start_offset = self.start_time.unwrap();
 
     let selected_streams_descriptors = {
-      let stream = input_format_context
+      let stream = media_source_builder
+        .input_format_context()
         .streams()
         .find(|stream| stream.parameters().medium() == MediaType::Audio)
         .ok_or(MessageError::RuntimeError(
@@ -118,6 +117,9 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
 
       vec![MediaStreamDescriptor::new_audio(stream.index(), filters)]
     };
+
+    let media_source = media_source_builder.try_build(selected_streams_descriptors)?;
+    let source = Source::Media(media_source);
 
     // Specify output format
     let output_format =
@@ -181,8 +183,10 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
                           }
                         }
                         OutputFormat::Json => {
+                          debug!("Received event: {event:?}");
                           let sequence_index = sequence_number.load(Acquire);
                           let updated_metadata = if let Some(metadata) = event.metadata {
+                            // debug!("Received event: {event:?}");
                             let clock: DateTime<Utc> = clock_vec.lock().unwrap()[0];
                             clock_vec.lock().unwrap().clear();
                             info!("Clock {clock}");
@@ -197,6 +201,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
                           };
                           let updated_event = WebsocketResponse {
                             message: event.message,
+                            format: event.format,
                             id: event.id,
                             kind: event.kind,
                             quality: event.quality,
@@ -233,10 +238,7 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
       }))
     };
 
-    Ok(MediaInitReturn {
-      selected_streams_descriptors,
-      output,
-    })
+    Ok(InitProcessReturn { source, output })
   }
 
   fn process_media_frames(
