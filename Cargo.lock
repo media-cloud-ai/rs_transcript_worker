@@ -1987,7 +1987,7 @@ dependencies = [
 [[package]]
 name = "mcai_worker_sdk"
 version = "2.2.1"
-source = "git+https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git?branch=feat%2Frework#daf0a4ff996821da5644905ff36fe1862e777619"
+source = "git+https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git?branch=feat%2Frework#6a299bc6b8dd0596750a7cfe6b590e887f95c052"
 dependencies = [
  "amq-protocol",
  "amq-protocol-types",
@@ -3732,7 +3732,7 @@ dependencies = [
 
 [[package]]
 name = "transcript_worker"
-version = "1.2.0-dev1"
+version = "1.2.0-dev3"
 dependencies = [
  "chrono",
  "futures",
