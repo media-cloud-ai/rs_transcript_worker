@@ -24,8 +24,8 @@ tokio-tungstenite = { version = "0.10.1", features = [
 
 [dependencies.mcai_worker_sdk]
 git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git"
-version = "2.2.1"
-features = ["media"]
+branch = "feat/rework"
+features = ["media", "srt_data"]
 
 [build-dependencies]
 mcai_build = "0.3.1"
