@@ -31,14 +31,9 @@ impl StartRecognitionInformation {
       transcription_config: TranscriptionConfig {
         language: Language::Fr,
         enable_partials: false,
-        max_delay: 4.0,
-        max_delay_mode: "fixed".into(),
-        diarization: "speaker".into(),
-        speaker_diarization_config: Some(SpeakerDiarizationConfig {
-          max_speakers: Some(50),
-          prefer_current_speaker: Some(false),
-          speaker_sensitivity: Some(0.6),
-        }),
+        max_delay: 5.0,
+        diarization: "speaker_change".to_string(),
+        speaker_change_sensitivity: 0.4,
         additional_vocab: vec![],
         operating_point: mode,
       },
