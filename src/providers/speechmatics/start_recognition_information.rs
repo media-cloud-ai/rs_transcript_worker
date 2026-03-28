@@ -32,12 +32,10 @@ impl StartRecognitionInformation {
         language: Language::Fr,
         enable_partials: true,
         max_delay: 5.0,
-        max_delay_mode: "fixed".into(),
-        speaker_diarization_config: Some(SpeakerDiarizationConfig {
-          max_speakers: Some(2),
-        }),
-        additional_vocab: custom_vocabulary,
-        operating_point: "standard".into(),
+        diarization: "speaker_change".into(),
+        speaker_change_sensitivity: 0.4,
+        additional_vocab: vec![],
+        operating_point: mode,
       },
       audio_format: AudioFormat {
         audio_type: AudioType::Raw,

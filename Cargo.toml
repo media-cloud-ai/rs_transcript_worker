@@ -24,8 +24,7 @@ tokio-tungstenite = { version = "0.10.1", features = [
 
 [dependencies.mcai_worker_sdk]
 git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git"
-branch = "feat/rework"
-features = ["media", "srt_data"]
-
+branch = "hotfix/add-srt-max-payload-size-config"
+features = ["media"]
 [build-dependencies]
 mcai_build = "0.3.1"
