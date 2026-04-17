@@ -15,7 +15,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libavdevice-dev \
         libavfilter-dev \
         libavformat-dev \
-        libavresample-dev \
+        libswresample-dev \
         libavutil-dev \
         libclang1 \
         libpython3.8 \
