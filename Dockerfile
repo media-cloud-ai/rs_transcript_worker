@@ -4,15 +4,13 @@ ENV TZ=Europe/Paris
 ADD . /src
 WORKDIR /src
 
-RUN apt-get update || true && \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    apt-get clean && \
+    (apt-get update || true) && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         gnupg \
         ubuntu-keyring && \
-    update-ca-certificates && \
-    apt-get update
-
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get update && \
     apt-get install -y \
         clang \
@@ -41,16 +39,14 @@ FROM ubuntu:focal
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
-RUN apt-get update || true && \
+RUN apt-get clean && \
+    (apt-get update || true) && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         gnupg \
         ubuntu-keyring && \
-    update-ca-certificates && \
-    apt-get update
-
-RUN apt update && \
-    apt install -y \
+    apt-get update && \
+    apt-get install -y \
     ca-certificates \
     libavcodec58 \
     libavdevice58 \
