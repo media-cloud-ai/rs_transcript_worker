@@ -1,8 +1,16 @@
-FROM ubuntu:22.04 as builder
+FROM ubuntu:focal as builder
 ENV TZ=Europe/Paris
 
 ADD . /src
 WORKDIR /src
+
+RUN apt-get update || true && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        gnupg \
+        ubuntu-keyring && \
+    update-ca-certificates && \
+    apt-get update
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get update && \
@@ -15,10 +23,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libavdevice-dev \
         libavfilter-dev \
         libavformat-dev \
-        libswresample-dev \
+        libavresample-dev \
         libavutil-dev \
         libclang1 \
-        # libpython3.8 \
+        libpython3.8 \
         libssl-dev \
         pkg-config \
         python3 \
@@ -29,9 +37,17 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     cargo build --verbose --release && \
     cargo install --path .
 
-FROM ubuntu:22.04
+FROM ubuntu:focal
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
+
+RUN apt-get update || true && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        gnupg \
+        ubuntu-keyring && \
+    update-ca-certificates && \
+    apt-get update
 
 RUN apt update && \
     apt install -y \
@@ -40,9 +56,9 @@ RUN apt update && \
     libavdevice58 \
     libavfilter7 \
     libavformat58 \
-    libswresample3 \
+    libavresample4 \
     libavutil56 \
-    libssl3
+    libssl1.1
 
 ENV AMQP_QUEUE job_transcript
 CMD transcript_worker
