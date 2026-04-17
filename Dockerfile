@@ -1,17 +1,8 @@
-FROM ubuntu:focal as builder
+FROM ubuntu:22.04 as builder
 ENV TZ=Europe/Paris
 
 ADD . /src
 WORKDIR /src
-
-
-RUN apt-get update || true && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        gnupg \
-        software-properties-common && \
-    rm -rf /var/lib/apt/lists/*
-
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get update && \
@@ -24,10 +15,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libavdevice-dev \
         libavfilter-dev \
         libavformat-dev \
-        libavresample-dev \
+        libswresample-dev \
         libavutil-dev \
         libclang1 \
-        libpython3.8 \
+        # libpython3.8 \
         libssl-dev \
         pkg-config \
         python3 \
@@ -38,7 +29,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     cargo build --verbose --release && \
     cargo install --path .
 
-FROM ubuntu:focal
+FROM ubuntu:22.04
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
@@ -49,9 +40,9 @@ RUN apt update && \
     libavdevice58 \
     libavfilter7 \
     libavformat58 \
-    libavresample4 \
+    libswresample3 \
     libavutil56 \
-    libssl1.1
+    libssl3
 
 ENV AMQP_QUEUE job_transcript
 CMD transcript_worker
