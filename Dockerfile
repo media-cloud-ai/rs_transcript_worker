@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 as builder
+FROM ubuntu:22.04 as builder
 ENV TZ=Europe/Paris
 
 ADD . /src
