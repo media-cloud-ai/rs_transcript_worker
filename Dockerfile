@@ -1,8 +1,17 @@
-FROM ubuntu:22.04 as builder
+FROM ubuntu:focal as builder
 ENV TZ=Europe/Paris
 
 ADD . /src
 WORKDIR /src
+
+
+RUN apt-get update || true && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        gnupg \
+        software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
+
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get update && \
@@ -15,7 +24,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
         libavdevice-dev \
         libavfilter-dev \
         libavformat-dev \
-        libswresample-dev \
+        libavresample-dev \
         libavutil-dev \
         libclang1 \
         libpython3.8 \
@@ -29,7 +38,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     cargo build --verbose --release && \
     cargo install --path .
 
-FROM ubuntu:24.04
+FROM ubuntu:focal
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
