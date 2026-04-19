@@ -32,7 +32,7 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
     }
   }
 
-  let websocket_url = format!("ws://{service_ip}:8080/v2");
+  let websocket_url = format!("ws://{service_ip}:9000/v2");
 
   let mut i = 0;
   let (mut ws_stream, _) = loop {
