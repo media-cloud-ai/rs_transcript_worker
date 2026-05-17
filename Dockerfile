@@ -11,13 +11,12 @@ WORKDIR /src
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-    sed -i 's|http://archive.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g; \
-            s|http://security.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    apt-get update || true && \
+    apt-get install -y --no-install-recommends ca-certificates gnupg dirmngr && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32 || true && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates \
-        gnupg \
         clang \
         curl \
         gcc \
@@ -42,13 +41,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
 FROM ubuntu:focal
 
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
-RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g; \
-            s|http://security.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
-    apt-get update && \
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    apt-get update || true && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         libavcodec58 \
@@ -60,6 +57,6 @@ RUN sed -i 's|http://archive.ubuntu.com/ubuntu|http://old-releases.ubuntu.com/ub
         libssl1.1 && \
     rm -rf /var/lib/apt/lists/*
 
-ENV AMQP_QUEUE job_transcript
+ENV AMQP_QUEUE=job_transcript
 
 CMD ["transcript_worker"]
