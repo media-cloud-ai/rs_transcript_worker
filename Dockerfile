@@ -12,11 +12,12 @@ COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifica
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /var/lib/apt/lists/partial && \
     apt-get update || true && \
-    apt-get install -y --no-install-recommends ca-certificates gnupg dirmngr && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3B4FE6ACC0B21F32 || true && \
+    apt-get install -y --no-install-recommends ubuntu-keyring ca-certificates && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+        gnupg dirmngr \
         clang \
         curl \
         gcc \
