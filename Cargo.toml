@@ -1,6 +1,6 @@
 [package]
 name = "transcript_worker"
-version = "1.0.0"
+version = "1.2.1-dev16"
 authors = [
     "Marc-Antoine Arnaud <maarnaud@media-io.com>",
     "Nicolas Pierre <nico.pierre@icloud.com>",
