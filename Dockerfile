@@ -17,7 +17,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
             -o Acquire::AllowDowngradeToInsecureRepositories=true \
             update || true && \
     apt-get install -y --no-install-recommends --allow-unauthenticated \
-    ca-certificates ubuntu-keyring && \
+        ca-certificates ubuntu-keyring && \
+    rm -rf /var/cache/apt/archives/*.deb && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
     apt-get -o Acquire::AllowInsecureRepositories=true update || true && \
     apt-get install -y --no-install-recommends --allow-unauthenticated \
