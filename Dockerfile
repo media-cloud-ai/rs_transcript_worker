@@ -35,9 +35,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain 1.88.0 -y && \
     . $HOME/.cargo/env && \
     cargo update -p time && \
-    cargo build --verbose --release && \
+    cargo build --release && \
     cargo install --path . && \
+    cargo clean && \
+    rm -rf target && \
     rm -rf /var/lib/apt/lists/*
+
 
 FROM ubuntu:focal
 
