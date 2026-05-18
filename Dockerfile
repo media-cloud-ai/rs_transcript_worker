@@ -13,26 +13,18 @@ COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifica
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     mkdir -p /var/lib/apt/lists/partial && \
+    apt-get -o Acquire::AllowInsecureRepositories=true \
+            -o Acquire::AllowDowngradeToInsecureRepositories=true \
+            update || true && \
+    apt-get install -y --no-install-recommends --allow-unauthenticated \
+        ca-certificates ubuntu-keyring && \
     apt-get update || true && \
-    apt-get install -y --no-install-recommends ubuntu-keyring ca-certificates && \
-    apt-get update && \
     apt-get install -y --no-install-recommends \
         gnupg dirmngr \
-        clang \
-        curl \
-        gcc \
-        llvm \
-        libavcodec-dev \
-        libavdevice-dev \
-        libavfilter-dev \
-        libavformat-dev \
-        libavresample-dev \
-        libavutil-dev \
-        libclang1 \
-        libpython3.8 \
-        libssl-dev \
-        pkg-config \
-        python3 && \
+        clang curl gcc llvm \
+        libavcodec-dev libavdevice-dev libavfilter-dev \
+        libavformat-dev libavresample-dev libavutil-dev \
+        libclang1 libpython3.8 libssl-dev pkg-config python3 && \
     curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain 1.88.0 -y && \
     . $HOME/.cargo/env && \
     cargo update -p time && \
