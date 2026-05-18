@@ -17,14 +17,17 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
             -o Acquire::AllowDowngradeToInsecureRepositories=true \
             update || true && \
     apt-get install -y --no-install-recommends --allow-unauthenticated \
-        ca-certificates ubuntu-keyring && \
-    apt-get update || true && \
-    apt-get install -y --no-install-recommends \
-        gnupg dirmngr \
-        clang curl gcc llvm \
-        libavcodec-dev libavdevice-dev libavfilter-dev \
-        libavformat-dev libavresample-dev libavutil-dev \
-        libclang1 libpython3.8 libssl-dev pkg-config python3 && \
+    ca-certificates ubuntu-keyring && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
+    apt-get -o Acquire::AllowInsecureRepositories=true update || true && \
+    apt-get install -y --no-install-recommends --allow-unauthenticated \
+    gnupg dirmngr \
+    clang curl gcc llvm \
+    libavcodec-dev libavdevice-dev libavfilter-dev \
+    libavformat-dev libavresample-dev libavutil-dev \
+    libclang1 libpython3.8 libssl-dev pkg-config python3 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
     curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain 1.88.0 -y && \
     . $HOME/.cargo/env && \
     cargo update -p time && \
