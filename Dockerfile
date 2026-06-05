@@ -3,10 +3,9 @@ ENV TZ=Europe/Paris
 
 COPY . /src
 WORKDIR /src
-COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
+# hadolint ignore=DL3008,DL3015,DL4006
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-    sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
     apt-get update && \
     apt-get install -y \
     clang \
@@ -26,19 +25,17 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &
     python3 \
     && \
     curl https://sh.rustup.rs -sSf | \
-    sh -s -- --default-toolchain 1.88.0 -y && \
-    . $HOME/.cargo/env && \
+    sh -s -- --default-toolchain 1.91.0 -y && \
+    . "$HOME/.cargo/env" && \
     cargo build --verbose --release && \
-    cargo install --path . && \
-    rm -rf /var/lib/apt/lists/*
+    cargo install --path .
 
 FROM ubuntu:noble
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
-COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-RUN sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|https://security.ubuntu.com/ubuntu|g' /etc/apt/sources.list && \
-    apt-get update && \
+# hadolint ignore=DL3008
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
     libavcodec60 \
@@ -47,7 +44,8 @@ RUN sed -i 's|http://archive.ubuntu.com/ubuntu|https://archive.ubuntu.com/ubuntu
     libavformat60 \
     libswresample4 \
     libavutil58 \
-    libssl3
+    libssl3 && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV AMQP_QUEUE=job_transcript
 CMD ["transcript_worker"]
