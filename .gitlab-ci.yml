@@ -1,9 +1,8 @@
 ---
 default:
-  image: registry.gitlab.com/media-cloud-ai/ci/rust:1.88.0-media
+  image: registry.gitlab.com/media-cloud-ai/ci/rust:1.91.0-media
 
 variables:
-  CONTAINER_REGISTRY: registry.gitlab.com
   CONTAINER_IMAGE_NAME: media/rs_transcript_worker
 
 stages:
@@ -11,10 +10,7 @@ stages:
   - publish
 
 include:
-  - project: 'media-cloud-ai/ci/pipelines'
-    file: '/rust/rust-publish-docker.yml'
-  - project: 'media-cloud-ai/ci/pipelines'
-    file: '/rust/rust-base.yml'
-
-...
-
+  - project: "media-cloud-ai/ci/pipelines"
+    file: "/rust/rust-publish-docker.yml"
+  - project: "media-cloud-ai/ci/pipelines"
+    file: "/rust/rust-base.yml"

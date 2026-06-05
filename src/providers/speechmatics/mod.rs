@@ -63,17 +63,17 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
   }
 
   // Transcript interval (length of each transcript)
-  if let Some(max_delay) = &parameters.transcript_interval {
-    if let Ok(max_delay_float) = max_delay.parse::<f64>() {
-      start_recognition_information.set_max_delay(max_delay_float);
-    }
+  if let Some(max_delay) = &parameters.transcript_interval
+    && let Ok(max_delay_float) = max_delay.parse::<f64>()
+  {
+    start_recognition_information.set_max_delay(max_delay_float);
   }
 
   // Diarisation balance
-  if let Some(diarisation_balance) = &parameters.diarisation_balance {
-    if let Ok(diarisation_balance_float) = diarisation_balance.parse::<f64>() {
-      start_recognition_information.set_diarisation(diarisation_balance_float);
-    }
+  if let Some(diarisation_balance) = &parameters.diarisation_balance
+    && let Ok(diarisation_balance_float) = diarisation_balance.parse::<f32>()
+  {
+    start_recognition_information.set_diarisation(diarisation_balance_float);
   }
 
   ws_stream
@@ -84,10 +84,10 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
   while let Some(Ok(event)) = ws_stream.next().await {
     let event: Result<WebsocketResponse> =
       self::websocket_response::WebsocketResponse::try_from(event);
-    if let Ok(event) = event {
-      if event.message == "RecognitionStarted" {
-        break;
-      }
+    if let Ok(event) = event
+      && event.message == "RecognitionStarted"
+    {
+      break;
     }
   }
 
