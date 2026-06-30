@@ -33,7 +33,7 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
   }
 
   let websocket_port = match service_ip {
-    "speechmatics-2" => 9002,
+    "speechmatics-chainesport" => 9002,
     _ => 9000,
   };
   let websocket_url = format!("ws://{service_ip}:{websocket_port}/v2");
