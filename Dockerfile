@@ -1,48 +1,51 @@
-FROM ubuntu:focal as builder
+FROM ubuntu:noble AS builder
 ENV TZ=Europe/Paris
 
-ADD . /src
+COPY . /src
 WORKDIR /src
 
+# hadolint ignore=DL3008,DL3015,DL4006
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     apt-get update && \
     apt-get install -y \
-        clang \
-        curl \
-        gcc \
-        llvm \
-        libavcodec-dev \
-        libavdevice-dev \
-        libavfilter-dev \
-        libavformat-dev \
-        libavresample-dev \
-        libavutil-dev \
-        libclang1 \
-        libpython3.8 \
-        libssl-dev \
-        pkg-config \
-        python3 \
-        && \
+    clang \
+    curl \
+    gcc \
+    llvm \
+    libavcodec-dev \
+    libavdevice-dev \
+    libavfilter-dev \
+    libavformat-dev \
+    libswresample-dev \
+    libavutil-dev \
+    libclang1 \
+    libpython3.8 \
+    libssl-dev \
+    pkg-config \
+    python3 \
+    && \
     curl https://sh.rustup.rs -sSf | \
-    sh -s -- --default-toolchain stable -y && \
-    . $HOME/.cargo/env && \
+    sh -s -- --default-toolchain 1.91.0 -y && \
+    . "$HOME/.cargo/env" && \
     cargo build --verbose --release && \
     cargo install --path .
 
-FROM ubuntu:focal
+FROM ubuntu:noble
 COPY --from=builder /root/.cargo/bin/transcript_worker /usr/bin
 COPY --from=builder /src/ressources /ressources
 
-RUN apt update && \
-    apt install -y \
+# hadolint ignore=DL3008
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     ca-certificates \
-    libavcodec58 \
-    libavdevice58 \
-    libavfilter7 \
-    libavformat58 \
-    libavresample4 \
-    libavutil56 \
-    libssl1.1
+    libavcodec60 \
+    libavdevice60 \
+    libavfilter-extra9 \
+    libavformat60 \
+    libswresample4 \
+    libavutil58 \
+    libssl3 && \
+    rm -rf /var/lib/apt/lists/*
 
-ENV AMQP_QUEUE job_transcript
-CMD transcript_worker
+ENV AMQP_QUEUE=job_transcript
+CMD ["transcript_worker"]

@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::{
   convert::TryInto,
   fs::File,
@@ -6,7 +7,7 @@ use std::{
 use tokio_tungstenite::tungstenite::protocol::Message;
 
 #[derive(Debug, Serialize)]
-/// Transcription session informations
+/// Transcription session information
 pub struct StartRecognitionInformation {
   pub message: TranscriptionMode,
   pub transcription_config: TranscriptionConfig,
@@ -30,9 +31,14 @@ impl StartRecognitionInformation {
       transcription_config: TranscriptionConfig {
         language: Language::Fr,
         enable_partials: false,
-        max_delay: 5.0,
-        diarization: "speaker_change".to_string(),
-        speaker_change_sensitivity: 0.4,
+        max_delay: 4.0,
+        max_delay_mode: "fixed".into(),
+        diarization: "speaker".into(),
+        speaker_diarization_config: Some(SpeakerDiarizationConfig {
+          max_speakers: Some(50),
+          prefer_current_speaker: Some(false),
+          speaker_sensitivity: Some(0.6),
+        }),
         additional_vocab: vec![],
         operating_point: mode,
       },
@@ -44,11 +50,10 @@ impl StartRecognitionInformation {
     }
   }
 
-  pub fn set_custom_vocabulary(&mut self, custom_vocabulary_path: String) {
+  pub fn set_custom_vocabulary(&mut self, custom_vocabulary_path: &str) {
     let custom_voc_file = File::open(custom_vocabulary_path).expect("File does not exist");
     let reader = BufReader::new(custom_voc_file);
-    let custom_vocabulary: Vec<CustomVocabulary> =
-      serde_json::from_reader(reader).expect("JSON was not well-formatted");
+    let custom_vocabulary = serde_json::from_reader(reader).expect("JSON was not well-formatted");
     self.transcription_config.additional_vocab = custom_vocabulary;
   }
 
@@ -56,16 +61,22 @@ impl StartRecognitionInformation {
     self.transcription_config.max_delay = max_delay;
   }
 
-  pub fn set_diarisation(&mut self, diarisation: f64) {
-    self.transcription_config.speaker_change_sensitivity = diarisation;
+  pub fn set_diarisation(&mut self, diarisation: f32) {
+    self.transcription_config.speaker_diarization_config = Some(SpeakerDiarizationConfig {
+      max_speakers: Some(50),
+      prefer_current_speaker: Some(false),
+      speaker_sensitivity: Some(diarisation),
+    });
   }
 }
 
 impl TryInto<Message> for StartRecognitionInformation {
   type Error = Error;
+
   fn try_into(self) -> Result<Message, Self::Error> {
-    let serialized = serde_json::to_string(&self)
-      .map_err(|e| Error::new(ErrorKind::InvalidData, e.to_string()))?;
+    let serialized =
+      serde_json::to_string(&self).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
+
     Ok(Message::text(serialized))
   }
 }
@@ -77,8 +88,9 @@ pub struct TranscriptionConfig {
   pub language: Language,
   pub enable_partials: bool,
   pub max_delay: f64,
+  pub max_delay_mode: String,
   pub diarization: String,
-  pub speaker_change_sensitivity: f64,
+  pub speaker_diarization_config: Option<SpeakerDiarizationConfig>,
   pub additional_vocab: Vec<CustomVocabulary>,
   pub operating_point: String,
 }
@@ -105,6 +117,15 @@ pub struct AudioFormat {
   pub audio_type: AudioType,
   pub encoding: AudioEncoding,
   pub sample_rate: u32,
+}
+
+#[derive(Debug, Serialize, Default)]
+/// Diarization Config
+/// See https://docs.speechmatics.com/speech-to-text/realtime/realtime_diarization#configuration
+pub struct SpeakerDiarizationConfig {
+  pub max_speakers: Option<i32>,
+  pub prefer_current_speaker: Option<bool>,
+  pub speaker_sensitivity: Option<f32>,
 }
 
 #[derive(Debug, Serialize)]

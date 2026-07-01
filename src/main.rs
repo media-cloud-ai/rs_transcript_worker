@@ -1,50 +1,47 @@
-#[macro_use]
-extern crate serde_derive;
-#[macro_use]
-extern crate serde_json;
+mod format;
+mod providers;
+
+use format::OutputFormat;
+use providers::speechmatics::{websocket_response, websocket_response::WebsocketResponse};
 
 use chrono::{DateTime, Utc};
-use format::OutputFormat;
-use futures::channel::mpsc::{channel, Sender};
-use futures_util::{future, pin_mut, StreamExt};
+use futures::channel::mpsc::{Sender, channel};
+use futures_util::{StreamExt, future, pin_mut};
 use mcai_worker_sdk::{
-  default_rust_mcai_worker_description, job::JobResult, prelude::*, MessageError,
+  MessageError, default_rust_mcai_worker_description,
+  job::JobResult,
+  prelude::{
+    ffmpeg_next::sys::{AV_NOPTS_VALUE, AV_TIME_BASE},
+    *,
+  },
 };
-
+use serde::Deserialize;
+use serde_json::json;
 use std::{
   convert::TryFrom,
   str::FromStr,
   sync::{
+    Arc, Mutex,
     atomic::{
       AtomicUsize,
       Ordering::{Acquire, Release},
     },
-    mpsc::Sender as StdSender,
-    Arc, Mutex,
   },
-  thread,
-  thread::JoinHandle,
+  thread::{self, JoinHandle},
   time::Duration,
 };
 use tokio::runtime::Runtime;
 use tokio_tungstenite::tungstenite::protocol::Message;
 
-mod format;
-mod providers;
-use providers::speechmatics::{websocket_response, websocket_response::WebsocketResponse};
-
 default_rust_mcai_worker_description!();
 
 #[derive(Debug, Default)]
-struct McaiRustWorker {}
-
-#[derive(Debug, Default)]
 #[allow(dead_code)]
-struct TranscriptEvent {
+struct TranscriptWorker {
   sequence_number: u64,
   start_time: Option<f32>,
   audio_source_sender: Option<Sender<Message>>,
-  sender: Option<Arc<Mutex<StdSender<ProcessResult>>>>,
+  output: Option<Arc<Mutex<DataOutput>>>,
   ws_thread: Option<JoinHandle<()>>,
   clock_vec: Arc<Mutex<Vec<DateTime<Utc>>>>,
 }
@@ -74,193 +71,216 @@ pub struct WorkerParameters {
   source_path: String,
 }
 
-impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent {
-  fn init_process(
-    &mut self,
-    parameters: WorkerParameters,
-    format_context: Arc<Mutex<FormatContext>>,
-    response_sender: Arc<Mutex<StdSender<ProcessResult>>>,
-  ) -> Result<Vec<StreamDescriptor>> {
-    let format_context = format_context.lock().unwrap();
+impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorker {
+  fn init_process(&mut self, process_builder: ProcessBuilder) -> Result<InitProcessReturn> {
+    let parameters: WorkerParameters = process_builder.get_job_parameters()?;
+
+    let output = Arc::new(Mutex::new(process_builder.try_new_data_output()?));
+    self.output = Some(output.clone());
+
+    let media_source_builder = process_builder.try_new_media_source_builder()?;
 
     // Store the start time
-    self.start_time = format_context.get_start_time();
-    let start_offset = self.start_time.unwrap();
+    self.start_time = {
+      let start_time =
+        unsafe { (*media_source_builder.input_format_context().as_ptr()).start_time };
 
-    let selected_streams = get_first_audio_stream_id(&format_context)?;
-    let param_output_format = parameters.output_format.clone();
-
-    // Specify output format
-    let output_format = OutputFormat::from_str(
-      &(param_output_format.unwrap_or_else(|| OutputFormat::EbuTtD.to_string())),
-    )
-    .expect("Cannot get output format");
-
-    let (audio_source_sender, audio_source_receiver) = channel(10000);
-    self.audio_source_sender = Some(audio_source_sender);
-    let cloned_sender = response_sender.clone();
-    let cloned_clock_vec = self.clock_vec.clone();
-    let start_time = self.start_time;
-
-    self.sender = Some(response_sender);
-
-    // Spawn a thread listening to the websocket
-    self.ws_thread = Some(thread::spawn(move || {
-      let sequence_number = Arc::new(AtomicUsize::new(0));
-
-      let future = async {
-        let ws_stream = providers::speechmatics::new(&parameters)
-          .await
-          .map_err(|e| MessageError::RuntimeError(e.to_string()));
-
-        if let Err(e) = ws_stream {
-          panic!("{}", e.to_string());
-        }
-
-        let (ws_sender, ws_receiver) = ws_stream.unwrap().split();
-
-        let send_to_ws = audio_source_receiver.map(Ok).forward(ws_sender);
-
-        let receive_from_ws = {
-          ws_receiver.for_each(|event| async {
-            if let Ok(event) = event {
-              debug!("{}", event);
-              let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
-
-              if let Ok(event) = event {
-                if event.message == "AudioAdded" {}
-                if event.message == "EndOfTranscript" {
-                  info!("End of transcript from provider");
-                  let result = ProcessResult::end_of_process();
-                  cloned_sender.lock().unwrap().send(result).unwrap();
-                }
-                if event.message == "AddTranscript" {
-                  match output_format {
-                    OutputFormat::EbuTtD => {
-                      if let Some(mut metadata) = event.metadata {
-                        metadata.start_time += start_offset as f64;
-                        metadata.end_time += start_offset as f64;
-                        let sequence_index = sequence_number.load(Acquire);
-                        cloned_clock_vec.lock().unwrap().clear();
-
-                        let result = ProcessResult::new_xml(
-                          metadata.generate_ttml(start_time, sequence_index),
-                        );
-                        cloned_sender.lock().unwrap().send(result).unwrap();
-
-                        sequence_number.store(sequence_index + 1, Release);
-                      }
-                    }
-                    OutputFormat::Json => {
-                      let sequence_index = sequence_number.load(Acquire);
-                      let updated_metadata = if let Some(metadata) = event.metadata {
-                        let clock: DateTime<Utc> = cloned_clock_vec.lock().unwrap()[0];
-                        cloned_clock_vec.lock().unwrap().clear();
-                        info!("Clock {}", clock);
-                        Some(websocket_response::Metadata {
-                          start_time: metadata.start_time,
-                          end_time: metadata.end_time,
-                          transcript: metadata.transcript,
-                          clock: Some(clock),
-                        })
-                      } else {
-                        None
-                      };
-                      let updated_event = WebsocketResponse {
-                        message: event.message,
-                        id: event.id,
-                        kind: event.kind,
-                        quality: event.quality,
-                        reason: event.reason,
-                        metadata: updated_metadata,
-                        results: event.results,
-                      };
-
-                      let result = ProcessResult::new_json(&updated_event);
-                      cloned_sender.lock().unwrap().send(result).unwrap();
-
-                      sequence_number.store(sequence_index + 1, Release);
-                    }
-                  }
-                }
-              } else {
-                debug!("receive raw message: {:?}", event);
-              }
-            }
-          })
-        };
-
-        pin_mut!(send_to_ws, receive_from_ws);
-        future::select(send_to_ws, receive_from_ws).await;
-        info!("Ending transcription.");
-      };
-
-      let mut runtime = Runtime::new().unwrap();
-
-      runtime.block_on(future);
-    }));
-
-    Ok(selected_streams)
-  }
-
-  fn process_frames(
-    &mut self,
-    job_result: JobResult,
-    _stream_index: usize,
-    process_frames: &[mcai_worker_sdk::prelude::ProcessFrame],
-  ) -> Result<ProcessResult> {
-    let process_frame: &ProcessFrame = &process_frames[0];
-    match &process_frame {
-      ProcessFrame::AudioVideo(frame) => unsafe {
-        trace!(
-          "Frame {} samples, {} channels, {} bytes",
-          (*frame.frame).nb_samples,
-          (*frame.frame).channels,
-          (*frame.frame).linesize[0],
-        );
-
-        let size = ((*frame.frame).channels * (*frame.frame).nb_samples * 2) as usize;
-        let data = Vec::from_raw_parts((*frame.frame).data[0], size, size);
-        let message = Message::binary(data.clone());
-        std::mem::forget(data);
-
-        if let Some(audio_source_sender) = &mut self.audio_source_sender {
-          let mut sended = false;
-          let clock: DateTime<Utc> = Utc::now();
-          self.clock_vec.lock().unwrap().push(clock);
-          while !sended {
-            match audio_source_sender.try_send(message.clone()) {
-              Ok(_) => {
-                sended = true;
-              }
-              Err(error) => {
-                if error.is_full() {
-                  warn!("Buffer is full!");
-                  thread::sleep(Duration::from_millis(50));
-                }
-                if error.is_disconnected() {
-                  error!("Websocket is disconnected.");
-                  return Err(MessageError::ProcessingError(
-                    job_result
-                      .with_status(JobStatus::Error)
-                      .with_message("Websocket is disconnected."),
-                  ));
-                }
-              }
-            }
-          }
-        }
-      },
-      _ => {
-        return Err(MessageError::ProcessingError(
-          job_result
-            .with_status(JobStatus::Error)
-            .with_message("Could not open frame as it was no AudioVideo frame in job."),
-        ))
+      if start_time == AV_NOPTS_VALUE {
+        None
+      } else {
+        Some(start_time as f32 / AV_TIME_BASE as f32)
       }
     };
 
-    Ok(ProcessResult::empty())
+    let start_offset = self.start_time.unwrap();
+
+    let selected_streams_descriptors = {
+      let stream = media_source_builder
+        .input_format_context()
+        .streams()
+        .find(|stream| stream.parameters().medium() == MediaType::Audio)
+        .ok_or(MessageError::RuntimeError(
+          "No such audio stream in the source".into(),
+        ))?;
+
+      info!("Stream {:?}", stream.index());
+
+      let channel_layouts = vec!["mono".into()];
+      let sample_formats = vec!["s16".into()];
+      let sample_rates = vec![16000];
+
+      let filters = vec![AudioFilter::Format(AudioFormat {
+        sample_rates,
+        channel_layouts,
+        sample_formats,
+      })];
+
+      vec![MediaStreamDescriptor::new_audio(stream.index(), filters)]
+    };
+
+    let media_source = media_source_builder.try_build(selected_streams_descriptors)?;
+    let source = Source::Media(media_source);
+
+    // Specify output format
+    let output_format =
+      parameters
+        .output_format
+        .as_ref()
+        .map_or(OutputFormat::EbuTtD, |param_output_format| {
+          OutputFormat::from_str(param_output_format).expect("Cannot get output format")
+        });
+
+    let (audio_source_sender, audio_source_receiver) = channel(10000);
+    self.audio_source_sender = Some(audio_source_sender);
+
+    // Spawn a thread listening to the websocket
+    self.ws_thread = {
+      let output = output.clone();
+      let clock_vec = self.clock_vec.clone();
+      let start_time = self.start_time;
+
+      Some(thread::spawn(move || {
+        let sequence_number = Arc::new(AtomicUsize::new(0));
+
+        let future = async {
+          match providers::speechmatics::new(&parameters).await {
+            Err(e) => {
+              panic!("{}", MessageError::RuntimeError(e.to_string()));
+            }
+            Ok(ws_stream) => {
+              let (ws_sender, ws_receiver) = ws_stream.split();
+
+              let send_to_ws = audio_source_receiver.map(Ok).forward(ws_sender);
+
+              let receive_from_ws = ws_receiver.for_each(|event| async {
+                if let Ok(event) = event {
+                  debug!("{event}");
+                  let event: Result<WebsocketResponse> = WebsocketResponse::try_from(event);
+
+                  match event {
+                    Ok(event) => match event.message.as_str() {
+                      "AudioAdded" => {
+                        debug!("Audio added to websocket");
+                      }
+                      "EndOfTranscript" => {
+                        info!("End of transcript from provider");
+                        let _ = output.lock().unwrap().complete();
+                      }
+                      "AddTranscript" => match output_format {
+                        OutputFormat::EbuTtD => {
+                          if let Some(mut metadata) = event.metadata {
+                            metadata.start_time += start_offset as f64;
+                            metadata.end_time += start_offset as f64;
+                            let sequence_index = sequence_number.load(Acquire);
+                            clock_vec.lock().unwrap().clear();
+
+                            let data_output_frame = DataOutputFrame::new_xml(
+                              metadata.generate_ttml(start_time, sequence_index),
+                            );
+                            output.lock().unwrap().push(data_output_frame);
+
+                            sequence_number.store(sequence_index + 1, Release);
+                          }
+                        }
+                        OutputFormat::Json => {
+                          debug!("Received event: {event:?}");
+                          let sequence_index = sequence_number.load(Acquire);
+                          let updated_metadata = if let Some(metadata) = event.metadata {
+                            // debug!("Received event: {event:?}");
+                            let clock: DateTime<Utc> = clock_vec.lock().unwrap()[0];
+                            clock_vec.lock().unwrap().clear();
+                            info!("Clock {clock}");
+                            Some(websocket_response::Metadata {
+                              start_time: metadata.start_time,
+                              end_time: metadata.end_time,
+                              transcript: metadata.transcript,
+                              clock: Some(clock),
+                            })
+                          } else {
+                            None
+                          };
+                          let updated_event = WebsocketResponse {
+                            message: event.message,
+                            format: event.format,
+                            id: event.id,
+                            kind: event.kind,
+                            quality: event.quality,
+                            reason: event.reason,
+                            metadata: updated_metadata,
+                            results: event.results,
+                          };
+
+                          let data_output_frame = DataOutputFrame::new_json(updated_event);
+                          output.lock().unwrap().push(data_output_frame);
+
+                          sequence_number.store(sequence_index + 1, Release);
+                        }
+                      },
+                      _ => {}
+                    },
+                    _ => {
+                      debug!("receive raw message: {event:?}");
+                    }
+                  }
+                }
+              });
+
+              pin_mut!(send_to_ws, receive_from_ws);
+              future::select(send_to_ws, receive_from_ws).await;
+              info!("Ending transcription.");
+            }
+          }
+        };
+
+        let mut runtime = Runtime::new().unwrap();
+
+        runtime.block_on(future);
+      }))
+    };
+
+    Ok(InitProcessReturn { source, output })
+  }
+
+  fn process_media_frames(
+    &mut self,
+    job_result: JobResult,
+    _stream_index: usize,
+    frames: Vec<MediaProcessFrame>,
+  ) -> Result<ProcessResult> {
+    for frame in frames {
+      if let MediaProcessFrame::Audio(audio_frame) = frame {
+        trace!(
+          "Frame {} samples, {} channels",
+          audio_frame.samples(),
+          audio_frame.channels(),
+        );
+
+        if let Some(audio_source_sender) = &mut self.audio_source_sender {
+          let mut message = Some(Message::binary(audio_frame.data(0)));
+
+          let clock = Utc::now();
+          self.clock_vec.lock().unwrap().push(clock);
+
+          while let Err(error) = audio_source_sender.try_send(message.take().unwrap()) {
+            if error.is_disconnected() {
+              error!("Websocket is disconnected.");
+              return Err(MessageError::ProcessingError(Box::new(
+                job_result
+                  .with_status(JobStatus::Error)
+                  .with_message("Websocket is disconnected."),
+              )));
+            }
+            if error.is_full() {
+              warn!("Buffer is full!");
+              message = Some(error.into_inner());
+              thread::sleep(Duration::from_millis(50));
+            }
+          }
+        }
+      }
+    }
+
+    Ok(ProcessResult::Nothing)
   }
 
   fn ending_process(&mut self) -> Result<()> {
@@ -276,40 +296,12 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptEvent
     }
 
     self.ws_thread.take().map(JoinHandle::join);
+
     Ok(())
   }
 }
 
-/// Select first audio stream index
-fn get_first_audio_stream_id(format_context: &FormatContext) -> Result<Vec<StreamDescriptor>> {
-  for stream_index in 0..format_context.get_nb_streams() {
-    info!(
-      "Stream {:?}, type {:?}",
-      stream_index,
-      format_context.get_stream_type(stream_index as isize)
-    );
-    if format_context.get_stream_type(stream_index as isize) == AVMediaType::AVMEDIA_TYPE_AUDIO {
-      let channel_layouts = vec!["mono".to_string()];
-      let sample_formats = vec!["s16".to_string()];
-      let sample_rates = vec![16000];
-      let filters = vec![AudioFilter::Format(AudioFormat {
-        sample_rates,
-        channel_layouts,
-        sample_formats,
-      })];
-
-      let stream_descriptor = StreamDescriptor::new_audio(stream_index as usize, filters);
-
-      return Ok(vec![stream_descriptor]);
-    }
-  }
-
-  Err(MessageError::RuntimeError(
-    "No such audio stream in the source".to_string(),
-  ))
-}
-
 fn main() {
-  let worker = TranscriptEvent::default();
+  let worker = TranscriptWorker::default();
   start_worker(worker);
 }
