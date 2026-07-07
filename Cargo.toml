@@ -24,7 +24,8 @@ tokio-tungstenite = { version = "0.10.1", features = [
 
 [dependencies.mcai_worker_sdk]
 git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git"
-branch = "fix/change-instanceid-method"
+rev = "b37aa6476a2b17cb275ac78225a1759479f6bd24"
+
 features = ["media", "srt_data"]
 
 [build-dependencies]
