@@ -186,8 +186,13 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
                           debug!("Received event: {event:?}");
                           let sequence_index = sequence_number.load(Acquire);
                           let updated_metadata = if let Some(metadata) = event.metadata {
-                            // debug!("Received event: {event:?}");
-                            let clock: DateTime<Utc> = clock_vec.lock().unwrap()[0];
+                            // Somehow the clock vec can be surprisingly empty !
+                            let local_clock_vec = clock_vec.lock().unwrap();
+                            let clock: DateTime<Utc> = if local_clock_vec.is_empty() {
+                              Utc::now()
+                            } else {
+                              local_clock_vec[0]
+                            };
                             clock_vec.lock().unwrap().clear();
                             info!("Clock {clock}");
                             Some(websocket_response::Metadata {
