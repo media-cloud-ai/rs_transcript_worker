@@ -44,10 +44,12 @@ pub async fn new(parameters: &WorkerParameters) -> Result<McaiWebSocketStream> {
     if let Err(e) = result {
       error!("{e}");
       if i == 3 {
+        error!("Connection attempt {}/{} failed: {e}", i + 1, 3);
         return Err(MessageError::RuntimeError(e.to_string()));
       }
       i += 1;
     } else {
+      info!("Connected to Speechmatics at {websocket_url}");
       break result.unwrap();
     }
   };
