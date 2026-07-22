@@ -1,6 +1,6 @@
 [package]
 name = "transcript_worker"
-version = "1.2.0-rc2"
+version = "1.2.2-rc0"
 authors = [
   "Marc-Antoine Arnaud <maarnaud@media-io.com>",
   "Nicolas Pierre <nico.pierre@icloud.com>",
@@ -24,7 +24,7 @@ tokio-tungstenite = { version = "0.10.1", features = [
 
 [dependencies.mcai_worker_sdk]
 git = "https://gitlab.com/media-cloud-ai/sdks/rs_mcai_worker_sdk.git"
-branch = "feat/rework"
+branch = "fix/correct-json-management"
 features = ["media", "srt_data"]
 
 [build-dependencies]
