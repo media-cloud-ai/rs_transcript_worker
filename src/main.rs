@@ -75,6 +75,14 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
   fn init_process(&mut self, process_builder: ProcessBuilder) -> Result<InitProcessReturn> {
     let parameters: WorkerParameters = process_builder.get_job_parameters()?;
 
+    info!(
+      "Starting transcript worker - provider: {}, service_ip: {:?}, output_format: {:?}, transcript_interval: {:?}",
+      parameters.provider,
+      parameters.service_instance_ip,
+      parameters.output_format,
+      parameters.transcript_interval
+    );
+
     let output = Arc::new(Mutex::new(process_builder.try_new_data_output()?));
     self.output = Some(output.clone());
 
@@ -86,13 +94,15 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
         unsafe { (*media_source_builder.input_format_context().as_ptr()).start_time };
 
       if start_time == AV_NOPTS_VALUE {
+        warn!("No start_time found in source stream, defaulting to None");
         None
       } else {
         Some(start_time as f32 / AV_TIME_BASE as f32)
       }
     };
 
-    let start_offset = self.start_time.unwrap();
+    //avoid panic if the flow not contains start_time
+    let start_offset = self.start_time.unwrap_or(0.0);
 
     let selected_streams_descriptors = {
       let stream = media_source_builder
@@ -186,10 +196,18 @@ impl McaiWorker<WorkerParameters, RustMcaiWorkerDescription> for TranscriptWorke
                           debug!("Received event: {event:?}");
                           let sequence_index = sequence_number.load(Acquire);
                           let updated_metadata = if let Some(metadata) = event.metadata {
-                            // debug!("Received event: {event:?}");
-                            let clock: DateTime<Utc> = clock_vec.lock().unwrap()[0];
+
+                            // Use the last pushed clock timestamp, falling back to current time
+                            // if the vector is empty due to a race condition between audio frame
+                            // processing and websocket response handling.
+                            let clock: DateTime<Utc> = clock_vec
+                              .lock()
+                              .unwrap()
+                              .last()
+                              .copied()
+                              .unwrap_or_else(Utc::now);
                             clock_vec.lock().unwrap().clear();
-                            info!("Clock {clock}");
+                            info!("Transcript received - clock: {clock}, start: {}, end: {}, text: {:?}", metadata.start_time, metadata.end_time, metadata.transcript);
                             Some(websocket_response::Metadata {
                               start_time: metadata.start_time,
                               end_time: metadata.end_time,
